@@ -45,13 +45,20 @@ void Frame::background_color(uint16_t color) {
     }
 }
 
+// Sizes are bigger than 8 bits because somebody may call 255 + 1.
+// Even though it's not good to have such a huge sprite, it's better to not let
+// the value wrap to 0 because of it being a uint8_t
+
+// Also, col and row are signed because I may want to offset the drawing before the screen
 void Frame::draw_sprite(int16_t col, int16_t row, uint16_t h, uint16_t w, const uint16_t *sprite) {
     // Validity checks
     if (col > this->width || row > this->height || col + w <= 0 || row + h <= 0) return;
+    if (h == 0 || w == 0) return;
 
-    // Clamping
     uint16_t sprite_w = w; // Dims for sprite
     uint16_t j_start = 0, i_start = 0; // Starting points for sprite
+
+    // Clamping
     if (col < 0) {
         j_start += -col;
         w += -col;

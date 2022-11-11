@@ -19,6 +19,7 @@ class Frame {
 private:
     uint16_t* _last_frame;
 protected:
+    // Only accessible by Display
     Frame();
     ~Frame();
 

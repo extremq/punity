@@ -13,6 +13,9 @@ add_executable(${PROJ_NAME}
         engine/Frame.cpp
         engine/Frame.h
         engine/Vector.h
+        engine/Display.cpp
+        engine/Display.h
+        engine/Sprite.h
         )
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
