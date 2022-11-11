@@ -9,6 +9,10 @@ set(PROJ_NAME shobi)
 pico_sdk_init()
 add_executable(${PROJ_NAME}
         main.cpp
+        engine/ST7735_defines.h
+        engine/Frame.cpp
+        engine/Frame.h
+        engine/Vector.h
         )
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
