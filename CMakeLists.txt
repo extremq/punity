@@ -30,7 +30,7 @@ target_link_libraries(${PROJ_NAME}
         )
 
 # Remove this when you compile
-#add_custom_command(TARGET
-#        ${PROJ_NAME} POST_BUILD
-#        COMMAND
-#        sudo -S /bin/sh ${PROJECT_SOURCE_DIR}/deploy.sh ${PROJECT_SOURCE_DIR}/build/${PROJ_NAME}.uf2)
+add_custom_command(TARGET
+        ${PROJ_NAME} POST_BUILD
+        COMMAND
+        sudo -S /bin/sh ${PROJECT_SOURCE_DIR}/deploy.sh ${PROJECT_SOURCE_DIR}/build/${PROJ_NAME}.uf2)

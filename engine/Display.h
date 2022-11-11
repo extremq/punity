@@ -18,13 +18,11 @@
  *
  * I choose to inherit Frame since there are multiple but similar types
  * of display controllers and the Frame is common but the display init
- * is different.
+ * is different, so you could create multiple types of Display instead of this one.
  */
 
 class Display : public Frame {
 private:
-    static Display* _instance;
-
     uint8_t _spi_port;
     uint8_t _cs, _dc, _sda, _scl, _res; /* Pins on PCB */
 
@@ -53,17 +51,19 @@ private:
         this->_scl = 0;
     }
 
-    // These should only be used by GameEngine
-    void init(uint8_t w, uint8_t h, uint8_t cs, uint8_t dc, uint8_t sda, uint8_t scl, uint8_t res, uint8_t spi_port);
+    Display(const Display&);
+    Display& operator=(const Display&);
+public:
     void load_frame();
 
-public:
-    static Display* get() {
-        if (_instance == nullptr) {
-            _instance = new Display;
-        }
+    static Display& get() {
+        // https://stackoverflow.com/questions/13047526/difference-between-singleton-implemention-using-pointer-and-using-static-object
+        // Good read about singletons
+        static Display _instance;
         return _instance;
     }
+    // These should only be used by GameEngine
+    void init(uint8_t w, uint8_t h, uint8_t cs, uint8_t dc, uint8_t sda, uint8_t scl, uint8_t res, uint8_t spi_port);
 
     friend class GameEngine;
 };

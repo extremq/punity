@@ -40,7 +40,7 @@ void Frame::compute_diff() {
 }
 
 void Frame::background_color(uint16_t color) {
-    for (uint16_t i = 0; i < this->height; ++i) {
+    for (uint16_t i = 0; i < this->height * this->width; ++i) {
         this->_buffer[i] = color;
     }
 }
