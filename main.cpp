@@ -2,7 +2,7 @@
 // Created by god on 11.11.2022.
 //
 #include <iostream>
-#include "engine/Display.h"
+#include "punity/Punity.h"
 
 /* Pins on PICO */
 constexpr uint8_t TFT_RES = 20;
@@ -15,10 +15,12 @@ constexpr uint8_t WIDTH = 128;
 constexpr uint8_t HEIGHT = 128;
 
 int main() {
-    std::cout << "Hello world.\n";
-    Display::get()->init(HEIGHT, WIDTH, TFT_CS, TFT_DC,
-                         TFT_SDA, TFT_SCL, TFT_RES, 0);
-    Display::get()->background_color(0x368F);
-    Display::get()->load_frame();
-    while(1);
+    stdio_init_all();
+    sleep_ms(2000);
+
+    Punity::Engine.config_screen(HEIGHT, WIDTH, 0, TFT_CS, TFT_DC, TFT_SDA, TFT_SCL, TFT_RES);
+    Punity::Screen.background_color(0xacdf);
+    Punity::Screen.load_frame();
+    Punity::Engine.set_framerate(1);
+    Punity::Engine.start_game();
 }
