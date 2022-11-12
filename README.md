@@ -7,6 +7,13 @@ In this implementation, the Screen is using a ST7735
 controller. You will also find logic for interfacing
 analog joysticks and buttons.
 
+### Also
+This project has been made for an university task.
+
+Check out [my previous attempt](https://github.com/extremq/pico_game/)
+at creating such a game engine. I've learnt from that
+and moved on to creating Punity just a few days later.
+
 ### TO DO:
 - [ ] Time
 - [ ] Invokables
