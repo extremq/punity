@@ -9,14 +9,14 @@ set(PROJ_NAME shobi)
 pico_sdk_init()
 add_executable(${PROJ_NAME}
         main.cpp
-        punity/PScreen.cpp
-        punity/PScreen.h
+        punity/Screen/PScreen.cpp
+        punity/Screen/PScreen.h
         punity/Punity.h
-        punity/PEngine.cpp
-        punity/PEngine.h
-        punity/PVector.h
-        punity/ST7735_defines.h
-        punity/PSprite.cpp punity/PSprite.h)
+        punity/Engine/PEngine.cpp
+        punity/Engine/PEngine.h
+        punity/Utils/PVector.h
+        punity/Screen/ST7735_defines.h
+        punity/Utils/PSprite.cpp punity/Utils/PSprite.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

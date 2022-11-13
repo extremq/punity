@@ -9,8 +9,8 @@
 #include <cstdlib>
 #include "pico/stdlib.h"
 
-#include "PScreen.h"
-#include "PEngine.h"
+#include "punity/Screen/PScreen.h"
+#include "punity/Engine/PEngine.h"
 
 // Start of Punity!
 namespace Punity {

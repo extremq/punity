@@ -3,7 +3,7 @@
 //
 
 #include "PEngine.h"
-#include "Punity.h"
+#include "punity/Punity.h"
 
 namespace Punity {
     void PEngine::config_screen(uint16_t h, uint16_t w, uint8_t spi, uint8_t cs, uint8_t dc, uint8_t sda, uint8_t scl,

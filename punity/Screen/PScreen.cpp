@@ -6,7 +6,7 @@
 #include <hardware/spi.h>
 #include "ST7735_defines.h"
 #include "PScreen.h"
-#include "Punity.h"
+#include "punity/Punity.h"
 
 namespace Punity {
     void PScreen::config(uint16_t h,
