@@ -16,7 +16,7 @@ add_executable(${PROJ_NAME}
         punity/Engine/PEngine.h
         punity/Utils/PVector.h
         punity/Screen/ST7735_defines.h
-        punity/Utils/PSprite.cpp punity/Utils/PSprite.h)
+        punity/Components/PSpriteRenderer.cpp punity/Components/PSpriteRenderer.h punity/Entity/PEntity.cpp punity/Entity/PEntity.h punity/Components/PComponent.cpp punity/Components/PComponent.h punity/Utils/PSprite.cpp punity/Utils/PSprite.h punity/Components/PComponent.fwd.h punity/Entity/PEntity.fwd.h punity/Engine/PEngine.fwd.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

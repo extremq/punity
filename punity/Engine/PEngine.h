@@ -5,6 +5,8 @@
 #ifndef _ENGINE_H
 #define _ENGINE_H
 
+#include "punity/Entity/PEntity.h"
+
 #include <cstdint>
 namespace Punity {
     class PEngine {
@@ -39,7 +41,11 @@ namespace Punity {
         // Sets... the framerate.
         void set_framerate(uint8_t);
 
-        void start_game() const;
+        void start_game();
+
+        // Root Entity, head of the Entity Tree
+        // Not a pointer since it's always present.
+        PEntity root_entity;
     };
 }
 

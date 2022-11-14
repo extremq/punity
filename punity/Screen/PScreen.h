@@ -64,8 +64,8 @@ namespace Punity {
         }
 
         // Public read-only access
-        const uint16_t& height = m_height;
-        const uint16_t& width = m_width;
+        uint16_t const& height = m_height;
+        uint16_t const& width = m_width;
 
         void draw_sprite(int16_t col, int16_t row, uint16_t h, uint16_t w, const uint16_t* sprite);
         void background_color(uint16_t color);

@@ -17,9 +17,12 @@ namespace Punity {
         m_frame_delay_us = (uint64_t) (1.0 / frame_rate) * 1000000;
     }
 
-    void PEngine::start_game() const {
+    void PEngine::start_game() {
+        // Game loop
         while (true) {
             uint64_t frame_start_time = time_us_64();
+
+            root_entity.propagate_update();
 
             // Sleep the remaining frame time
             uint64_t time_difference = time_us_64() - frame_start_time;

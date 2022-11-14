@@ -1,8 +1,5 @@
 //
-// Created by god on 12.11.2022.
+// Created by god on 14.11.2022.
 //
 
 #include "PSprite.h"
-
-namespace Punity {
-} // Punity

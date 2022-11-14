@@ -8,7 +8,7 @@
 #include <cmath>
 #include <string>
 
-namespace Punity {
+namespace Punity::Utils {
     struct PVector {
     public:
         float x = 0, y = 0;
