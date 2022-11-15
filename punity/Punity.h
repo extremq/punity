@@ -19,8 +19,13 @@ namespace Punity {
     static PEngine& Engine = PEngine::get();
 
     // Simple error function
-    static void Error(const std::string& error_message) {
+    static void Error(std::string const& error_message) {
         std::cout << "[ERROR] " << error_message << '\n';
+        exit(EXIT_FAILURE);
+    }
+
+    static void Error(std::string const& error_message, std::string const& object_name) {
+        std::cout << "[ERROR] [" << object_name << "] " << error_message << '\n';
         exit(EXIT_FAILURE);
     }
 }

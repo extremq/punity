@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22.1)
 include(pico_sdk_import.cmake)
-project(pico_st7735 C CXX ASM)
+project(Punity-game-engine C CXX ASM)
 
 set(CMAKE_C STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -16,7 +16,20 @@ add_executable(${PROJ_NAME}
         punity/Engine/PEngine.h
         punity/Utils/PVector.h
         punity/Screen/ST7735_defines.h
-        punity/Components/PSpriteRenderer.cpp punity/Components/PSpriteRenderer.h punity/Entity/PEntity.cpp punity/Entity/PEntity.h punity/Components/PComponent.cpp punity/Components/PComponent.h punity/Utils/PSprite.cpp punity/Utils/PSprite.h punity/Components/PComponent.fwd.h punity/Entity/PEntity.fwd.h punity/Engine/PEngine.fwd.h)
+        punity/Components/PSpriteRenderer.cpp
+        punity/Components/PSpriteRenderer.h
+        punity/Entity/PEntity.cpp
+        punity/Entity/PEntity.h
+        punity/Components/PComponent.cpp
+        punity/Components/PComponent.h
+        punity/Utils/PSprite.cpp
+        punity/Utils/PSprite.h
+        punity/Components/PComponent.fwd.h
+        punity/Entity/PEntity.fwd.h
+        punity/Engine/PEngine.fwd.h
+        punity/Components/PTransform.cpp
+        punity/Components/PTransform.h
+        punity/Components/testComponent.cpp punity/Components/testComponent.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

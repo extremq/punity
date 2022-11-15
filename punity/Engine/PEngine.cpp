@@ -11,7 +11,7 @@ namespace Punity {
         Punity::Screen.config(h, w, spi, cs, dc, sda, scl, res);
     }
 
-    void PEngine::set_framerate(uint8_t frame_rate) {
+    void PEngine::set_framerate(float frame_rate) {
         if (frame_rate == 0) Punity::Error("Zero frame rate.");
 
         m_frame_delay_us = (uint64_t) (1.0 / frame_rate) * 1000000;
@@ -22,7 +22,33 @@ namespace Punity {
         while (true) {
             uint64_t frame_start_time = time_us_64();
 
-            root_entity.propagate_update();
+            // Any deletion is commited only on next frame
+            for (auto it = m_all_entities.begin(); it != m_all_entities.end(); ++it) {
+                if ((*it)->m_is_destroyed) {
+                    // delete the entity
+                    // any entity should be NEW
+                    delete *it;
+
+                    // Swap with end and pop end.
+                    auto last = m_all_entities.back();
+                    m_all_entities.pop_back();
+
+                    // Maybe we popped the end
+                    if (it != m_all_entities.end())
+                        *it = last;
+
+                    --it;
+                }
+            }
+
+            // No particular order
+            for (auto entity : m_all_entities) {
+                // Skip over disabled or destroyed objects
+                if (!entity->m_is_active || entity->m_is_destroyed) continue;
+
+                // Update the components
+                entity->on_update();
+            }
 
             // Sleep the remaining frame time
             uint64_t time_difference = time_us_64() - frame_start_time;
@@ -30,5 +56,9 @@ namespace Punity {
                 sleep_us(m_frame_delay_us - time_difference);
             }
         }
+    }
+
+    void PEngine::register_entity(PEntity *entity) {
+        m_all_entities.push_front(entity);
     }
 }

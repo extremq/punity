@@ -34,6 +34,8 @@ namespace Punity {
 
         m_frame_buffer = new uint16_t[w * h];
         m_last_frame_buffer = new uint16_t[w * h];
+
+        // TODO optimize and use all 8 bits.
         m_diff = new uint8_t[w * h];
 
         // Set buffer to white, while also setting

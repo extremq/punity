@@ -114,7 +114,7 @@ namespace Punity::Utils {
                    "," + std::to_string(this->y) + ")";
         }
 
-        friend std::ostream &operator<<(std::ostream &os, const Vector &v) {
+        friend std::ostream &operator<<(std::ostream &os, const PVector &v) {
             os << v.str();
             return os;
         }

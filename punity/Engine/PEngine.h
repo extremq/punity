@@ -11,10 +11,12 @@
 namespace Punity {
     class PEngine {
     private:
-        PEngine() = default;
+        PEngine() : root_entity("__Root") { };
 
         // In microseconds (1e^-6 sec)
         uint64_t m_frame_delay_us = 16666; // Assume 60 fps
+
+        std::list<PEntity*> m_all_entities;
     public:
         // Prohibit copying.
         PEngine(const PEngine &) = delete;
@@ -28,6 +30,9 @@ namespace Punity {
             return m_instance;
         };
 
+        std::list<PEntity*> const& entity_list = m_all_entities;
+        void register_entity(PEntity*);
+
         // Config is private but friend to Engine.
         void config_screen(uint16_t h,
                            uint16_t w,
@@ -39,7 +44,7 @@ namespace Punity {
                            uint8_t res);
 
         // Sets... the framerate.
-        void set_framerate(uint8_t);
+        void set_framerate(float);
 
         void start_game();
 
