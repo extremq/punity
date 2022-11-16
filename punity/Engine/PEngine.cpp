@@ -84,6 +84,7 @@ namespace Punity {
     }
 
     void PEngine::register_entity(PEntity *entity) {
+        entity->report_enable_to_components();
         std::cout << "registering " << entity->name << '\n';
         m_all_entities.push_front(entity);
     }

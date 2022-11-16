@@ -17,7 +17,7 @@ and moved on to creating Punity just a few days later.
 ### TO DO:
 - [ ] Time
 - [ ] Invokables
-- [ ] Game object
+- [x] Game object
 - [ ] Components
 - [ ] Joystick (inside the Input namespace, please)
 - [ ] Button

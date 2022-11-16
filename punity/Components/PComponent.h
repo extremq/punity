@@ -12,6 +12,8 @@ namespace Punity::Components {
     // The base component
     class PComponent {
     private:
+        // This state is individual and is not linked to parent Entity,
+        // however updates wont be executed if parent entity is disabled.
         bool m_is_active = true;
 
         // Befriend class for access
@@ -26,6 +28,11 @@ namespace Punity::Components {
         // Activated by set_active(true/false)
         virtual void on_enable() {}
         virtual void on_disable() {}
+
+        // Called when parent is enabled/disabled
+        virtual void on_entity_enable() {}
+        virtual void on_entity_disable() {}
+
         virtual void on_update() {}
         virtual void on_destroy() {}
 
@@ -35,6 +42,7 @@ namespace Punity::Components {
         // Public read-only
         Punity::PEntity *const & entity = m_parent_entity;
         void set_active(bool);
+
     };
 } // Punity
 

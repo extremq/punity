@@ -17,16 +17,12 @@ void Punity::PEntity::set_active(bool state) {
     // If this is an enable, register ourselves
     // Otherwise, disables will be handled by the Engine
     if (state) {
-        // Report enable event to components
-        report_enable_to_components();
+        // Will report an enable event
         Punity::Engine.register_entity(this);
     }
 
-    // Activate children entities and children components
+    // Activate children entities
     for (auto child : m_children_entities) {
-        child->set_active(state);
-    }
-    for (auto child : m_components) {
         child->set_active(state);
     }
 }
@@ -173,7 +169,7 @@ void Punity::PEntity::report_enable_to_components() {
 void Punity::PEntity::report_disable_to_components() {
     for (auto component : m_components) {
         if (component->m_is_active) {
-            component->on_disable();
+            component->on_entity_disable();
         }
     }
 }
@@ -181,7 +177,7 @@ void Punity::PEntity::report_disable_to_components() {
 void Punity::PEntity::report_update_to_components() {
     for (auto component : m_components) {
         if (component->m_is_active) {
-            component->on_update();
+            component->on_entity_enable();
         }
     }
 }
