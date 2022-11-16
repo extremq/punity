@@ -2,6 +2,7 @@
 // Created by god on 12.11.2022.
 //
 
+#include <queue>
 #include "PEngine.h"
 #include "punity/Punity.h"
 
@@ -19,24 +20,25 @@ namespace Punity {
 
     void PEngine::start_game() {
         // Game loop
-
+        std::queue<PEntity*> to_be_destroyed;
         // TODO add onStart, onDestroy
         while (true) {
             uint64_t frame_start_time = time_us_64();
 
             // Any deletion is committed only on next frame
             for (auto it = m_all_entities.begin(); it != m_all_entities.end(); ++it) {
-                std::cout << "checking " << (*it)->m_id << '\n';
                 if ((*it)->m_is_destroyed || !(*it)->m_is_active) {
-                    // delete the entity but only if its marked
                     if ((*it)->m_is_destroyed) {
-                        std::cout << "destroying " << (*it)->name << '\n';
-                        delete *it;
+                        // Delete the entity, but don't use delete yet.
+                        // Instead, add it to a queue.
+                        // Why? Since inside an on_destroy() event somebody can
+                        // create more stuff.
+                        to_be_destroyed.push(*it);
+                        (*it)->report_destroy_to_components();
                     }
                     else {
-                        std::cout << "discarding " << (*it)->name << '\n';
                         // Disable the entity.
-                        (*it)->on_disable();
+                        (*it)->report_disable_to_components();
                     }
 
                     // Reached the end, don't care to save
@@ -54,6 +56,13 @@ namespace Punity {
                 }
             }
 
+            // Now, finally, we can safely delete
+            // and be assured no weird stuff happens
+            while (!to_be_destroyed.empty()) {
+                delete to_be_destroyed.front();
+                to_be_destroyed.pop();
+            }
+
             // No particular order
             // Notice that I don't do any particular checks.
             // That means inactive and destroyed objects are still called
@@ -63,7 +72,7 @@ namespace Punity {
             for (auto entity : m_all_entities) {
                 // Update the components
                 std::cout << " - " << entity->name << '\n';
-                entity->on_update();
+                entity->report_update_to_components();
             }
 
             // Sleep the remaining frame time

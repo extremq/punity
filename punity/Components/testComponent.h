@@ -10,6 +10,7 @@
 namespace Punity::Components {
     class testComponent : public PComponent {
         void on_update() override;
+        void on_destroy() override;
     };
 
 }

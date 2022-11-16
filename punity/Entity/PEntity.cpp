@@ -16,8 +16,11 @@ void Punity::PEntity::set_active(bool state) {
 
     // If this is an enable, register ourselves
     // Otherwise, disables will be handled by the Engine
-    if (state)
+    if (state) {
+        // Report enable event to components
+        report_enable_to_components();
         Punity::Engine.register_entity(this);
+    }
 
     // Activate children entities and children components
     for (auto child : m_children_entities) {
@@ -56,7 +59,7 @@ void Punity::PEntity::add_child(Punity::PEntity *entity) {
         Punity::Error("Inserting an entity child that already exists.", m_name);
 }
 
-std::list<Punity::Components::PComponent *> const &Punity::PEntity::get_components() {
+std::list<Punity::Components::PComponent *> const &Punity::PEntity::get_all_components() {
     return m_components;
 }
 
@@ -106,6 +109,7 @@ void Punity::PEntity::remove_child_entity(Punity::PEntity* entity) {
 
 void Punity::PEntity::set_parent(Punity::PEntity *parent) {
     std::cout << "setting parent of " << name << " to " << parent->name << '\n';
+    if (parent->m_is_destroyed) Punity::Error("Setting as parent a destroyed entity.", m_name);
     if (m_parent_entity != nullptr && !m_parent_entity->m_children_entities.empty()) {
         m_parent_entity->remove_child_entity(this);
     }
@@ -143,27 +147,50 @@ Punity::PEntity::PEntity() {
 
 void Punity::PEntity::destroy() {
     m_is_destroyed = true;
+    m_is_active = false;
+
+    // Also mark the subtree inactive.
+    // A destroyed component is also inactive.
+    // Destruction has priority over disabling in event execution order.
 
     std::cout << "destroyed " << m_name << '\n';
+
     // Mark children entities as destroyed, next frame takes effect
     for (auto child : m_children_entities) {
         child->destroy();
     }
 }
 
-void Punity::PEntity::on_enable() {
-
+void Punity::PEntity::report_enable_to_components() {
+    for (auto component : m_components) {
+        if (component->m_is_active) {
+            component->on_enable();
+        }
+    }
 }
 
 // Called by the engine on disabling
-void Punity::PEntity::on_disable() {
-
+void Punity::PEntity::report_disable_to_components() {
+    for (auto component : m_components) {
+        if (component->m_is_active) {
+            component->on_disable();
+        }
+    }
 }
 
-void Punity::PEntity::on_update() {
+void Punity::PEntity::report_update_to_components() {
     for (auto component : m_components) {
         if (component->m_is_active) {
             component->on_update();
+        }
+    }
+}
+
+// Called by the engine on disabling
+void Punity::PEntity::report_destroy_to_components() {
+    for (auto component : m_components) {
+        if (component->m_is_active) {
+            component->on_destroy();
         }
     }
 }
@@ -172,7 +199,3 @@ Punity::PEntity::~PEntity() {
     std::cout << "Destructor called for " << name << '\n';
 }
 
-// Called by the engine on disabling
-void Punity::PEntity::on_destroy() {
-
-}

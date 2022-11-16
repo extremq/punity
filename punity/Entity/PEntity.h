@@ -39,10 +39,10 @@ namespace Punity {
         PEntity* m_parent_entity = nullptr;
         std::list<Punity::PEntity*> m_children_entities;
 
-        void on_enable();
-        void on_disable();
-        void on_update();
-        void on_destroy();
+        void report_enable_to_components();
+        void report_disable_to_components();
+        void report_update_to_components();
+        void report_destroy_to_components();
 
         PEntity &operator=(const PEntity &);
     public:
@@ -70,7 +70,7 @@ namespace Punity {
         void remove_child_entity(PEntity* entity);
 
         // Return components
-        std::list<Punity::Components::PComponent*> const & get_components();
+        std::list<Punity::Components::PComponent*> const & get_all_components();
 
         Punity::Components::PComponent* find_component(Punity::Components::PComponent* component);
 

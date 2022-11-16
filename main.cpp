@@ -36,7 +36,7 @@ int main() {
     auto c2 = new PEntity("c2");
     auto c3 = new PEntity("c3");
     auto c4 = new PEntity("c4");
-    b->add_component(test);
+    c3->add_component(test);
     c1->set_parent(d);
     c2->set_parent(d);
     c3->set_parent(c1);

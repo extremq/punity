@@ -27,6 +27,7 @@ namespace Punity::Components {
         virtual void on_enable() {}
         virtual void on_disable() {}
         virtual void on_update() {}
+        virtual void on_destroy() {}
 
         // No need to move components for no reason.
         void set_parent(Punity::PEntity* parent);
