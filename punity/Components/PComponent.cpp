@@ -8,6 +8,9 @@ uint64_t Punity::Components::PComponent::component_count = 0;
 
 namespace Punity::Components {
     void PComponent::set_active(bool state) {
+        // Don't do anything if this is the same state
+        if (m_is_active == state) return;
+
         m_is_active = state;
 
         // Simple state management

@@ -19,34 +19,50 @@ namespace Punity {
 
     void PEngine::start_game() {
         // Game loop
+
+        // TODO add onStart, onDestroy
         while (true) {
             uint64_t frame_start_time = time_us_64();
 
-            // Any deletion is commited only on next frame
+            // Any deletion is committed only on next frame
             for (auto it = m_all_entities.begin(); it != m_all_entities.end(); ++it) {
-                if ((*it)->m_is_destroyed) {
-                    // delete the entity
-                    // any entity should be NEW
-                    delete *it;
+                std::cout << "checking " << (*it)->m_id << '\n';
+                if ((*it)->m_is_destroyed || !(*it)->m_is_active) {
+                    // delete the entity but only if its marked
+                    if ((*it)->m_is_destroyed) {
+                        std::cout << "destroying " << (*it)->name << '\n';
+                        delete *it;
+                    }
+                    else {
+                        std::cout << "discarding " << (*it)->name << '\n';
+                        // Disable the entity.
+                        (*it)->on_disable();
+                    }
+
+                    // Reached the end, don't care to save
+                    if ((it != m_all_entities.end()) && (it == --m_all_entities.end())) {
+                        m_all_entities.pop_back();
+                        break;
+                    }
 
                     // Swap with end and pop end.
                     auto last = m_all_entities.back();
                     m_all_entities.pop_back();
 
-                    // Maybe we popped the end
-                    if (it != m_all_entities.end())
-                        *it = last;
-
+                    *it = last;
                     --it;
                 }
             }
 
             // No particular order
+            // Notice that I don't do any particular checks.
+            // That means inactive and destroyed objects are still called
+            // However, that only happens if in this frame they were committed
+            // Otherwise, the next frame will remove them.
+            std::cout << "Active entities this frame:\n";
             for (auto entity : m_all_entities) {
-                // Skip over disabled or destroyed objects
-                if (!entity->m_is_active || entity->m_is_destroyed) continue;
-
                 // Update the components
+                std::cout << " - " << entity->name << '\n';
                 entity->on_update();
             }
 
@@ -59,6 +75,7 @@ namespace Punity {
     }
 
     void PEngine::register_entity(PEntity *entity) {
+        std::cout << "registering " << entity->name << '\n';
         m_all_entities.push_front(entity);
     }
 }

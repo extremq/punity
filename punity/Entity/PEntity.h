@@ -42,6 +42,7 @@ namespace Punity {
         void on_enable();
         void on_disable();
         void on_update();
+        void on_destroy();
 
         PEntity &operator=(const PEntity &);
     public:

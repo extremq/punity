@@ -10,7 +10,14 @@
 uint64_t Punity::PEntity::entity_count = 0;
 
 void Punity::PEntity::set_active(bool state) {
+    // If the state is the same, nothing should happen.
+    if (m_is_active == state) return;
     m_is_active = state;
+
+    // If this is an enable, register ourselves
+    // Otherwise, disables will be handled by the Engine
+    if (state)
+        Punity::Engine.register_entity(this);
 
     // Activate children entities and children components
     for (auto child : m_children_entities) {
@@ -19,9 +26,6 @@ void Punity::PEntity::set_active(bool state) {
     for (auto child : m_components) {
         child->set_active(state);
     }
-
-    if (state) on_enable();
-    else on_disable();
 }
 
 std::list<Punity::PEntity*> const & Punity::PEntity::get_children() {
@@ -67,6 +71,7 @@ Punity::Components::PComponent* Punity::PEntity::find_component(Punity::Componen
     return nullptr;
 }
 
+// TODO Should be template, get component
 void Punity::PEntity::add_component(Punity::Components::PComponent *component) {
     // Search for component
     if (find_component(component) == nullptr) {
@@ -85,11 +90,15 @@ void Punity::PEntity::remove_child_entity(Punity::PEntity* entity) {
     Punity::PEntity* last = m_children_entities.back();
     for (auto it = m_children_entities.begin(); it != m_children_entities.end(); ++it) {
         if ((*it)->m_id == entity->m_id) {
-            m_children_entities.pop_back();
 
-            // Maybe we popped the end
-            if (it != m_children_entities.end())
-                (*it) = last;
+            // Maybe it's the end, then no need to save
+            if ((it != m_children_entities.end()) && (it == --m_children_entities.end())) {
+                m_children_entities.pop_back();
+                return;
+            }
+
+            m_children_entities.pop_back();
+            (*it) = last;
             return;
         }
     }
@@ -118,7 +127,7 @@ Punity::PEntity::PEntity(const std::string &new_name) {
     if (new_name != "__Root") {
         m_name = new_name;
         set_parent(&Punity::Engine.root_entity);
-        Punity::PEngine::get().register_entity(this);
+        Punity::Engine.register_entity(this);
     }
     else {
         // Also set name for root, but dont set any parent nor register
@@ -129,7 +138,7 @@ Punity::PEntity::PEntity(const std::string &new_name) {
 Punity::PEntity::PEntity() {
     // Any Entity should have the root_entity as a default parent
     set_parent(&Punity::Engine.root_entity);
-    Punity::PEngine::get().register_entity(this);
+    Punity::Engine.register_entity(this);
 }
 
 void Punity::PEntity::destroy() {
@@ -146,6 +155,7 @@ void Punity::PEntity::on_enable() {
 
 }
 
+// Called by the engine on disabling
 void Punity::PEntity::on_disable() {
 
 }
@@ -160,4 +170,9 @@ void Punity::PEntity::on_update() {
 
 Punity::PEntity::~PEntity() {
     std::cout << "Destructor called for " << name << '\n';
+}
+
+// Called by the engine on disabling
+void Punity::PEntity::on_destroy() {
+
 }
