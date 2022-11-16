@@ -3,7 +3,6 @@
 //
 #include <iostream>
 #include "punity/Punity.h"
-#include "punity/Components/testComponent.h"
 
 /* Pins on PICO */
 constexpr uint8_t TFT_RES = 20;
@@ -24,23 +23,12 @@ int main() {
     Screen.background_color(0xacdf);
 
     std::cout << sizeof(PEntity) << '\n';
-    auto a = new PEntity("a");
-    auto b = new PEntity("b");
-    auto c = new PEntity("c");
-    auto d = new PEntity("d");
-    d->set_parent(b);
-    c->set_parent(b);
-
-    auto test = new Components::testComponent();
-    auto c1 = new PEntity("c1");
-    auto c2 = new PEntity("c2");
-    auto c3 = new PEntity("c3");
-    auto c4 = new PEntity("c4");
-    c3->add_component(test);
-    c1->set_parent(d);
-    c2->set_parent(d);
-    c3->set_parent(c1);
-    c4->set_parent(c3);
+    auto a = PEntity::make_entity("a");
+    auto b = PEntity::make_entity("b");
+    auto c = PEntity::make_entity("c");
+    auto d = PEntity::make_entity("d");
+    d.set_parent(b);
+    c.set_parent(b);
 
     Screen.load_frame();
     Engine.set_framerate(0.5);

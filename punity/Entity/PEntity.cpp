@@ -32,24 +32,23 @@ std::list<Punity::PEntity*> const & Punity::PEntity::get_children() {
 }
 
 // Returns pointer to found child, if exists
-Punity::PEntity *Punity::PEntity::find_child_entity(Punity::PEntity* entity) {
+bool Punity::PEntity::has_child(Punity::PEntity& entity) {
     for (auto child : m_children_entities) {
-        if (child->m_id == entity->m_id) {
-            return child;
+        if (child->m_id == entity.m_id) {
+            return true;
         }
     }
-
-    return nullptr;
+    return false;
 }
 
-void Punity::PEntity::add_child(Punity::PEntity *entity) {
-    if (entity == this) Punity::Error("Cannot set entity child as self.", m_name);
+void Punity::PEntity::add_child(Punity::PEntity& entity) {
+    if (&entity == this) Punity::Error("Cannot set entity child as self.", m_name);
 
     // Search for child
-    if (find_child_entity(entity) == nullptr) {
+    if (!has_child(entity)) {
         // Nothing found, insert it
-        m_children_entities.push_back(entity);
-        entity->m_parent_entity = this;
+        m_children_entities.push_back(&entity);
+        entity.m_parent_entity = this;
     }
     else
         Punity::Error("Inserting an entity child that already exists.", m_name);
@@ -82,13 +81,13 @@ void Punity::PEntity::add_component(Punity::Components::PComponent *component) {
         Punity::Error("Inserting an already existing component.", m_name);
 }
 
-void Punity::PEntity::remove_child_entity(Punity::PEntity* entity) {
+void Punity::PEntity::remove_child_entity(Punity::PEntity& entity) {
     // Let's swap the end with the removed entity.
     if (m_children_entities.empty()) Punity::Error("Trying to remove from childless entity.", m_name);
 
     Punity::PEntity* last = m_children_entities.back();
     for (auto it = m_children_entities.begin(); it != m_children_entities.end(); ++it) {
-        if ((*it)->m_id == entity->m_id) {
+        if ((*it)->m_id == entity.m_id) {
 
             // Maybe it's the end, then no need to save
             if ((it != m_children_entities.end()) && (it == --m_children_entities.end())) {
@@ -103,18 +102,20 @@ void Punity::PEntity::remove_child_entity(Punity::PEntity* entity) {
     }
 }
 
-void Punity::PEntity::set_parent(Punity::PEntity *parent) {
-    std::cout << "setting parent of " << name << " to " << parent->name << '\n';
-    if (parent->m_is_destroyed) Punity::Error("Setting as parent a destroyed entity.", m_name);
+void Punity::PEntity::set_parent(Punity::PEntity& parent) {
+    std::cout << "setting parent of " << name << " to " << parent.name << '\n';
+
+    if (parent.m_is_destroyed) Punity::Error("Setting as parent a destroyed entity.", m_name);
+
     if (m_parent_entity != nullptr && !m_parent_entity->m_children_entities.empty()) {
-        m_parent_entity->remove_child_entity(this);
+        m_parent_entity->remove_child_entity(*this);
     }
 
     // And update the parent entity
-    parent->add_child(this);
+    parent.add_child(*this);
 
     // Update parent pointer
-    m_parent_entity = parent;
+    m_parent_entity = &parent;
 }
 
 void Punity::PEntity::set_name(const std::string &new_name) {
@@ -122,11 +123,14 @@ void Punity::PEntity::set_name(const std::string &new_name) {
 }
 
 Punity::PEntity::PEntity(const std::string &new_name) {
+    // Set transform up
+    m_transform = new Components::PTransform;
+
     // Any Entity should have the root_entity as a default parent
     // Except for root itself
     if (new_name != "__Root") {
         m_name = new_name;
-        set_parent(&Punity::Engine.root_entity);
+        set_parent(Punity::Engine.root_entity);
         Punity::Engine.register_entity(this);
     }
     else {
@@ -136,8 +140,11 @@ Punity::PEntity::PEntity(const std::string &new_name) {
 }
 
 Punity::PEntity::PEntity() {
+    // Set transform up
+    m_transform = new Components::PTransform;
+
     // Any Entity should have the root_entity as a default parent
-    set_parent(&Punity::Engine.root_entity);
+    set_parent(Punity::Engine.root_entity);
     Punity::Engine.register_entity(this);
 }
 
@@ -192,6 +199,17 @@ void Punity::PEntity::report_destroy_to_components() {
 }
 
 Punity::PEntity::~PEntity() {
+    delete m_transform;
     std::cout << "Destructor called for " << name << '\n';
+}
+
+Punity::PEntity &Punity::PEntity::make_entity() {
+    // Create an return a reference to entity
+    return *(new PEntity());
+}
+
+Punity::PEntity &Punity::PEntity::make_entity(const std::string &new_name) {
+    // Create an return a reference to entity
+    return *(new PEntity(new_name));
 }
 

@@ -11,7 +11,7 @@
 namespace Punity {
     class PEngine {
     private:
-        PEngine() : root_entity("__Root") { };
+        PEngine() : root_entity("__Root") {};
 
         // In microseconds (1e^-6 sec)
         uint64_t m_frame_delay_us = 16666; // Assume 60 fps

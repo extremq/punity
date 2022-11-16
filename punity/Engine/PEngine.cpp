@@ -20,7 +20,7 @@ namespace Punity {
 
     void PEngine::start_game() {
         // Game loop
-        std::queue<PEntity*> to_be_destroyed;
+        std::queue<PEntity *> to_be_destroyed;
         // TODO add onStart, onDestroy
         while (true) {
             uint64_t frame_start_time = time_us_64();
@@ -35,8 +35,7 @@ namespace Punity {
                         // create more stuff.
                         to_be_destroyed.push(*it);
                         (*it)->report_destroy_to_components();
-                    }
-                    else {
+                    } else {
                         // Disable the entity.
                         (*it)->report_disable_to_components();
                     }
@@ -69,7 +68,7 @@ namespace Punity {
             // However, that only happens if in this frame they were committed
             // Otherwise, the next frame will remove them.
             std::cout << "Active entities this frame:\n";
-            for (auto entity : m_all_entities) {
+            for (auto entity: m_all_entities) {
                 // Update the components
                 std::cout << " - " << entity->name << '\n';
                 entity->report_update_to_components();

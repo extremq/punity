@@ -6,6 +6,8 @@
 #define _SCREEN_H
 
 #include <cstdint>
+#include "punity/Engine/PEngine.fwd.h"
+
 namespace Punity {
     class PScreen {
     private:
@@ -43,7 +45,8 @@ namespace Punity {
         void reset() const;
         void init_lcd();
 
-        friend class PEngine; // Used by PEngine
+        friend class PEngine;
+
         // Configures the privates but has effect only once
         void config(uint16_t h,
                     uint16_t w,

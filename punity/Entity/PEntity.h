@@ -20,8 +20,11 @@ namespace Punity {
         // Entity name
         std::string m_name;
 
-        bool m_is_active = true;
-        bool m_is_destroyed = false;
+        // Children entities
+        std::list<Punity::PEntity*> m_children_entities;
+
+        // List of components
+        std::list<Punity::Components::PComponent*> m_components;
 
         // Befriend class for access
         friend class Punity::PEngine;
@@ -29,45 +32,45 @@ namespace Punity {
         static uint64_t entity_count;
         uint64_t m_id = entity_count++; // Increment id's
 
-        // Entity transform
-        Components::PTransform m_transform;
-
-        // List of components
-        std::list<Punity::Components::PComponent*> m_components;
-
-        // Parent entity and children entities
+        // Parent entity and
         PEntity* m_parent_entity = nullptr;
-        std::list<Punity::PEntity*> m_children_entities;
+
+        // Entity transform
+        Components::PTransform* m_transform;
+
+        bool m_is_active = true;
+        bool m_is_destroyed = false;
 
         void report_enable_to_components();
         void report_disable_to_components();
         void report_update_to_components();
         void report_destroy_to_components();
 
-        PEntity &operator=(const PEntity &);
-    public:
-        void destroy();
-
         // Disable copy
-        ~PEntity();
+        PEntity &operator=(const PEntity &);
+
         PEntity();
         explicit PEntity(std::string const& new_name);
-
-        // Public read-only
-        Components::PTransform const& transform = m_transform;
-        PEntity* const & parent_of_entity = m_parent_entity;
-
-        std::string const& name = m_name;
+    public:
+        // Let's make sure we create entities dynamically.
+        static PEntity& make_entity();
+        static PEntity& make_entity(std::string const& new_name);
 
         void set_name(std::string const& new_name);
         void set_active(bool);
+        void destroy();
+
+        // Public read-only
+        Components::PTransform* const& transform = m_transform;
+        PEntity* const & parent_of_entity = m_parent_entity;
+        std::string const& name = m_name;
 
         // Return all children entities
         std::list<PEntity*> const & get_children();
 
-        PEntity* find_child_entity(PEntity* entity);
+        bool has_child(PEntity& entity);
 
-        void remove_child_entity(PEntity* entity);
+        void remove_child_entity(PEntity& entity);
 
         // Return components
         std::list<Punity::Components::PComponent*> const & get_all_components();
@@ -75,12 +78,14 @@ namespace Punity {
         Punity::Components::PComponent* find_component(Punity::Components::PComponent* component);
 
         // Add a new child entity
-        void add_child(PEntity* entity);
+        void add_child(PEntity& entity);
 
         // Add a new component
         void add_component(Components::PComponent* component);
 
-        void set_parent(PEntity* parent);
+        void set_parent(PEntity& parent);
+
+        ~PEntity();
     };
 }
 

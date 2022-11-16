@@ -17,6 +17,9 @@ namespace Punity::Components {
         bool m_is_active = true;
 
         // Befriend class for access
+        // Entity should have full control
+        // over component.
+        // Entities are not public to users
         friend class Punity::PEntity;
 
         static uint64_t component_count;
