@@ -5,6 +5,8 @@ project(Punity-game-engine C CXX ASM)
 set(CMAKE_C STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(PROJ_NAME shobi)
+#set(CMAKE_VERBOSE_MAKEFILE ON)
+set(PICO_CXX_ENABLE_RTTI 1)
 
 pico_sdk_init()
 add_executable(${PROJ_NAME}

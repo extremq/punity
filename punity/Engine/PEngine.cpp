@@ -70,7 +70,7 @@ namespace Punity {
             std::cout << "Active entities this frame:\n";
             for (auto entity: m_all_entities) {
                 // Update the components
-                std::cout << " - " << entity->name << '\n';
+                std::cout << " - " << entity->name << " at " << entity << '\n';
                 entity->report_update_to_components();
             }
 
@@ -82,7 +82,7 @@ namespace Punity {
         }
     }
 
-    void PEngine::register_entity(PEntity *entity) {
+    void PEngine::register_entity(PEntity* entity) {
         entity->report_enable_to_components();
         std::cout << "registering " << entity->name << '\n';
         m_all_entities.push_front(entity);

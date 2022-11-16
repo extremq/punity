@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include "punity/Punity.h"
+#include "punity/Components/PSpriteRenderer.h"
 
 /* Pins on PICO */
 constexpr uint8_t TFT_RES = 20;
@@ -27,8 +28,10 @@ int main() {
     auto b = PEntity::make_entity("b");
     auto c = PEntity::make_entity("c");
     auto d = PEntity::make_entity("d");
-    d.set_parent(b);
-    c.set_parent(b);
+    d->set_parent(b);
+    c->set_parent(b);
+    a->add_component<Components::PSpriteRenderer>();
+    std::cout << a->get_all_components().size() << " " << &a << '\n';
 
     Screen.load_frame();
     Engine.set_framerate(0.5);

@@ -42,6 +42,7 @@ namespace Punity::Components {
         // No need to move components for no reason.
         void set_parent(Punity::PEntity* parent);
     public:
+        PComponent() = default;
         // Public read-only
         Punity::PEntity *const & entity = m_parent_entity;
         void set_active(bool);

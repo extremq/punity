@@ -1,9 +1,9 @@
 //
 // Created by god on 14.11.2022.
 //
-
 #ifndef _ENTITY_H
 #define _ENTITY_H
+#include <typeinfo>
 
 #include "punity/Components/PComponent.fwd.h"
 #include "punity/Components/PTransform.h"
@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <string>
 #include <list>
-#include <memory>
+#include <iostream>
 
 namespace Punity {
     class PEntity {
@@ -53,8 +53,8 @@ namespace Punity {
         explicit PEntity(std::string const& new_name);
     public:
         // Let's make sure we create entities dynamically.
-        static PEntity& make_entity();
-        static PEntity& make_entity(std::string const& new_name);
+        static PEntity* make_entity();
+        static PEntity* make_entity(std::string const& new_name);
 
         void set_name(std::string const& new_name);
         void set_active(bool);
@@ -68,22 +68,44 @@ namespace Punity {
         // Return all children entities
         std::list<PEntity*> const & get_children();
 
-        bool has_child(PEntity& entity);
+        bool has_child(PEntity* entity);
 
-        void remove_child_entity(PEntity& entity);
+        void remove_child_entity(PEntity* entity);
 
         // Return components
         std::list<Punity::Components::PComponent*> const & get_all_components();
 
-        Punity::Components::PComponent* find_component(Punity::Components::PComponent* component);
 
         // Add a new child entity
-        void add_child(PEntity& entity);
+        void add_child(PEntity* entity);
 
         // Add a new component
-        void add_component(Components::PComponent* component);
+        template <class T>
+        void add_component() {
+            // No checking if component exists, after all if
+            // you mistakenly insert more than once component
+            // you will still get the first component returned
+            // to you.
+            // Also, it costs time to find a component, so no, thanks.
+            Components::PComponent* component = (Components::PComponent*)(new T);
+            m_components.push_front(component);
+        }
 
-        void set_parent(PEntity& parent);
+        template <class T>
+        T* get_component() {
+            for (auto component : m_components) {
+                T* derived = dynamic_cast<T*>(component);
+                if (derived != nullptr) {
+
+                    // TODO check whats up with add
+                    // Cast to T*
+                    return derived;
+                }
+            }
+            return nullptr;
+        }
+
+        void set_parent(PEntity* parent);
 
         ~PEntity();
     };

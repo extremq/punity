@@ -5,6 +5,7 @@
 #ifndef _PSPRITE_RENDERER_H
 #define _PSPRITE_RENDERER_H
 
+#include <iostream>
 #include "PComponent.h"
 #include "punity/Utils/PSprite.h"
 
@@ -19,7 +20,11 @@ namespace Punity::Components {
         void set_sprite(Punity::Utils::PSprite const& new_sprite) {
 
         }
+        PSpriteRenderer() : m_sprite(nullptr, 0, 0) {};
+
+        void on_kill_myself();
+        void on_update();
     };
 } // Punity
 
-#endif //_PSPRITE_H
+#endif //_PSPRITE_RENDERER_H
