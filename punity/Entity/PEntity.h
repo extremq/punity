@@ -79,6 +79,10 @@ namespace Punity {
         // Add a new child entity
         void add_child(PEntity* entity);
 
+        // Could use std::enable_if and std::is_base_of/std::is_convertible
+        // so we dont compile for components not derived from PComponent.
+        // But I'm done with this. I've wasted too much time.
+
         // Add a new component
         template <class T>
         void add_component() {
@@ -86,19 +90,20 @@ namespace Punity {
             // you mistakenly insert more than once component
             // you will still get the first component returned
             // to you.
+
             // Also, it costs time to find a component, so no, thanks.
             Components::PComponent* component = (Components::PComponent*)(new T);
+            component->set_parent(this);
             m_components.push_front(component);
         }
 
         template <class T>
         T* get_component() {
+            std::cout << m_components.size() << " yeah " << '\n';
             for (auto component : m_components) {
+                // Cast to T*
                 T* derived = dynamic_cast<T*>(component);
                 if (derived != nullptr) {
-
-                    // TODO check whats up with add
-                    // Cast to T*
                     return derived;
                 }
             }

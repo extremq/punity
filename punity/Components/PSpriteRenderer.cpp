@@ -11,6 +11,7 @@ namespace Punity {
     }
 
     void Components::PSpriteRenderer::on_update() {
-        entity->get_component<PSpriteRenderer>();
+        std::cout << entity << '\n';
+        entity->get_component<PSpriteRenderer>()->on_kill_myself();
     }
 } // Punity

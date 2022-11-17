@@ -23,7 +23,7 @@ namespace Punity::Components {
         PSpriteRenderer() : m_sprite(nullptr, 0, 0) {};
 
         void on_kill_myself();
-        void on_update();
+        void on_update() override;
     };
 } // Punity
 
