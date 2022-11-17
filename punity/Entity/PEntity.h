@@ -99,7 +99,6 @@ namespace Punity {
 
         template <class T>
         T* get_component() {
-            std::cout << m_components.size() << " yeah " << '\n';
             for (auto component : m_components) {
                 // Cast to T*
                 T* derived = dynamic_cast<T*>(component);

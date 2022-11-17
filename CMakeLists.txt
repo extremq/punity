@@ -24,8 +24,6 @@ add_executable(${PROJ_NAME}
         punity/Entity/PEntity.h
         punity/Components/PComponent.cpp
         punity/Components/PComponent.h
-        punity/Utils/PSprite.cpp
-        punity/Utils/PSprite.h
         punity/Components/PComponent.fwd.h
         punity/Entity/PEntity.fwd.h
         punity/Engine/PEngine.fwd.h

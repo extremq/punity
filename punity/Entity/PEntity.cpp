@@ -160,7 +160,6 @@ void Punity::PEntity::report_disable_to_components() {
 }
 
 void Punity::PEntity::report_update_to_components() {
-    std::cout << "has " << m_components.size() << "\n";
     for (auto component : m_components) {
         if (component->m_is_active) {
             component->on_update();

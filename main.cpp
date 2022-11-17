@@ -15,6 +15,8 @@ constexpr uint8_t TFT_DC = 16;
 constexpr uint8_t WIDTH = 128;
 constexpr uint8_t HEIGHT = 128;
 
+const uint16_t x[2 * 2] = {0, 0, 0, 0};
+
 int main() {
     stdio_init_all();
     sleep_ms(2000);
@@ -31,7 +33,7 @@ int main() {
     d->set_parent(b);
     c->set_parent(b);
     a->add_component<Components::PSpriteRenderer>();
-    std::cout << a->get_all_components().size() << " " << &a << '\n';
+    a->get_component<Components::PSpriteRenderer>()->set_sprite(x, 2, 2);
 
     Screen.load_frame();
     Engine.set_framerate(0.5);

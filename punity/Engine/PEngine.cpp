@@ -74,6 +74,7 @@ namespace Punity {
                 entity->report_update_to_components();
             }
 
+            Punity::Screen.load_frame();
             // Sleep the remaining frame time
             uint64_t time_difference = time_us_64() - frame_start_time;
             if (time_difference < m_frame_delay_us) {
