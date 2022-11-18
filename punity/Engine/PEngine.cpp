@@ -7,11 +7,6 @@
 #include "punity/Punity.h"
 
 namespace Punity {
-    void PEngine::config_screen(uint16_t h, uint16_t w, uint8_t spi, uint8_t cs, uint8_t dc, uint8_t sda, uint8_t scl,
-                                uint8_t res) {
-        Punity::Screen.config(h, w, spi, cs, dc, sda, scl, res);
-    }
-
     void PEngine::set_framerate(float frame_rate) {
         if (frame_rate == 0) Punity::Error("Zero frame rate.");
 
@@ -24,6 +19,9 @@ namespace Punity {
         // TODO add onStart, onDestroy
         while (true) {
             uint64_t frame_start_time = time_us_64();
+
+            // Update Time.h util
+            update_time(frame_start_time);
 
             // Any deletion is committed only on next frame
             for (auto it = m_all_entities.begin(); it != m_all_entities.end(); ++it) {
@@ -62,6 +60,7 @@ namespace Punity {
                 to_be_destroyed.pop();
             }
 
+            Punity::Screen.load_background();
             // No particular order
             // Notice that I don't do any particular checks.
             // That means inactive and destroyed objects are still called
@@ -87,5 +86,15 @@ namespace Punity {
         entity->report_enable_to_components();
         std::cout << "registering " << entity->name << '\n';
         m_all_entities.push_front(entity);
+    }
+
+    void PEngine::update_time(uint64_t raw_time) {
+        float raw_time_seconds = raw_time / 1000000.0f;
+        Punity::Time.m_delta_time = raw_time_seconds - Punity::Time.m_time;
+        Punity::Time.m_time = raw_time_seconds;
+    }
+
+    PEngine::PEngine() {
+        root_entity = new PEntity("__Root");
     }
 }

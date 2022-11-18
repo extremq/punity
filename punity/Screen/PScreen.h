@@ -13,6 +13,8 @@ namespace Punity {
     private:
         PScreen() = default;
 
+        uint16_t m_bg_color = 0x0;
+
         // Allow one single init, basically a fake read-only
         bool m_initialized = false;
 
@@ -47,6 +49,9 @@ namespace Punity {
 
         friend class PEngine;
 
+        void load_background();
+        void load_frame();
+    public:
         // Configures the privates but has effect only once
         void config(uint16_t h,
                     uint16_t w,
@@ -56,7 +61,7 @@ namespace Punity {
                     uint8_t sda,
                     uint8_t scl,
                     uint8_t res);
-    public:
+
         // Prohibit copying.
         PScreen(const PScreen&) = delete;
         PScreen& operator=(const PScreen&) = delete;
@@ -72,7 +77,6 @@ namespace Punity {
 
         void draw_sprite(int16_t col, int16_t row, uint16_t h, uint16_t w, const uint16_t* sprite);
         void background_color(uint16_t color);
-        void load_frame();
         void compute_diff();
     };
 }

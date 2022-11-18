@@ -28,7 +28,9 @@ add_executable(${PROJ_NAME}
         punity/Entity/PEntity.fwd.h
         punity/Engine/PEngine.fwd.h
         punity/Components/PTransform.cpp
-        punity/Components/PTransform.h)
+        punity/Components/PTransform.h
+        punity/Utils/PTime.h
+        punity/Utils/PJoystick.h punity/Components/PMovement.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

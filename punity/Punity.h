@@ -11,12 +11,17 @@
 
 #include "punity/Screen/PScreen.h"
 #include "punity/Engine/PEngine.h"
+#include "punity/Utils/PTime.h"
+#include "punity/Utils/PJoystick.h"
 
 // Start of Punity!
 namespace Punity {
     // The statics
     static PScreen& Screen = PScreen::get();
     static PEngine& Engine = PEngine::get();
+    static Utils::PTime& Time = Utils::PTime::get();
+    static Utils::PJoystick& Joystick = Utils::PJoystick::get();
+
 
     // Simple error function
     static void Error(std::string const& error_message) {

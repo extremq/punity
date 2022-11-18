@@ -102,13 +102,13 @@ void Punity::PEntity::set_name(const std::string &new_name) {
 
 Punity::PEntity::PEntity(const std::string &new_name) {
     // Set transform up
-    m_transform = new Components::PTransform;
+    m_transform = add_component<Components::PTransform>();
 
     // Any Entity should have the root_entity as a default parent
     // Except for root itself
     if (new_name != "__Root") {
         m_name = new_name;
-        set_parent(&Punity::Engine.root_entity);
+        set_parent(Punity::Engine.root_entity);
         Punity::Engine.register_entity(this);
     }
     else {
@@ -119,10 +119,10 @@ Punity::PEntity::PEntity(const std::string &new_name) {
 
 Punity::PEntity::PEntity() {
     // Set transform up
-    m_transform = new Components::PTransform;
+    m_transform = add_component<Components::PTransform>();
 
     // Any Entity should have the root_entity as a default parent
-    set_parent(&Punity::Engine.root_entity);
+    set_parent(Punity::Engine.root_entity);
     Punity::Engine.register_entity(this);
 }
 

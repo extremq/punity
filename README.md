@@ -19,7 +19,7 @@ and moved on to creating Punity just a few days later.
 - [ ] Invokables
 - [x] Game object
 - [ ] Components
-- [ ] Joystick (inside the Input namespace, please)
+- [ ] PJoystick (inside the Input namespace, please)
 - [ ] Button
 - [ ] Collision
 - [ ] Layered drawing

@@ -85,7 +85,7 @@ namespace Punity {
 
         // Add a new component
         template <class T>
-        void add_component() {
+        T* add_component() {
             // No checking if component exists, after all if
             // you mistakenly insert more than once component
             // you will still get the first component returned
@@ -95,6 +95,7 @@ namespace Punity {
             Components::PComponent* component = (Components::PComponent*)(new T);
             component->set_parent(this);
             m_components.push_front(component);
+            return (T*) component;
         }
 
         template <class T>

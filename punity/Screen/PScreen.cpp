@@ -73,6 +73,9 @@ namespace Punity {
         gpio_put(m_res, true); // RES is active low
 
         init_lcd(); // And finally init the lcd.
+
+        // Init the frame
+        compute_diff();
     }
 
     void PScreen::compute_diff() {
@@ -92,6 +95,7 @@ namespace Punity {
         // Validity checks
         if (col > m_width || row > m_height || col + w <= 0 || row + h <= 0) return;
         if (h == 0 || w == 0) Punity::Error("Zero width/height sprite.");
+        if (sprite == nullptr) Punity::Error("Null sprite.");
 
         uint16_t sprite_w = w; // Dims for sprite
         uint16_t j_start = 0, i_start = 0; // Starting points for sprite
@@ -99,13 +103,13 @@ namespace Punity {
         // Clamping
         if (col < 0) {
             j_start += -col;
-            w += -col;
+            w += col;
             col = 0;
         }
 
         if (row < 0) {
             i_start += -row;
-            h += -row;
+            h += row;
             row = 0;
         }
 
@@ -125,10 +129,14 @@ namespace Punity {
         }
     }
 
-    void PScreen::background_color(uint16_t color) {
+    void PScreen::load_background() {
         for (uint16_t i = 0; i < m_height * m_width; ++i) {
-            m_frame_buffer[i] = color;
+            m_frame_buffer[i] = m_bg_color;
         }
+    }
+
+    void PScreen::background_color(uint16_t color) {
+        m_bg_color = color;
     }
 
     void PScreen::set_cs_voltage(bool value) const {

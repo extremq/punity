@@ -11,12 +11,12 @@
 namespace Punity {
     class PEngine {
     private:
-        PEngine() : root_entity("__Root") {};
+        PEngine();
 
         // In microseconds (1e^-6 sec)
         uint64_t m_frame_delay_us = 16666; // Assume 60 fps
-
         std::list<PEntity*> m_all_entities;
+        void update_time(uint64_t);
     public:
         // Prohibit copying.
         PEngine(const PEngine &) = delete;
@@ -33,24 +33,13 @@ namespace Punity {
         std::list<PEntity*> const& entity_list = m_all_entities;
         void register_entity(PEntity*);
 
-        // Config is private but friend to Engine.
-        void config_screen(uint16_t h,
-                           uint16_t w,
-                           uint8_t spi,
-                           uint8_t cs,
-                           uint8_t dc,
-                           uint8_t sda,
-                           uint8_t scl,
-                           uint8_t res);
-
         // Sets... the framerate.
         void set_framerate(float);
 
         void start_game();
 
         // Root Entity, head of the Entity Tree
-        // Not a pointer since it's always present.
-        PEntity root_entity;
+        PEntity* root_entity = nullptr;
     };
 }
 
