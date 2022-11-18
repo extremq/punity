@@ -145,7 +145,7 @@ void Punity::PEntity::destroy() {
 void Punity::PEntity::report_enable_to_components() {
     for (auto component : m_components) {
         if (component->m_is_active) {
-            component->on_entity_enable();
+            component->on_enable();
         }
     }
 }
@@ -154,7 +154,7 @@ void Punity::PEntity::report_enable_to_components() {
 void Punity::PEntity::report_disable_to_components() {
     for (auto component : m_components) {
         if (component->m_is_active) {
-            component->on_entity_disable();
+            component->on_disable();
         }
     }
 }

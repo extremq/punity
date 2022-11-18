@@ -12,7 +12,7 @@
 #include "punity/Screen/PScreen.h"
 #include "punity/Engine/PEngine.h"
 #include "punity/Utils/PTime.h"
-#include "punity/Utils/PJoystick.h"
+#include "punity/Input/PJoystick.h"
 
 // Start of Punity!
 namespace Punity {
@@ -20,7 +20,7 @@ namespace Punity {
     static PScreen& Screen = PScreen::get();
     static PEngine& Engine = PEngine::get();
     static Utils::PTime& Time = Utils::PTime::get();
-    static Utils::PJoystick& Joystick = Utils::PJoystick::get();
+    static Input::PJoystick& Joystick = Input::PJoystick::get();
 
 
     // Simple error function

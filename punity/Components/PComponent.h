@@ -29,12 +29,10 @@ namespace Punity::Components {
         Punity::PEntity* m_parent_entity = nullptr;
 
         // Activated by set_active(true/false)
+        // Also activated by parent entity, but only
+        // when component itself is active.
         virtual void on_enable() {}
         virtual void on_disable() {}
-
-        // Called when parent is enabled/disabled
-        virtual void on_entity_enable() {}
-        virtual void on_entity_disable() {}
 
         virtual void on_update() {}
         virtual void on_destroy() {}

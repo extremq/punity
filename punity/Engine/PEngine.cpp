@@ -66,10 +66,10 @@ namespace Punity {
             // That means inactive and destroyed objects are still called
             // However, that only happens if in this frame they were committed
             // Otherwise, the next frame will remove them.
-            std::cout << "Active entities this frame:\n";
+//            std::cout << "Active entities this frame:\n";
             for (auto entity: m_all_entities) {
                 // Update the components
-                std::cout << " - " << entity->name << " at " << entity << '\n';
+//                std::cout << " - " << entity->name << " at " << entity << '\n';
                 entity->report_update_to_components();
             }
 

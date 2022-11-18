@@ -46,6 +46,14 @@ namespace Punity::Components {
                     m_sprite
                     );
         }
+
+        void on_enable() override {
+            std::cout << "I'm enabled\n";
+        }
+
+        void on_disable() override {
+            std::cout << "I'm disabled\n";
+        }
     };
 } // Punity
 

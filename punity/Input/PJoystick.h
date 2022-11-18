@@ -5,10 +5,10 @@
 #ifndef _PJOYSTICK_H
 #define _PJOYSTICK_H
 
-#include <cstdint>
-#include "hardware/adc.h"
+#include "../../../../../../usr/lib/arm-none-eabi/include/c++/10.3.1/cstdint"
+#include "../../../pico-sdk/src/rp2_common/hardware_adc/include/hardware/adc.h"
 
-namespace Punity::Utils {
+namespace Punity::Input {
     class PJoystick {
     private:
 
