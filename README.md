@@ -15,12 +15,12 @@ at creating such a game engine. I've learnt from that
 and moved on to creating Punity just a few days later.
 
 ### TO DO:
-- [ ] Time
+- [x] Time
 - [ ] Invokables
 - [x] Game object
 - [ ] Components
-- [ ] PJoystick (inside the Input namespace, please)
+- [x] PJoystick
 - [ ] Button
 - [ ] Collision
 - [ ] Layered drawing
-- [ ] Sprites
+- [x] Sprites
