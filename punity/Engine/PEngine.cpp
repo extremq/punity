@@ -5,6 +5,7 @@
 #include <queue>
 #include "PEngine.h"
 #include "punity/Punity.h"
+#include "punity/Entity/PEntity.h"
 
 namespace Punity {
     void PEngine::set_framerate(float frame_rate) {
@@ -66,10 +67,10 @@ namespace Punity {
             // That means inactive and destroyed objects are still called
             // However, that only happens if in this frame they were committed
             // Otherwise, the next frame will remove them.
-//            std::cout << "Active entities this frame:\n";
+            std::cout << "Active entities this frame:\n";
             for (auto entity: m_all_entities) {
                 // Update the components
-//                std::cout << " - " << entity->name << " at " << entity << '\n';
+                std::cout << " - " << entity->name << " at " << entity << '\n';
                 entity->report_update_to_components();
             }
 
@@ -96,5 +97,9 @@ namespace Punity {
 
     PEngine::PEngine() {
         root_entity = new PEntity("__Root");
+    }
+
+    void PEngine::register_sprite(Components::PSpriteRenderer *) {
+
     }
 }

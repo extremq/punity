@@ -3,7 +3,6 @@
 //
 
 #include "PSpriteRenderer.h"
-#include "punity/Entity/PEntity.h"
 
 namespace Punity {
 } // Punity

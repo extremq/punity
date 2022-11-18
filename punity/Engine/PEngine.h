@@ -5,9 +5,12 @@
 #ifndef _ENGINE_H
 #define _ENGINE_H
 
-#include "punity/Entity/PEntity.h"
+#include "punity/Entity/PEntity.fwd.h"
+#include "punity/Components/PSpriteRenderer.fwd.h"
 
 #include <cstdint>
+#include <list>
+
 namespace Punity {
     class PEngine {
     private:
@@ -32,6 +35,7 @@ namespace Punity {
 
         std::list<PEntity*> const& entity_list = m_all_entities;
         void register_entity(PEntity*);
+        void register_sprite(Components::PSpriteRenderer*);
 
         // Sets... the framerate.
         void set_framerate(float);

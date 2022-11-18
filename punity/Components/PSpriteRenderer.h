@@ -28,6 +28,19 @@ namespace Punity::Components {
             layer = l;
         }
 
+        // Overload with custom offset
+        void set_sprite(uint16_t const * sprite, uint16_t h, uint16_t w, uint16_t l, Punity::Utils::PVector my_offset) {
+            m_sprite = sprite;
+            m_height = h;
+            m_width = w;
+            offset = my_offset;
+            layer = l;
+        }
+
+        uint16_t const* get_sprite() {
+            return m_sprite;
+        }
+
         // Need to offset so we can have the sprite's center
         // described by the entity transform
         Utils::PVector offset = {0, 0};
@@ -36,6 +49,8 @@ namespace Punity::Components {
         friend class PScreen;
 
         uint16_t layer = 0;
+        uint16_t const& height = m_height;
+        uint16_t const& width = m_width;
 
         void on_update() override {
             Punity::Screen.draw_sprite(
