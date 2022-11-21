@@ -21,4 +21,12 @@ namespace Punity::Components {
     void PComponent::set_parent(Punity::PEntity *parent) {
         m_parent_entity = parent;
     }
+
+    uint64_t PComponent::get_id() {
+        return m_id;
+    }
+
+    bool PComponent::is_active() {
+        return m_is_active;
+    }
 } // Punity

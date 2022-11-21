@@ -45,6 +45,7 @@ namespace Punity {
         void report_disable_to_components();
         void report_update_to_components();
         void report_destroy_to_components();
+        void report_start_to_components();
 
         // Disable copy
         PEntity &operator=(const PEntity &);

@@ -6,12 +6,21 @@
 #define _ENGINE_H
 
 #include "punity/Entity/PEntity.fwd.h"
-#include "punity/Components/PSpriteRenderer.fwd.h"
+#include "punity/Components/PSpriteRenderer.h"
 
 #include <cstdint>
 #include <list>
+#include <set>
+
 
 namespace Punity {
+    // Comparator for sprites
+    struct cmp_sprites {
+        bool operator() (Components::PSpriteRenderer const* a, Components::PSpriteRenderer const* b) const {
+            return a->layer < b->layer;
+        }
+    };
+
     class PEngine {
     private:
         PEngine();
@@ -19,6 +28,7 @@ namespace Punity {
         // In microseconds (1e^-6 sec)
         uint64_t m_frame_delay_us = 16666; // Assume 60 fps
         std::list<PEntity*> m_all_entities;
+
         void update_time(uint64_t);
     public:
         // Prohibit copying.
@@ -35,7 +45,6 @@ namespace Punity {
 
         std::list<PEntity*> const& entity_list = m_all_entities;
         void register_entity(PEntity*);
-        void register_sprite(Components::PSpriteRenderer*);
 
         // Sets... the framerate.
         void set_framerate(float);

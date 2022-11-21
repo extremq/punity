@@ -30,7 +30,9 @@ add_executable(${PROJ_NAME}
         punity/Components/PTransform.cpp
         punity/Components/PTransform.h
         punity/Utils/PTime.h
-        punity/Input/PJoystick.h punity/Components/PMovement.h punity/Components/PSpriteRenderer.fwd.h)
+        punity/Input/PJoystick.h
+        punity/Components/PMovement.h
+        punity/Components/PSpriteRenderer.fwd.h punity/Utils/PError.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

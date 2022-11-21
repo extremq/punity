@@ -6,14 +6,13 @@
 #include "PEntity.h"
 #include "punity/Punity.h"
 #include "punity/Components/PComponent.h"
-#include <typeinfo>
 
 uint64_t Punity::PEntity::entity_count = 0;
 
 void Punity::PEntity::set_active(bool state) {
     // If the state is the same, nothing should happen.
     if (m_is_active == state) return;
-    m_is_active = state;
+        m_is_active = state;
 
     // If this is an enable, register ourselves
     // Otherwise, disables will be handled by the Engine
@@ -43,7 +42,7 @@ bool Punity::PEntity::has_child(Punity::PEntity* entity) {
 }
 
 void Punity::PEntity::add_child(Punity::PEntity* entity) {
-    if (entity == this) Punity::Error("Cannot set entity child as self.", m_name);
+    if (entity == this) Punity::Utils::Error("Cannot set entity child as self.", m_name);
 
     // Search for child
     if (!has_child(entity)) {
@@ -52,7 +51,7 @@ void Punity::PEntity::add_child(Punity::PEntity* entity) {
         entity->m_parent_entity = this;
     }
     else
-        Punity::Error("Inserting an entity child that already exists.", m_name);
+        Punity::Utils::Error("Inserting an entity child that already exists.", m_name);
 }
 
 std::list<Punity::Components::PComponent *> const &Punity::PEntity::get_all_components() {
@@ -61,7 +60,7 @@ std::list<Punity::Components::PComponent *> const &Punity::PEntity::get_all_comp
 
 void Punity::PEntity::remove_child_entity(Punity::PEntity* entity) {
     // Let's swap the end with the removed entity.
-    if (m_children_entities.empty()) Punity::Error("Trying to remove from childless entity.", m_name);
+    if (m_children_entities.empty()) Punity::Utils::Error("Trying to remove from childless entity.", m_name);
 
     Punity::PEntity* last = m_children_entities.back();
     for (auto it = m_children_entities.begin(); it != m_children_entities.end(); ++it) {
@@ -83,7 +82,7 @@ void Punity::PEntity::remove_child_entity(Punity::PEntity* entity) {
 void Punity::PEntity::set_parent(Punity::PEntity* parent) {
     std::cout << "setting parent of " << name << " to " << parent->name << '\n';
 
-    if (parent->m_is_destroyed) Punity::Error("Setting as parent a destroyed entity.", m_name);
+    if (parent->m_is_destroyed) Punity::Utils::Error("Setting as parent a destroyed entity.", m_name);
 
     if (m_parent_entity != nullptr && !m_parent_entity->m_children_entities.empty()) {
         m_parent_entity->remove_child_entity(this);
@@ -172,6 +171,14 @@ void Punity::PEntity::report_destroy_to_components() {
     for (auto component : m_components) {
         if (component->m_is_active) {
             component->on_destroy();
+        }
+    }
+}
+
+void Punity::PEntity::report_start_to_components() {
+    for (auto component : m_components) {
+        if (component->m_is_active) {
+            component->on_start();
         }
     }
 }

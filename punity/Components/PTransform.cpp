@@ -4,6 +4,7 @@
 
 #include "PTransform.h"
 #include "punity/Engine/PEngine.h"
+#include "punity/Entity/PEntity.h"
 
 // After all setting a local value is the same as setting a global value.
 // It will always be relative to the parent

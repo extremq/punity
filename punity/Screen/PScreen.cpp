@@ -6,7 +6,7 @@
 #include <hardware/spi.h>
 #include "ST7735_defines.h"
 #include "PScreen.h"
-#include "punity/Punity.h"
+#include "punity/Utils/PError.h"
 
 namespace Punity {
     void PScreen::config(uint16_t h,
@@ -19,7 +19,7 @@ namespace Punity {
                          uint8_t res) {
         // Is this object initialized?
         if (m_initialized) return;
-        if (w == 0 || h == 0) Punity::Error("Zero width/height screen.");
+        if (w == 0 || h == 0) Punity::Utils::Error("Zero width/height screen.");
 
         // First time, let's set these in stone
         m_initialized = true;
@@ -94,8 +94,8 @@ namespace Punity {
         // Also, col and row are signed because I may want to offset the drawing before the screen
         // Validity checks
         if (col > m_width || row > m_height || col + w <= 0 || row + h <= 0) return;
-        if (h == 0 || w == 0) Punity::Error("Zero width/height sprite.");
-        if (sprite == nullptr) Punity::Error("Null sprite.");
+        if (h == 0 || w == 0) Punity::Utils::Error("Zero width/height sprite.");
+        if (sprite == nullptr) Punity::Utils::Error("Null sprite.");
 
         uint16_t sprite_w = w; // Dims for sprite
         uint16_t j_start = 0, i_start = 0; // Starting points for sprite

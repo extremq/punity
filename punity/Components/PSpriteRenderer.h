@@ -7,7 +7,8 @@
 
 #include <iostream>
 #include "PComponent.h"
-#include "punity/Punity.h"
+#include "punity/Utils/PVector.h"
+#include "punity/Entity/PEntity.h"
 
 namespace Punity::Components {
     class PSpriteRenderer : public PComponent {
@@ -52,22 +53,16 @@ namespace Punity::Components {
         uint16_t const& height = m_height;
         uint16_t const& width = m_width;
 
-        void on_update() override {
-            Punity::Screen.draw_sprite(
-                    entity->transform->global_position.x + offset.x,
-                    entity->transform->global_position.y + offset.y,
-                    m_height,
-                    m_width,
-                    m_sprite
-                    );
-        }
-
         void on_enable() override {
             std::cout << "I'm enabled\n";
         }
 
         void on_disable() override {
             std::cout << "I'm disabled\n";
+        }
+
+        void on_start() override {
+            std::cout << "Hello it's me\n";
         }
     };
 } // Punity

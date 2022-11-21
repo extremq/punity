@@ -36,6 +36,7 @@ namespace Punity::Components {
 
         virtual void on_update() {}
         virtual void on_destroy() {}
+        virtual void on_start() {}
 
         // No need to move components for no reason.
         void set_parent(Punity::PEntity* parent);
@@ -44,7 +45,8 @@ namespace Punity::Components {
         // Public read-only
         Punity::PEntity *const & entity = m_parent_entity;
         void set_active(bool);
-
+        bool is_active();
+        uint64_t get_id();
     };
 } // Punity
 

@@ -6,7 +6,7 @@
 #define _TIME_H
 
 #include <cstdint>
-#include "punity/Engine/PEngine.h"
+#include "punity/Engine/PEngine.fwd.h"
 
 namespace Punity::Utils {
     class PTime {

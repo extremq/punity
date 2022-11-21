@@ -40,7 +40,7 @@ int main() {
     a->set_parent(b);
     a->add_component<Components::PMovement>();
     a->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
-    d->add_component<Components::PSpriteRenderer>()->set_sprite(xx, 4, 4, 0);
+    d->add_component<Components::PSpriteRenderer>()->set_sprite(xx, 4, 4, 1);
 
     Engine.set_framerate(60);
     Engine.start_game();

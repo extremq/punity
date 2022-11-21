@@ -9,7 +9,7 @@
 
 namespace Punity {
     void PEngine::set_framerate(float frame_rate) {
-        if (frame_rate == 0) Punity::Error("Zero frame rate.");
+        if (frame_rate == 0) Punity::Utils::Error("Zero frame rate.");
 
         m_frame_delay_us = (uint64_t) (1.0 / frame_rate) * 1000000;
     }
@@ -17,7 +17,14 @@ namespace Punity {
     void PEngine::start_game() {
         // Game loop
         std::queue<PEntity *> to_be_destroyed;
-        // TODO add onStart, onDestroy
+
+        // Let's first report the on_start event to every entity.
+        // Time does not need to be updated. It will assume t = 0s.
+        for (auto entity: m_all_entities) {
+            // Update the components
+            entity->report_start_to_components();
+        }
+
         while (true) {
             uint64_t frame_start_time = time_us_64();
 
@@ -62,16 +69,39 @@ namespace Punity {
             }
 
             Punity::Screen.load_background();
+
             // No particular order
             // Notice that I don't do any particular checks.
             // That means inactive and destroyed objects are still called
             // However, that only happens if in this frame they were committed
             // Otherwise, the next frame will remove them.
+
+            // Sprites arranged by layer
+            std::multiset<Components::PSpriteRenderer*, cmp_sprites> sprites;
+            Components::PSpriteRenderer* spriteRenderer;
+
             std::cout << "Active entities this frame:\n";
             for (auto entity: m_all_entities) {
                 // Update the components
                 std::cout << " - " << entity->name << " at " << entity << '\n';
+
                 entity->report_update_to_components();
+
+                // But also add the sprite.
+                spriteRenderer = entity->get_component<Components::PSpriteRenderer>();
+                if (spriteRenderer != nullptr && spriteRenderer->is_active()) {
+                    sprites.insert(spriteRenderer);
+                }
+            }
+
+            // Now, render the sprites!
+            for (auto sprite : sprites) {
+                Punity::Screen.draw_sprite(
+                        sprite->entity->transform->global_position.x + sprite->offset.x,
+                        sprite->entity->transform->global_position.y + sprite->offset.y,
+                        sprite->height,
+                        sprite->width,
+                        sprite->get_sprite());
             }
 
             Punity::Screen.load_frame();
@@ -82,7 +112,6 @@ namespace Punity {
             }
         }
     }
-
     void PEngine::register_entity(PEntity* entity) {
         entity->report_enable_to_components();
         std::cout << "registering " << entity->name << '\n';
@@ -97,9 +126,5 @@ namespace Punity {
 
     PEngine::PEngine() {
         root_entity = new PEntity("__Root");
-    }
-
-    void PEngine::register_sprite(Components::PSpriteRenderer *) {
-
     }
 }
