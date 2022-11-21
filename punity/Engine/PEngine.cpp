@@ -88,8 +88,13 @@ namespace Punity {
                 entity->report_update_to_components();
 
                 // But also add the sprite.
+                // Should be moderately fast, but if speed is a must you could
+                // use on_enable and on_disable. Of course, that comes with
+                // a cost, since you must ensure it is safe and doesn't destroy
+                // the multiset.
                 spriteRenderer = entity->get_component<Components::PSpriteRenderer>();
                 if (spriteRenderer != nullptr && spriteRenderer->is_active()) {
+                    // Logarithmic
                     sprites.insert(spriteRenderer);
                 }
             }
