@@ -52,18 +52,6 @@ namespace Punity::Components {
         uint16_t layer = 0;
         uint16_t const& height = m_height;
         uint16_t const& width = m_width;
-
-        void on_enable() override {
-            std::cout << "I'm enabled\n";
-        }
-
-        void on_disable() override {
-            std::cout << "I'm disabled\n";
-        }
-
-        void on_start() override {
-            std::cout << "Hello it's me\n";
-        }
     };
 } // Punity
 

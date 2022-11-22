@@ -11,6 +11,7 @@
 #include "punity/Utils/PTime.h"
 #include "punity/Utils/PError.h"
 #include "punity/Utils/PVector.h"
+#include "punity/Utils/PRandom.h"
 #include "punity/Input/PJoystick.h"
 #include "punity/Engine/PEngine.h"
 #include "punity/Screen/PScreen.h"

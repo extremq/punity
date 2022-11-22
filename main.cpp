@@ -37,10 +37,23 @@ int main() {
     auto a = PEntity::make_entity("a");
     auto b = PEntity::make_entity("b");
     d->set_parent(a);
-    a->set_parent(b);
     a->add_component<Components::PMovement>();
     a->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
     d->add_component<Components::PSpriteRenderer>()->set_sprite(xx, 4, 4, 1);
+    b->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
+    b->transform->set_global({15, 15});
+
+    for (int z = 0; z < 500; ++z) {
+        auto i = PEntity::make_entity("r");
+        if (z & 1)
+            i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
+        else
+            i->add_component<Components::PSpriteRenderer>()->set_sprite(xx, 4, 4, 0);
+
+        Utils::PVector rand(Utils::PRandom::get_random() * 300, Utils::PRandom::get_random() * 300);
+        i->transform->set_global(rand);
+        sleep_us(5);
+    }
 
     Engine.set_framerate(60);
     Engine.start_game();

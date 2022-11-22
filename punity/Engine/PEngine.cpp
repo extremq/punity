@@ -80,10 +80,10 @@ namespace Punity {
             std::multiset<Components::PSpriteRenderer*, cmp_sprites> sprites;
             Components::PSpriteRenderer* spriteRenderer;
 
-            std::cout << "Active entities this frame:\n";
+//            std::cout << "Active entities this frame:\n";
             for (auto entity: m_all_entities) {
                 // Update the components
-                std::cout << " - " << entity->name << " at " << entity << '\n';
+//                std::cout << " - " << entity->name << " at " << entity << '\n';
 
                 entity->report_update_to_components();
 

@@ -86,45 +86,50 @@ namespace Punity {
         }
     }
 
-    void PScreen::draw_sprite(int16_t col, int16_t row, uint16_t h, uint16_t w, const uint16_t *sprite) {
+    void PScreen::draw_sprite(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t *sprite) {
         // Sizes are bigger than 8 bits because somebody may call 255 + 1.
         // Even though it's not good to have such a huge sprite, it's better to not let
         // the value wrap to 0 because of it being a uint8_t
 
         // Also, col and row are signed because I may want to offset the drawing before the screen
         // Validity checks
-        if (col > m_width || row > m_height || col + w <= 0 || row + h <= 0) return;
+        int32_t cam_far_w = camera.x + m_width / 2;
+        int32_t cam_near_w = camera.x - m_width / 2;
+        int32_t cam_far_h = camera.y + m_height / 2;
+        int32_t cam_near_h = camera.y - m_height / 2;
+
+        if (col > cam_far_w || row > cam_far_h || col + w <= cam_near_w || row + h <= cam_near_h) return;
         if (h == 0 || w == 0) Punity::Utils::Error("Zero width/height sprite.");
         if (sprite == nullptr) Punity::Utils::Error("Null sprite.");
 
-        uint16_t sprite_w = w; // Dims for sprite
-        uint16_t j_start = 0, i_start = 0; // Starting points for sprite
+        int32_t sprite_w = w; // Dims for sprite
+        int32_t j_start = 0, i_start = 0; // Starting points for sprite
 
         // Clamping
-        if (col < 0) {
-            j_start += -col;
-            w += col;
-            col = 0;
+        if (col < cam_near_w) {
+            j_start = cam_near_w - col;
+            w -= j_start;
+            col = cam_near_w;
         }
 
-        if (row < 0) {
-            i_start += -row;
-            h += row;
-            row = 0;
+        if (row < cam_near_h) {
+            i_start = cam_near_h - row;
+            h -= i_start;
+            row = cam_near_h;
         }
 
-        if (col + w > m_width) {
-            w = m_width - col;
+        if (col + w > cam_far_w) {
+            w -= col + w - cam_far_w;
         }
 
-        if (row + h > m_height) {
-            h = m_height - row;
+        if (row + h > cam_far_h) {
+            h -= row + h - cam_far_h;
         }
 
         // Start writing
-        for (uint16_t y = row, i = i_start; y < row + h; ++y, ++i) {
-            for (uint16_t x = col, j = j_start; x < col + w; ++x, ++j) {
-                m_frame_buffer[x + y * m_height] = sprite[j + i * sprite_w];
+        for (int32_t y = row, i = i_start; y < row + h; ++y, ++i) {
+            for (int32_t x = col, j = j_start; x < col + w; ++x, ++j) {
+                m_frame_buffer[x - cam_near_w + (y - cam_near_h) * m_height] = sprite[j + i * sprite_w];
             }
         }
     }

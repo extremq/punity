@@ -18,6 +18,7 @@ namespace Punity::Components {
             direction.y = Punity::Joystick.get_y_direction();
             direction = entity->transform->global_position + direction * 30.0f * Punity::Time.delta_time;
             entity->transform->set_global(direction);
+            Punity::Screen.camera = entity->transform->global_position;
         }
     };
 

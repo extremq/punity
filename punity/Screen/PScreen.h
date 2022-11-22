@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include "punity/Engine/PEngine.fwd.h"
+#include "punity/Utils/PVector.h"
 
 namespace Punity {
     class PScreen {
@@ -75,7 +76,9 @@ namespace Punity {
         uint16_t const& height = m_height;
         uint16_t const& width = m_width;
 
-        void draw_sprite(int16_t col, int16_t row, uint16_t h, uint16_t w, const uint16_t* sprite);
+        Punity::Utils::PVector camera;
+
+        void draw_sprite(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t* sprite);
         void background_color(uint16_t color);
         void compute_diff();
     };
