@@ -18,9 +18,9 @@ and moved on to creating Punity just a few days later.
 - [x] Time
 - [ ] Invokables
 - [x] Game object
-- [ ] Components
+- [x] Components
 - [x] PJoystick
 - [ ] Button
 - [ ] Collision
-- [ ] Layered drawing
+- [x] Layered drawing
 - [x] Sprites
