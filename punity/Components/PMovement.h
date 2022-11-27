@@ -16,8 +16,8 @@ namespace Punity::Components {
             Utils::PVector direction;
             direction.x = Punity::Joystick.get_x_direction();
             direction.y = Punity::Joystick.get_y_direction();
-            direction = entity->transform->global_position + direction * 30.0f * Punity::Time.delta_time;
-            entity->transform->set_global(direction);
+            direction = direction * 30.0f * Punity::Time.delta_time;
+            entity->transform->translate(direction);
             Punity::Screen.camera = entity->transform->global_position;
         }
     };

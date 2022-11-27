@@ -29,3 +29,8 @@ void Punity::Components::PTransform::update_position_of_children() {
         child->transform->update_position_of_children();
     }
 }
+
+void Punity::Components::PTransform::translate(Punity::Utils::PVector const& tr) {
+    std::cout << tr << '\n';
+    set_global(m_global_position + tr);
+}

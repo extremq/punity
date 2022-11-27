@@ -27,6 +27,7 @@ namespace Punity::Components {
         void set_global(Utils::PVector const&);
 
         // That's all for members
+        void translate(Utils::PVector const& tr);
     };
 }
 

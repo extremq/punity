@@ -12,7 +12,6 @@
 #include <list>
 #include <set>
 
-
 namespace Punity {
     // Comparator for sprites
     struct cmp_sprites {
