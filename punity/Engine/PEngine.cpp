@@ -6,6 +6,7 @@
 #include "PEngine.h"
 #include "punity/Punity.h"
 #include "punity/Entity/PEntity.h"
+#include "punity/Components/PCollider.h"
 
 namespace Punity {
     void PEngine::set_framerate(float frame_rate) {
@@ -80,6 +81,11 @@ namespace Punity {
             std::multiset<Components::PSpriteRenderer*, cmp_sprites> sprites;
             Components::PSpriteRenderer* spriteRenderer;
 
+            // Collider list
+            std::list<Components::PCollider*> all_colliders;
+            std::list<Components::PCollider*> dynamic_colliders;
+            Components::PCollider* collider;
+
 //            std::cout << "Active entities this frame:\n";
             for (auto entity: m_all_entities) {
                 // Update the components
@@ -97,6 +103,29 @@ namespace Punity {
                     // Logarithmic
                     sprites.insert(spriteRenderer);
                 }
+
+                // Add the collider to the collider list
+                collider = entity->get_component<Components::PCollider>();
+                if (collider != nullptr && collider->is_active()) {
+                    all_colliders.push_back(collider);
+
+                    // Maintain a different list of dynamic colliders
+                    // for efficiency.
+                    if (!collider->is_static) {
+                        dynamic_colliders.push_back(collider);
+                    }
+                }
+            }
+
+            // Collision first, rendering second
+            for (auto dynamic_collider : dynamic_colliders) {
+                for (auto common_collider : all_colliders) {
+                    // Don't self-compute
+                    if (common_collider == dynamic_collider) continue;
+
+                    // Solve the collision
+                    dynamic_collider->solve_collision(common_collider);
+                }
             }
 
             // Now, render the sprites!
@@ -106,7 +135,8 @@ namespace Punity {
                         sprite->entity->transform->global_position.y + sprite->offset.y,
                         sprite->height,
                         sprite->width,
-                        sprite->get_sprite());
+                        sprite->get_sprite(),
+                        sprite->get_alpha());
             }
 
             Punity::Screen.load_frame();

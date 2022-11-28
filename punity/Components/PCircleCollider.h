@@ -2,21 +2,19 @@
 // Created by god on 26.11.2022.
 //
 
-#ifndef PUNITY_GAME_ENGINE_PCIRCLECOLLIDER_H
-#define PUNITY_GAME_ENGINE_PCIRCLECOLLIDER_H
+#ifndef _PCIRCLECOLLIDER_H
+#define _PCIRCLECOLLIDER_H
 
 #include "PCollider.h"
 
-namespace Punity {
-    namespace Components {
+namespace Punity::Components {
+    class PCircleCollider : public PCollider {
+    public:
+        PCircleCollider();
+        float radius = 0.0f;
+        bool solve_collision(PCollider* other) override;
+    };
 
-        class PCircleCollider : PCollider {
-        public:
-            float radius = 0.0f;
-            void solve_collisions(PCollider* other) override;
-        };
-
-    } // Punity
 } // Components
 
-#endif //PUNITY_GAME_ENGINE_PCIRCLECOLLIDER_H
+#endif //_PCIRCLECOLLIDER_H

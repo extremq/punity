@@ -45,8 +45,10 @@ namespace Punity::Components {
         // Public read-only
         Punity::PEntity *const & entity = m_parent_entity;
         void set_active(bool);
-        bool is_active();
+
         uint64_t get_id();
+
+        bool is_active();
     };
 } // Punity
 

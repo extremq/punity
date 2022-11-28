@@ -4,6 +4,8 @@
 #include <iostream>
 #include "punity/Punity.h"
 #include "punity/Components/PMovement.h"
+#include "punity/Components/PCircleCollider.h"
+#include "punity/Components/PBoxCollider.h"
 #include "punity/Components/PSpriteRenderer.h"
 
 /* Pins on PICO */
@@ -19,10 +21,14 @@ constexpr uint8_t WIDTH = 128;
 constexpr uint8_t HEIGHT = 128;
 
 const uint16_t x[8 * 8] = {0};
-const uint16_t xx[4 * 4] = {0xff,0xff,0xff,0xff,
+const uint16_t xx[4 * 4] = {0xacdf,0xff,0xff,0xacdf,
                             0xff,0xff,0xff,0xff,
                             0xff,0xff,0xff,0xff,
-                            0xff,0xff,0xff,0xff};
+                            0xacdf,0xff,0xff,0xacdf};
+const bool xxalpha[4 * 4] = {false, true, true, false,
+                             true, true, true, true,
+                             true, true, true, true,
+                             false, true, true, false};
 
 int main() {
     stdio_init_all();
@@ -33,27 +39,34 @@ int main() {
     Screen.background_color(0xacdf);
     Joystick.config(JOY_X, JOY_Y);
 
-    auto d = PEntity::make_entity("d");
     auto a = PEntity::make_entity("a");
-    auto b = PEntity::make_entity("b");
-    d->set_parent(a);
     a->add_component<Components::PMovement>();
-    a->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
-    d->add_component<Components::PSpriteRenderer>()->set_sprite(xx, 4, 4, 1);
-    b->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
-    b->transform->set_global({15, 15});
+    a->add_component<Components::PCircleCollider>()->radius = 2;
+    a->get_component<Components::PCircleCollider>()->is_static = false;
+    a->add_component<Components::PSpriteRenderer>()->set_sprite(xx, xxalpha, 4, 4, 0);
+    auto i = PEntity::make_entity("r");
+    i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
+    i->add_component<Components::PBoxCollider>()->width = 8;
+    i->get_component<Components::PBoxCollider>()->height = 8;
+    i->transform->set_global({20, 20});
 
-    for (int z = 0; z < 500; ++z) {
-        auto i = PEntity::make_entity("r");
-        if (z & 1)
-            i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
-        else
-            i->add_component<Components::PSpriteRenderer>()->set_sprite(xx, 4, 4, 0);
-
-        Utils::PVector rand(Utils::PRandom::get_random() * 300, Utils::PRandom::get_random() * 300);
-        i->transform->set_global(rand);
-        sleep_us(5);
-    }
+//    for (int z = 0; z < 300; ++z) {
+//        auto i = PEntity::make_entity("r");
+//        if (z & 1) {
+//            i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
+//            i->add_component<Components::PBoxCollider>()->width = 8;
+//            i->get_component<Components::PBoxCollider>()->height = 8;
+//        }
+//        else {
+//            i->add_component<Components::PSpriteRenderer>()->set_sprite(xx, 4, 4, 0);
+//            i->add_component<Components::PBoxCollider>()->width = 4;
+//            i->get_component<Components::PBoxCollider>()->height = 4;
+//        }
+//
+//        Utils::PVector rand(Utils::PRandom::get_random() * 300, Utils::PRandom::get_random() * 300);
+//        i->transform->set_global(rand);
+//        sleep_us(5);
+//    }
 
     Engine.set_framerate(60);
     Engine.start_game();

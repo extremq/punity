@@ -11,8 +11,8 @@
 namespace Punity::Components {
     enum Shape {BOX, CIRCLE};
     // Class for colliding template
-    class PCollider : PComponent {
-    private:
+    class PCollider : public PComponent {
+    protected:
         Shape m_shape = BOX;
     public:
         uint8_t layer = 0;
@@ -22,7 +22,8 @@ namespace Punity::Components {
         // trigger = only acts as a boundary
         bool is_trigger = false;
 
-        virtual void solve_collisions() {};
+        virtual bool solve_collision(PCollider* other) { return false; }
+        Shape get_shape() { return m_shape; }
     };
 
 } // Components

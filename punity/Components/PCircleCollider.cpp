@@ -3,11 +3,22 @@
 //
 
 #include "PCircleCollider.h"
+#include "punity/Utils/PCollisionComputation.h"
+#include "punity/Utils/PError.h"
 
-namespace Punity {
-    namespace Components {
-        void PCircleCollider::solve_collisions(PCollider* other) {
-
+namespace Punity::Components {
+    bool PCircleCollider::solve_collision(PCollider* other) {
+        switch (other->get_shape()) {
+            case BOX:
+                return Punity::Collision::solve_circle_rect(this, (PBoxCollider*) other);
+            case CIRCLE:
+                Punity::Utils::Error("Circle-Circle collision not defined.");
+                return false;
         }
-    } // Punity
+        return false;
+    }
+
+    PCircleCollider::PCircleCollider() {
+        m_shape = CIRCLE;
+    }
 } // Components

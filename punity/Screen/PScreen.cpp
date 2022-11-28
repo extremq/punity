@@ -86,7 +86,7 @@ namespace Punity {
         }
     }
 
-    void PScreen::draw_sprite(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t *sprite) {
+    void PScreen::draw_sprite(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t *sprite, const bool* alpha) {
         // Sizes are bigger than 8 bits because somebody may call 255 + 1.
         // Even though it's not good to have such a huge sprite, it's better to not let
         // the value wrap to 0 because of it being a uint8_t
@@ -129,7 +129,9 @@ namespace Punity {
         // Start writing
         for (int32_t y = row, i = i_start; y < row + h; ++y, ++i) {
             for (int32_t x = col, j = j_start; x < col + w; ++x, ++j) {
-                m_frame_buffer[x - cam_near_w + (y - cam_near_h) * m_height] = sprite[j + i * sprite_w];
+                // Check with alpha
+                if (alpha == nullptr || alpha[j + i * sprite_w])
+                    m_frame_buffer[x - cam_near_w + (y - cam_near_h) * m_height] = sprite[j + i * sprite_w];
             }
         }
     }

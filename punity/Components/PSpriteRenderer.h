@@ -19,10 +19,20 @@ namespace Punity::Components {
         uint16_t const * m_sprite = nullptr;
         uint16_t m_height = 0;
         uint16_t m_width = 0;
+        bool const * m_alpha = nullptr;
 
     public:
         void set_sprite(uint16_t const * sprite, uint16_t h, uint16_t w, uint16_t l) {
             m_sprite = sprite;
+            m_height = h;
+            m_width = w;
+            offset = {-m_width / 2.0f, -m_height / 2.0f};
+            layer = l;
+        }
+
+        void set_sprite(uint16_t const * sprite, bool const* alpha, uint16_t h, uint16_t w, uint16_t l) {
+            m_sprite = sprite;
+            m_alpha = alpha;
             m_height = h;
             m_width = w;
             offset = {-m_width / 2.0f, -m_height / 2.0f};
@@ -40,6 +50,10 @@ namespace Punity::Components {
 
         uint16_t const* get_sprite() {
             return m_sprite;
+        }
+
+        bool const* get_alpha() {
+            return m_alpha;
         }
 
         // Need to offset so we can have the sprite's center
