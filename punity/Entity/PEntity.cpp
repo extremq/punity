@@ -183,6 +183,23 @@ void Punity::PEntity::report_start_to_components() {
     }
 }
 
+
+void Punity::PEntity::report_start_collision_to_components(Components::PCollider* col) {
+    for (auto component : m_components) {
+        if (component->m_is_active) {
+            component->on_start_collision(col);
+        }
+    }
+}
+
+void Punity::PEntity::report_end_collision_to_components(Components::PCollider* col) {
+    for (auto component : m_components) {
+        if (component->m_is_active) {
+            component->on_end_collision(col);
+        }
+    }
+}
+
 Punity::PEntity::~PEntity() {
     delete m_transform;
     for (auto component : m_components) {

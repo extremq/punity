@@ -21,6 +21,6 @@ and moved on to creating Punity just a few days later.
 - [x] Components
 - [x] PJoystick
 - [ ] Button
-- [ ] Collision
+- [x] Collision
 - [x] Layered drawing
 - [x] Sprites

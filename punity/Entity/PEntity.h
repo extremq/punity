@@ -15,6 +15,10 @@
 #include <iostream>
 
 namespace Punity {
+    namespace Components {
+        class PCollider; // Small forward iteration for pointer
+    }
+
     class PEntity {
     private:
         // Entity name
@@ -28,6 +32,7 @@ namespace Punity {
 
         // Befriend class for access
         friend class Punity::PEngine;
+        friend class Components::PCollider;
 
         static uint64_t entity_count;
         uint64_t m_id = entity_count++; // Increment id's
@@ -46,6 +51,8 @@ namespace Punity {
         void report_update_to_components();
         void report_destroy_to_components();
         void report_start_to_components();
+        void report_start_collision_to_components(Components::PCollider*);
+        void report_end_collision_to_components(Components::PCollider*);
 
         // Disable copy
         PEntity &operator=(const PEntity &);

@@ -9,6 +9,8 @@
 #include "punity/Entity/PEntity.fwd.h"
 
 namespace Punity::Components {
+    class PCollider; // Small forward iteration for pointer
+
     // The base component
     class PComponent {
     private:
@@ -33,6 +35,9 @@ namespace Punity::Components {
         // when component itself is active.
         virtual void on_enable() {}
         virtual void on_disable() {}
+
+        virtual void on_start_collision(PCollider*) {}
+        virtual void on_end_collision(PCollider*) {}
 
         virtual void on_update() {}
         virtual void on_destroy() {}

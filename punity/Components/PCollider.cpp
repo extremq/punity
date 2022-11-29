@@ -3,8 +3,20 @@
 //
 
 #include "PCollider.h"
+#include "punity/Entity/PEntity.h"
 
-namespace Punity {
-    namespace Components {
-    } // Punity
+namespace Punity::Components {
+    PCollider* PCollider::check_if_exists_as_collider(PCollider *other) {
+        if (m_colliders.find(other->get_id()) != m_colliders.end())
+            return m_colliders[other->get_id()];
+        return nullptr;
+    }
+
+    void PCollider::delete_collider(PCollider *other) {
+        m_colliders.erase(other->get_id());
+    }
+
+    void PCollider::add_collider(PCollider *other) {
+        m_colliders.insert({other->get_id(), other});
+    }
 } // Components

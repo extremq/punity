@@ -44,29 +44,22 @@ int main() {
     a->add_component<Components::PCircleCollider>()->radius = 2;
     a->get_component<Components::PCircleCollider>()->is_static = false;
     a->add_component<Components::PSpriteRenderer>()->set_sprite(xx, xxalpha, 4, 4, 0);
-    auto i = PEntity::make_entity("r");
-    i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
-    i->add_component<Components::PBoxCollider>()->width = 8;
-    i->get_component<Components::PBoxCollider>()->height = 8;
-    i->transform->set_global({20, 20});
+//    auto i = PEntity::make_entity("r");
+//    i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
+//    i->add_component<Components::PBoxCollider>()->width = 8;
+//    i->get_component<Components::PBoxCollider>()->height = 8;
+//    i->transform->set_global({20, 20});
 
-//    for (int z = 0; z < 300; ++z) {
-//        auto i = PEntity::make_entity("r");
-//        if (z & 1) {
-//            i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
-//            i->add_component<Components::PBoxCollider>()->width = 8;
-//            i->get_component<Components::PBoxCollider>()->height = 8;
-//        }
-//        else {
-//            i->add_component<Components::PSpriteRenderer>()->set_sprite(xx, 4, 4, 0);
-//            i->add_component<Components::PBoxCollider>()->width = 4;
-//            i->get_component<Components::PBoxCollider>()->height = 4;
-//        }
-//
-//        Utils::PVector rand(Utils::PRandom::get_random() * 300, Utils::PRandom::get_random() * 300);
-//        i->transform->set_global(rand);
-//        sleep_us(5);
-//    }
+    for (int z = 0; z < 300; ++z) {
+        auto i = PEntity::make_entity("r" + std::to_string(z));
+        i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
+        i->add_component<Components::PBoxCollider>()->width = 8;
+        i->get_component<Components::PBoxCollider>()->height = 8;
+
+        Utils::PVector rand(Utils::PRandom::get_random() * 100, Utils::PRandom::get_random() * 100);
+        i->transform->set_global(rand);
+        sleep_us(5);
+    }
 
     Engine.set_framerate(60);
     Engine.start_game();

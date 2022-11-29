@@ -124,7 +124,27 @@ namespace Punity {
                     if (common_collider == dynamic_collider) continue;
 
                     // Solve the collision
-                    dynamic_collider->solve_collision(common_collider);
+                    bool has_collided = dynamic_collider->solve_collision(common_collider);
+
+                    // Notify the dynamic collider first
+                    Components::PCollider* collider_in_list = dynamic_collider->check_if_exists_as_collider(common_collider);
+
+                    if (has_collided && collider_in_list == nullptr) {
+                        // If this is a new collision, add it and report the event
+                        dynamic_collider->add_collider(common_collider);
+                        dynamic_collider->entity->report_start_collision_to_components(common_collider);
+
+                        common_collider->add_collider(dynamic_collider);
+                        common_collider->entity->report_start_collision_to_components(dynamic_collider);
+                    }
+                    else if (!has_collided && collider_in_list != nullptr) {
+                        // If this hasn't collided BUT it exists, delete it and report the event
+                        dynamic_collider->delete_collider(common_collider);
+                        dynamic_collider->entity->report_end_collision_to_components(common_collider);
+
+                        common_collider->delete_collider(dynamic_collider);
+                        common_collider->entity->report_end_collision_to_components(dynamic_collider);
+                    }
                 }
             }
 
@@ -136,7 +156,8 @@ namespace Punity {
                         sprite->height,
                         sprite->width,
                         sprite->get_sprite(),
-                        sprite->get_alpha());
+                        sprite->get_alpha()
+                        );
             }
 
             Punity::Screen.load_frame();
