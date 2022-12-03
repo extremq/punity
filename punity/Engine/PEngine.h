@@ -7,6 +7,7 @@
 
 #include "punity/Entity/PEntity.fwd.h"
 #include "punity/Components/PSpriteRenderer.h"
+#include "punity/Components/PUISpriteRenderer.h"
 
 #include <cstdint>
 #include <list>
@@ -16,6 +17,12 @@ namespace Punity {
     // Comparator for sprites
     struct cmp_sprites {
         bool operator() (Components::PSpriteRenderer const* a, Components::PSpriteRenderer const* b) const {
+            return a->layer < b->layer;
+        }
+    };
+
+    struct cmp_ui_sprites {
+        bool operator() (Components::PUISpriteRenderer const* a, Components::PUISpriteRenderer const* b) const {
             return a->layer < b->layer;
         }
     };

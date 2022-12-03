@@ -7,6 +7,7 @@
 #include "punity/Components/PCircleCollider.h"
 #include "punity/Components/PBoxCollider.h"
 #include "punity/Components/PSpriteRenderer.h"
+#include "game/sprites.h"
 
 /* Pins on PICO */
 constexpr uint8_t TFT_RES = 20;
@@ -20,17 +21,6 @@ constexpr uint8_t JOY_Y = 27;
 constexpr uint8_t WIDTH = 128;
 constexpr uint8_t HEIGHT = 128;
 
-const uint16_t x[8 * 8] = {0};
-const uint16_t xx[4 * 4] = {0xacdf,0xff,0xff,0xacdf,
-                            0xff,0xff,0xff,0xff,
-                            0xff,0xff,0xff,0xff,
-                            0xacdf,0xff,0xff,0xacdf};
-
-const bool xxalpha[4 * 4] = {false, true, true, false,
-                             true, true, true, true,
-                             true, true, true, true,
-                             false, true, true, false};
-
 int main() {
     stdio_init_all();
     sleep_ms(2000);
@@ -42,18 +32,31 @@ int main() {
 
     auto a = PEntity::make_entity("a");
     a->add_component<Components::PMovement>();
-    a->add_component<Components::PCircleCollider>()->radius = 2;
+    a->add_component<Components::PUISpriteRenderer>()->set_sprite(
+            Game::Sprites::test_text,
+            Game::Sprites::test_text_alpha,
+            Game::Sprites::test_text_h,
+            Game::Sprites::test_text_w,
+            0
+            );
+    a->get_component<Components::PUISpriteRenderer>()->ui_position = {0, -64 + 6};
+    a->add_component<Components::PCircleCollider>()->radius = 4;
     a->get_component<Components::PCircleCollider>()->is_static = false;
-    a->add_component<Components::PSpriteRenderer>()->set_sprite(xx, xxalpha, 4, 4, 0);
-//    auto i = PEntity::make_entity("r");
-//    i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
-//    i->add_component<Components::PBoxCollider>()->width = 8;
-//    i->get_component<Components::PBoxCollider>()->height = 8;
-//    i->transform->set_global({20, 20});
+    a->add_component<Components::PSpriteRenderer>()->set_sprite(
+        Game::Sprites::player, 
+        Game::Sprites::player_alpha,
+        Game::Sprites::player_h, 
+        Game::Sprites::player_w, 
+        0);
 
     for (int z = 0; z < 300; ++z) {
         auto i = PEntity::make_entity("r" + std::to_string(z));
-        i->add_component<Components::PSpriteRenderer>()->set_sprite(x, 8, 8, 0);
+        i->add_component<Components::PSpriteRenderer>()->set_sprite(
+                Game::Sprites::test_wall,
+                Game::Sprites::test_wall_alpha,
+                Game::Sprites::test_wall_h,
+                Game::Sprites::test_wall_w,
+                0);
         i->add_component<Components::PBoxCollider>()->width = 8;
         i->get_component<Components::PBoxCollider>()->height = 8;
 

@@ -32,7 +32,18 @@ add_executable(${PROJ_NAME}
         punity/Utils/PTime.h
         punity/Input/PJoystick.h
         punity/Components/PMovement.h
-        punity/Components/PSpriteRenderer.fwd.h punity/Utils/PError.h punity/Utils/PRandom.h punity/Components/PCollider.cpp punity/Components/PCollider.h punity/Utils/PCollisionComputation.h punity/Components/PCircleCollider.cpp punity/Components/PCircleCollider.h punity/Components/PBoxCollider.cpp punity/Components/PBoxCollider.h)
+        punity/Components/PSpriteRenderer.fwd.h
+        punity/Utils/PError.h
+        punity/Utils/PRandom.h
+        punity/Components/PCollider.cpp
+        punity/Components/PCollider.h
+        punity/Utils/PCollisionComputation.h
+        punity/Components/PCircleCollider.cpp
+        punity/Components/PCircleCollider.h
+        punity/Components/PBoxCollider.cpp
+        punity/Components/PBoxCollider.h
+        game/sprites.cpp
+        game/sprites.h punity/Components/PUISpriteRenderer.cpp punity/Components/PUISpriteRenderer.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

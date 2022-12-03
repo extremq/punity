@@ -12,7 +12,7 @@
 
 namespace Punity::Components {
     class PSpriteRenderer : public PComponent {
-    private:
+    protected:
         // Pointer to const
         // Shared memory, of course!
         // All modifiers are applied at draw-stage

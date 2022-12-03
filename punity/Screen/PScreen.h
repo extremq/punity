@@ -79,6 +79,7 @@ namespace Punity {
         Punity::Utils::PVector camera;
 
         void draw_sprite(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t* sprite, const bool* alpha);
+        void draw_ui(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t* sprite, const bool* alpha);
         void background_color(uint16_t color);
         void compute_diff();
     };

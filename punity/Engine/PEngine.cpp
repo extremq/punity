@@ -81,6 +81,9 @@ namespace Punity {
             std::multiset<Components::PSpriteRenderer*, cmp_sprites> sprites;
             Components::PSpriteRenderer* spriteRenderer;
 
+            std::multiset<Components::PUISpriteRenderer*, cmp_sprites> ui_sprites;
+            Components::PUISpriteRenderer* ui_spriteRenderer;
+
             // Collider list
             std::list<Components::PCollider*> all_colliders;
             std::list<Components::PCollider*> dynamic_colliders;
@@ -102,6 +105,12 @@ namespace Punity {
                 if (spriteRenderer != nullptr && spriteRenderer->is_active()) {
                     // Logarithmic
                     sprites.insert(spriteRenderer);
+                }
+
+                ui_spriteRenderer = entity->get_component<Components::PUISpriteRenderer>();
+                if (ui_spriteRenderer != nullptr && ui_spriteRenderer->is_active()) {
+                    // Logarithmic
+                    ui_sprites.insert(ui_spriteRenderer);
                 }
 
                 // Add the collider to the collider list
@@ -148,7 +157,7 @@ namespace Punity {
                 }
             }
 
-            // Now, render the sprites!
+            // Now, draw the sprites!
             for (auto sprite : sprites) {
                 Punity::Screen.draw_sprite(
                         sprite->entity->transform->global_position.x + sprite->offset.x,
@@ -160,6 +169,21 @@ namespace Punity {
                         );
             }
 
+
+            // Then draw the UI!
+            for (auto sprite : ui_sprites) {
+                std::cout << "printing a ui\n";
+                Punity::Screen.draw_ui(
+                        sprite->ui_position.x + sprite->offset.x,
+                        sprite->ui_position.y + sprite->offset.y,
+                        sprite->height,
+                        sprite->width,
+                        sprite->get_sprite(),
+                        sprite->get_alpha()
+                );
+            }
+
+            // Render the screen
             Punity::Screen.load_frame();
             // Sleep the remaining frame time
             uint64_t time_difference = time_us_64() - frame_start_time;

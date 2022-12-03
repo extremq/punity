@@ -86,6 +86,53 @@ namespace Punity {
         }
     }
 
+    void PScreen::draw_ui(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t *sprite, const bool *alpha) {
+        // Same code but with camera at 0, 0
+        // It would be better to wrap these calls to a common function
+        // Shouldn't be repeating code.
+        int32_t cam_far_w = m_width / 2;
+        int32_t cam_near_w = -m_width / 2;
+        int32_t cam_far_h = m_width / 2;
+        int32_t cam_near_h = -m_width / 2;
+
+        if (col > cam_far_w || row > cam_far_h || col + w <= cam_near_w || row + h <= cam_near_h) return;
+        if (h == 0 || w == 0) Punity::Utils::Error("Zero width/height sprite.");
+        if (sprite == nullptr) Punity::Utils::Error("Null sprite.");
+
+        int32_t sprite_w = w; // Dims for sprite
+        int32_t j_start = 0, i_start = 0; // Starting points for sprite
+
+        // Clamping
+        if (col < cam_near_w) {
+            j_start = cam_near_w - col;
+            w -= j_start;
+            col = cam_near_w;
+        }
+
+        if (row < cam_near_h) {
+            i_start = cam_near_h - row;
+            h -= i_start;
+            row = cam_near_h;
+        }
+
+        if (col + w > cam_far_w) {
+            w -= col + w - cam_far_w;
+        }
+
+        if (row + h > cam_far_h) {
+            h -= row + h - cam_far_h;
+        }
+
+        // Start writing
+        for (int32_t y = row, i = i_start; y < row + h; ++y, ++i) {
+            for (int32_t x = col, j = j_start; x < col + w; ++x, ++j) {
+                // Check with alpha
+                if (alpha == nullptr || alpha[j + i * sprite_w])
+                    m_frame_buffer[x - cam_near_w + (y - cam_near_h) * m_height] = sprite[j + i * sprite_w];
+            }
+        }
+    }
+
     void PScreen::draw_sprite(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t *sprite, const bool* alpha) {
         // Sizes are bigger than 8 bits because somebody may call 255 + 1.
         // Even though it's not good to have such a huge sprite, it's better to not let
