@@ -25,6 +25,7 @@ const uint16_t xx[4 * 4] = {0xacdf,0xff,0xff,0xacdf,
                             0xff,0xff,0xff,0xff,
                             0xff,0xff,0xff,0xff,
                             0xacdf,0xff,0xff,0xacdf};
+
 const bool xxalpha[4 * 4] = {false, true, true, false,
                              true, true, true, true,
                              true, true, true, true,
