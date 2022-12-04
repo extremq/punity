@@ -13,7 +13,7 @@ namespace Punity::Components {
 
     // The base component
     class PComponent {
-    private:
+    protected:
         // This state is individual and is not linked to parent Entity,
         // however updates wont be executed if parent entity is disabled.
         bool m_is_active = true;

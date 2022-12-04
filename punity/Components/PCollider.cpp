@@ -19,4 +19,24 @@ namespace Punity::Components {
     void PCollider::add_collider(PCollider *other) {
         m_colliders.insert({other->get_id(), other});
     }
+
+    // Update and notify the respective collider
+    void PCollider::on_destroy() {
+        for (auto collider : m_colliders) {
+            collider.second->delete_collider(this);
+            collider.second->entity->report_end_collision_to_components(this);
+        }
+
+        m_colliders.clear();
+    }
+
+    void PCollider::on_disable() {
+        for (auto collider : m_colliders) {
+            collider.second->delete_collider(this);
+            // Only notify their component, ours is inactive anyways
+            collider.second->entity->report_end_collision_to_components(this);
+
+            delete_collider(collider.second);
+        }
+    }
 } // Components

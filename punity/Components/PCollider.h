@@ -24,6 +24,10 @@ namespace Punity::Components {
         void delete_collider(PCollider* other);
         void add_collider(PCollider* other);
         Shape m_shape = BOX;
+
+        // Needed for cleaning up
+        void on_disable() override;
+        void on_destroy() override;
     public:
         uint8_t layer = 0;
         // static = doesn't move

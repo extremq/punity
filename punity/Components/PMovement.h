@@ -7,6 +7,7 @@
 
 #include "punity/Punity.h"
 #include "PSpriteRenderer.h"
+#include "PCollider.h"
 
 namespace Punity::Components {
     class PMovement : public PComponent {
@@ -19,6 +20,8 @@ namespace Punity::Components {
             direction = direction * 30.0f * Punity::Time.delta_time;
             entity->transform->translate(direction);
             Punity::Screen.camera = entity->transform->global_position;
+            if (Punity::Time.time > 6)
+                entity->set_active(false);
         }
     };
 

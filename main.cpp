@@ -49,7 +49,7 @@ int main() {
         Game::Sprites::player_w, 
         0);
 
-    for (int z = 0; z < 300; ++z) {
+    for (int z = 0; z < 20; ++z) {
         auto i = PEntity::make_entity("r" + std::to_string(z));
         i->add_component<Components::PSpriteRenderer>()->set_sprite(
                 Game::Sprites::test_wall,

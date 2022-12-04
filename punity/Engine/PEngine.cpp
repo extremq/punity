@@ -12,7 +12,7 @@ namespace Punity {
     void PEngine::set_framerate(float frame_rate) {
         if (frame_rate == 0) Punity::Utils::Error("Zero frame rate.");
 
-        m_frame_delay_us = (uint64_t) (1.0 / frame_rate) * 1000000;
+        m_frame_delay_us = (1.0 / frame_rate) * 1000000;
     }
 
     void PEngine::start_game() {
@@ -33,6 +33,10 @@ namespace Punity {
             update_time(frame_start_time);
 
             // Any deletion is committed only on next frame
+            std::cout << "before\n";
+            for (auto it : m_all_entities) {
+                std::cout << it->name << '\n';
+            }
             for (auto it = m_all_entities.begin(); it != m_all_entities.end(); ++it) {
                 if ((*it)->m_is_destroyed || !(*it)->m_is_active) {
                     if ((*it)->m_is_destroyed) {
@@ -65,6 +69,7 @@ namespace Punity {
             // Now, finally, we can safely delete
             // and be assured no weird stuff happens
             while (!to_be_destroyed.empty()) {
+                to_be_destroyed.front()->parent_of_entity->remove_child_entity(to_be_destroyed.front());
                 delete to_be_destroyed.front();
                 to_be_destroyed.pop();
             }
@@ -81,7 +86,7 @@ namespace Punity {
             std::multiset<Components::PSpriteRenderer*, cmp_sprites> sprites;
             Components::PSpriteRenderer* spriteRenderer;
 
-            std::multiset<Components::PUISpriteRenderer*, cmp_sprites> ui_sprites;
+            std::multiset<Components::PUISpriteRenderer*, cmp_ui_sprites> ui_sprites;
             Components::PUISpriteRenderer* ui_spriteRenderer;
 
             // Collider list
@@ -89,11 +94,14 @@ namespace Punity {
             std::list<Components::PCollider*> dynamic_colliders;
             Components::PCollider* collider;
 
+            std::cout << "after\n";
+            for (auto it : m_all_entities) {
+                std::cout << it->name << '\n';
+            }
 //            std::cout << "Active entities this frame:\n";
             for (auto entity: m_all_entities) {
                 // Update the components
-//                std::cout << " - " << entity->name << " at " << entity << '\n';
-
+                std::cout << entity->name << '-' << entity << '\n';
                 entity->report_update_to_components();
 
                 // But also add the sprite.
@@ -141,17 +149,15 @@ namespace Punity {
                     if (has_collided && collider_in_list == nullptr) {
                         // If this is a new collision, add it and report the event
                         dynamic_collider->add_collider(common_collider);
-                        dynamic_collider->entity->report_start_collision_to_components(common_collider);
-
                         common_collider->add_collider(dynamic_collider);
+                        dynamic_collider->entity->report_start_collision_to_components(common_collider);
                         common_collider->entity->report_start_collision_to_components(dynamic_collider);
                     }
                     else if (!has_collided && collider_in_list != nullptr) {
                         // If this hasn't collided BUT it exists, delete it and report the event
                         dynamic_collider->delete_collider(common_collider);
-                        dynamic_collider->entity->report_end_collision_to_components(common_collider);
-
                         common_collider->delete_collider(dynamic_collider);
+                        dynamic_collider->entity->report_end_collision_to_components(common_collider);
                         common_collider->entity->report_end_collision_to_components(dynamic_collider);
                     }
                 }
@@ -172,7 +178,6 @@ namespace Punity {
 
             // Then draw the UI!
             for (auto sprite : ui_sprites) {
-                std::cout << "printing a ui\n";
                 Punity::Screen.draw_ui(
                         sprite->ui_position.x + sprite->offset.x,
                         sprite->ui_position.y + sprite->offset.y,
@@ -187,6 +192,7 @@ namespace Punity {
             Punity::Screen.load_frame();
             // Sleep the remaining frame time
             uint64_t time_difference = time_us_64() - frame_start_time;
+
             if (time_difference < m_frame_delay_us) {
                 sleep_us(m_frame_delay_us - time_difference);
             }
