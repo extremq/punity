@@ -43,27 +43,11 @@ int main() {
     a->add_component<Components::PCircleCollider>()->radius = 4;
     a->get_component<Components::PCircleCollider>()->is_static = false;
     a->add_component<Components::PSpriteRenderer>()->set_sprite(
-        Game::Sprites::player, 
+        Game::Sprites::player,
         Game::Sprites::player_alpha,
-        Game::Sprites::player_h, 
-        Game::Sprites::player_w, 
+        Game::Sprites::player_h,
+        Game::Sprites::player_w,
         0);
-
-    for (int z = 0; z < 20; ++z) {
-        auto i = PEntity::make_entity("r" + std::to_string(z));
-        i->add_component<Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::test_wall,
-                Game::Sprites::test_wall_alpha,
-                Game::Sprites::test_wall_h,
-                Game::Sprites::test_wall_w,
-                0);
-        i->add_component<Components::PBoxCollider>()->width = 8;
-        i->get_component<Components::PBoxCollider>()->height = 8;
-
-        Utils::PVector rand(Utils::PRandom::get_random() * 100, Utils::PRandom::get_random() * 100);
-        i->transform->set_global(rand);
-        sleep_us(5);
-    }
 
     Engine.set_framerate(60);
     Engine.start_game();

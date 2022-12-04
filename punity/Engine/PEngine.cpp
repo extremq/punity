@@ -26,6 +26,18 @@ namespace Punity {
             entity->report_start_to_components();
         }
 
+        // Sprites arranged by layer
+        std::multiset<Components::PSpriteRenderer*, cmp_sprites> sprites;
+        Components::PSpriteRenderer* spriteRenderer;
+
+        std::multiset<Components::PUISpriteRenderer*, cmp_ui_sprites> ui_sprites;
+        Components::PUISpriteRenderer* ui_spriteRenderer;
+
+        // Collider list
+        std::list<Components::PCollider*> all_colliders;
+        std::list<Components::PCollider*> dynamic_colliders;
+        Components::PCollider* collider;
+
         while (true) {
             uint64_t frame_start_time = time_us_64();
 
@@ -33,10 +45,7 @@ namespace Punity {
             update_time(frame_start_time);
 
             // Any deletion is committed only on next frame
-            std::cout << "before\n";
-            for (auto it : m_all_entities) {
-                std::cout << it->name << '\n';
-            }
+//            std::cout << "deletion\n";
             for (auto it = m_all_entities.begin(); it != m_all_entities.end(); ++it) {
                 if ((*it)->m_is_destroyed || !(*it)->m_is_active) {
                     if ((*it)->m_is_destroyed) {
@@ -66,10 +75,19 @@ namespace Punity {
                 }
             }
 
+//            std::cout << "del queue size " << to_be_destroyed.size() << '\n';
             // Now, finally, we can safely delete
             // and be assured no weird stuff happens
             while (!to_be_destroyed.empty()) {
-                to_be_destroyed.front()->parent_of_entity->remove_child_entity(to_be_destroyed.front());
+                // Remove reference from parent
+                if (to_be_destroyed.front()->parent_of_entity != nullptr) {
+                    to_be_destroyed.front()->parent_of_entity->remove_child_entity(to_be_destroyed.front());
+                }
+                for (auto child : to_be_destroyed.front()->get_children()) {
+                    // mark parents of destroyed child as nullptr
+//                    std::cout << child->name << " has null parent now\n";
+                    child->m_parent_entity = nullptr;
+                }
                 delete to_be_destroyed.front();
                 to_be_destroyed.pop();
             }
@@ -82,26 +100,10 @@ namespace Punity {
             // However, that only happens if in this frame they were committed
             // Otherwise, the next frame will remove them.
 
-            // Sprites arranged by layer
-            std::multiset<Components::PSpriteRenderer*, cmp_sprites> sprites;
-            Components::PSpriteRenderer* spriteRenderer;
-
-            std::multiset<Components::PUISpriteRenderer*, cmp_ui_sprites> ui_sprites;
-            Components::PUISpriteRenderer* ui_spriteRenderer;
-
-            // Collider list
-            std::list<Components::PCollider*> all_colliders;
-            std::list<Components::PCollider*> dynamic_colliders;
-            Components::PCollider* collider;
-
-            std::cout << "after\n";
-            for (auto it : m_all_entities) {
-                std::cout << it->name << '\n';
-            }
-//            std::cout << "Active entities this frame:\n";
+//            std::cout << "Active entities size " << m_all_entities.size() << '\n';
             for (auto entity: m_all_entities) {
                 // Update the components
-                std::cout << entity->name << '-' << entity << '\n';
+//                std::cout << entity->name << '-' << entity << '\n';
                 entity->report_update_to_components();
 
                 // But also add the sprite.
@@ -110,6 +112,7 @@ namespace Punity {
                 // a cost, since you must ensure it is safe and doesn't destroy
                 // the multiset.
                 spriteRenderer = entity->get_component<Components::PSpriteRenderer>();
+
                 if (spriteRenderer != nullptr && spriteRenderer->is_active()) {
                     // Logarithmic
                     sprites.insert(spriteRenderer);
@@ -134,6 +137,8 @@ namespace Punity {
                 }
             }
 
+//            std::cout << "DYnamic Colliders size: " << dynamic_colliders.size() << '\n';
+//            std::cout << "All Colliders size: " << all_colliders.size() << '\n';
             // Collision first, rendering second
             for (auto dynamic_collider : dynamic_colliders) {
                 for (auto common_collider : all_colliders) {
@@ -164,6 +169,7 @@ namespace Punity {
             }
 
             // Now, draw the sprites!
+//            std::cout << "sprites size " << sprites.size() << '\n';
             for (auto sprite : sprites) {
                 Punity::Screen.draw_sprite(
                         sprite->entity->transform->global_position.x + sprite->offset.x,
@@ -177,6 +183,7 @@ namespace Punity {
 
 
             // Then draw the UI!
+//            std::cout << "ui sprites size " << sprites.size() << '\n';
             for (auto sprite : ui_sprites) {
                 Punity::Screen.draw_ui(
                         sprite->ui_position.x + sprite->offset.x,
@@ -192,6 +199,11 @@ namespace Punity {
             Punity::Screen.load_frame();
             // Sleep the remaining frame time
             uint64_t time_difference = time_us_64() - frame_start_time;
+
+            sprites.clear();
+            ui_sprites.clear();
+            all_colliders.clear();
+            dynamic_colliders.clear();
 
             if (time_difference < m_frame_delay_us) {
                 sleep_us(m_frame_delay_us - time_difference);

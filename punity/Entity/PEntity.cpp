@@ -201,9 +201,9 @@ void Punity::PEntity::report_end_collision_to_components(Components::PCollider* 
 }
 
 Punity::PEntity::~PEntity() {
-    delete m_transform;
     for (auto component : m_components) {
         delete component;
+//        std::cout << "component called for " << name << '\n';
     }
     std::cout << "Destructor called for " << name << '\n';
 }
@@ -216,4 +216,8 @@ Punity::PEntity *Punity::PEntity::make_entity() {
 Punity::PEntity *Punity::PEntity::make_entity(const std::string &new_name) {
     // Create and return a reference to entity
     return new PEntity(new_name);
+}
+
+bool Punity::PEntity::is_active() {
+    return m_is_active;
 }

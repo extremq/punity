@@ -3,3 +3,4 @@ cmake-build-debug/
 deploy.sh
 .idea/
 game/__pycache__/
+.vscode/
