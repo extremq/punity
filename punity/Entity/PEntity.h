@@ -67,6 +67,7 @@ namespace Punity {
         void set_name(std::string const& new_name);
         void set_active(bool);
         bool is_active();
+        uint64_t get_id();
         void destroy();
 
         // Public read-only

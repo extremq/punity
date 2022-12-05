@@ -6,6 +6,7 @@
 #define _ENGINE_H
 
 #include "punity/Entity/PEntity.fwd.h"
+#include "punity/Utils/PInvokable.fwd.h"
 #include "punity/Components/PSpriteRenderer.h"
 #include "punity/Components/PUISpriteRenderer.h"
 
@@ -34,6 +35,7 @@ namespace Punity {
         // In microseconds (1e^-6 sec)
         uint64_t m_frame_delay_us = 16666; // Assume 60 fps
         std::list<PEntity*> m_all_entities;
+        std::list<Utils::PInvokableBase*> m_invokers;
 
         void update_time(uint64_t);
     public:
@@ -51,6 +53,7 @@ namespace Punity {
 
         std::list<PEntity*> const& entity_list = m_all_entities;
         void register_entity(PEntity*);
+        void register_invoker(Utils::PInvokableBase*);
 
         // Sets... the framerate.
         void set_framerate(float);

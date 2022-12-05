@@ -7,6 +7,7 @@
 #include "punity/Punity.h"
 #include "punity/Entity/PEntity.h"
 #include "punity/Components/PCollider.h"
+#include "punity/Utils/PInvokable.h"
 
 namespace Punity {
     void PEngine::set_framerate(float frame_rate) {
@@ -47,6 +48,7 @@ namespace Punity {
          * New frame starts here
          * Load the background
          * Loop through all entities and update them while also collecting colliders and sprites
+         * Solve Invokers
          * Compute collisions
          * Draw sprites
          * Send the frame
@@ -102,6 +104,28 @@ namespace Punity {
 //                    std::cout << child->name << " has null parent now\n";
                     child->m_parent_entity = nullptr;
                 }
+
+                // Also remove invokers with this entity id
+                for (auto it = m_invokers.begin(); it != m_invokers.end(); ++it) {
+                    // If execution time has reached its point, lets invoke the function
+                    if ((*it)->get_entity_id() == to_be_destroyed.front()->get_id()) {
+                        delete *it;
+                        // Remove the invoker
+                        // Reached the end, don't care to save
+                        if ((it != m_invokers.end()) && (it == --m_invokers.end())) {
+                            m_invokers.pop_back();
+                            break;
+                        }
+
+                        // Swap with end and pop end.
+                        auto last = m_invokers.back();
+                        m_invokers.pop_back();
+
+                        *it = last;
+                        --it;
+                    }
+                }
+
                 delete to_be_destroyed.front();
                 to_be_destroyed.pop();
             }
@@ -150,6 +174,31 @@ namespace Punity {
                     }
                 }
             }
+
+            // Loop through all invokers and resolve them
+            for (auto it = m_invokers.begin(); it != m_invokers.end(); ++it) {
+                // If execution time has reached its point, lets invoke the function
+                std::cout << (*it)->get_execution_time() << 'v' << Punity::Time.time << '\n';
+                if ((*it)->get_execution_time() <= Punity::Time.time) {
+                    (*it)->execute_function();
+                    delete *it;
+
+                    // Remove the invoker
+                    // Reached the end, don't care to save
+                    if ((it != m_invokers.end()) && (it == --m_invokers.end())) {
+                        m_invokers.pop_back();
+                        break;
+                    }
+
+                    // Swap with end and pop end.
+                    auto last = m_invokers.back();
+                    m_invokers.pop_back();
+
+                    *it = last;
+                    --it;
+                }
+            }
+
 
 //            std::cout << "DYnamic Colliders size: " << dynamic_colliders.size() << '\n';
 //            std::cout << "All Colliders size: " << all_colliders.size() << '\n';
@@ -238,5 +287,9 @@ namespace Punity {
 
     PEngine::PEngine() {
         root_entity = new PEntity("__Root");
+    }
+
+    void PEngine::register_invoker(Utils::PInvokableBase * invoker) {
+        m_invokers.push_front(invoker);
     }
 }

@@ -221,3 +221,7 @@ Punity::PEntity *Punity::PEntity::make_entity(const std::string &new_name) {
 bool Punity::PEntity::is_active() {
     return m_is_active;
 }
+
+uint64_t Punity::PEntity::get_id() {
+    return m_id;
+}

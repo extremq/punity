@@ -10,6 +10,7 @@
 #include "PCollider.h"
 #include "PBoxCollider.h"
 #include "game/sprites.h"
+#include "punity/Utils/PInvokable.h"
 
 namespace Punity::Components {
     class PMovement : public PComponent {
@@ -42,8 +43,14 @@ namespace Punity::Components {
             Punity::Screen.camera = entity->transform->global_position;
         }
 
+        void toggle_ui() {
+            std::cout << "ayo\n";
+            entity->get_component<PUISpriteRenderer>()->set_active(!entity->get_component<PUISpriteRenderer>()->is_active());
+        }
+
         void on_start_collision(PCollider* other) override {
-            other->entity->destroy();
+            std::cout << "coll\n";
+            new Utils::PInvokable<PMovement>(&PMovement::toggle_ui, this, 3, entity->get_id());
         }
     };
 
