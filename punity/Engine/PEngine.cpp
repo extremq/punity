@@ -292,4 +292,13 @@ namespace Punity {
     void PEngine::register_invoker(Utils::PInvokableBase * invoker) {
         m_invokers.push_front(invoker);
     }
+
+    // Returns first active entity with this name
+    PEntity *PEngine::find_entity(std::string name) {
+        for (auto entity : m_all_entities) {
+            if (entity->name == name)
+                return entity;
+        }
+        return nullptr;
+    }
 }

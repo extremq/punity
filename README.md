@@ -20,7 +20,7 @@ and moved on to creating Punity just a few days later.
 - [x] Game object
 - [x] Components
 - [x] PJoystick
-- [ ] Button
+- [x] Button
 - [x] Collision
 - [x] Layered drawing
 - [x] Sprites

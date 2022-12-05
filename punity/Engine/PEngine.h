@@ -60,6 +60,8 @@ namespace Punity {
 
         void start_game();
 
+        PEntity* find_entity(std::string name);
+
         // Root Entity, head of the Entity Tree
         PEntity* root_entity = nullptr;
     };

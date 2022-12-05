@@ -13,6 +13,7 @@
 #include "punity/Utils/PVector.h"
 #include "punity/Utils/PRandom.h"
 #include "punity/Input/PJoystick.h"
+#include "punity/Input/PButton.h"
 #include "punity/Engine/PEngine.h"
 #include "punity/Screen/PScreen.h"
 
@@ -23,6 +24,7 @@ namespace Punity {
     static PEngine& Engine = PEngine::get();
     static Utils::PTime& Time = Utils::PTime::get();
     static Input::PJoystick& Joystick = Input::PJoystick::get();
+    static Input::PButton& Button = Input::PButton::get();
 }
 
 #endif //_PUNITY_H
