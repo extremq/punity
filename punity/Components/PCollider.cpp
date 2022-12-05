@@ -24,6 +24,7 @@ namespace Punity::Components {
     void PCollider::on_destroy() {
         for (auto collider : m_colliders) {
             collider.second->delete_collider(this);
+
             collider.second->entity->report_end_collision_to_components(this);
         }
 

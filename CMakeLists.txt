@@ -18,7 +18,6 @@ add_executable(${PROJ_NAME}
         punity/Engine/PEngine.h
         punity/Utils/PVector.h
         punity/Screen/ST7735_defines.h
-        punity/Components/PSpriteRenderer.cpp
         punity/Components/PSpriteRenderer.h
         punity/Components/PComponent.cpp
         punity/Components/PComponent.h
@@ -43,7 +42,7 @@ add_executable(${PROJ_NAME}
         punity/Components/PBoxCollider.cpp
         punity/Components/PBoxCollider.h
         game/sprites.cpp
-        game/sprites.h punity/Components/PUISpriteRenderer.cpp punity/Components/PUISpriteRenderer.h)
+        game/sprites.h punity/Components/PUISpriteRenderer.h punity/Components/PBasicSprite.cpp punity/Components/PBasicSprite.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

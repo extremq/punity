@@ -5,65 +5,14 @@
 #ifndef _PUISPRITERENDERER_H
 #define _PUISPRITERENDERER_H
 
-#include "punity/Components/PSpriteRenderer.h"
+#include "PBasicSprite.h"
 
 namespace Punity::Components {
-    class PUISpriteRenderer : public PComponent {
-    protected:
-        // Pointer to const
-        // Shared memory, of course!
-        // All modifiers are applied at draw-stage
-        uint16_t const * m_sprite = nullptr;
-        uint16_t m_height = 0;
-        uint16_t m_width = 0;
-        bool const * m_alpha = nullptr;
-
+    class PUISpriteRenderer : public PBasicSprite {
+        // All that's needed is ui_position, describing where on the screen the sprite
+        // will exist
     public:
-        void set_sprite(uint16_t const * sprite, uint16_t h, uint16_t w, uint16_t l) {
-            m_sprite = sprite;
-            m_height = h;
-            m_width = w;
-            offset = {-m_width / 2.0f, -m_height / 2.0f};
-            layer = l;
-        }
-
-        void set_sprite(uint16_t const * sprite, bool const* alpha, uint16_t h, uint16_t w, uint16_t l) {
-            m_sprite = sprite;
-            m_alpha = alpha;
-            m_height = h;
-            m_width = w;
-            offset = {-m_width / 2.0f, -m_height / 2.0f};
-            layer = l;
-        }
-
-        // Overload with custom offset
-        void set_sprite(uint16_t const * sprite, uint16_t h, uint16_t w, uint16_t l, Punity::Utils::PVector my_offset) {
-            m_sprite = sprite;
-            m_height = h;
-            m_width = w;
-            offset = my_offset;
-            layer = l;
-        }
-
-        uint16_t const* get_sprite() {
-            return m_sprite;
-        }
-
-        bool const* get_alpha() {
-            return m_alpha;
-        }
-
-        // Need to offset so we can have the sprite's center
-        // described by the entity transform
-        Utils::PVector offset = {0, 0};
         Utils::PVector ui_position = {0, 0};
-
-        // Let PScreen handle privates for efficiency
-        friend class PScreen;
-
-        uint16_t layer = 0;
-        uint16_t const& height = m_height;
-        uint16_t const& width = m_width;
     };
 
 } // Components

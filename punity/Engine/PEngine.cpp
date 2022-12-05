@@ -38,6 +38,20 @@ namespace Punity {
         std::list<Components::PCollider*> dynamic_colliders;
         Components::PCollider* collider;
 
+        /*
+         * ORDER OF EXECUTION:
+         *
+         * First, check which entities are disabled/destroyed and remove them from the active entities list
+         * Then, safely delete the destroyed entities
+         *
+         * New frame starts here
+         * Load the background
+         * Loop through all entities and update them while also collecting colliders and sprites
+         * Compute collisions
+         * Draw sprites
+         * Send the frame
+         * Sleep the remaining time and repeat
+         */
         while (true) {
             uint64_t frame_start_time = time_us_64();
 

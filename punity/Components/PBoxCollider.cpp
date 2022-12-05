@@ -6,15 +6,13 @@
 #include "punity/Utils/PCollisionComputation.h"
 #include "punity/Utils/PError.h"
 
-namespace Punity {
-    namespace Components {
-        PBoxCollider::PBoxCollider() {
-            m_shape = BOX;
-        }
+namespace Punity::Components {
+    PBoxCollider::PBoxCollider() {
+        m_shape = BOX;
+    }
 
-        bool PBoxCollider::solve_collision(PCollider *other) {
-            Punity::Utils::Error("Box collisions not implemented.");
-            return false;
-        }
-    } // Punity
+    bool PBoxCollider::solve_collision(PCollider *other) {
+        Punity::Utils::Error("Box collisions not implemented.");
+        return false;
+    }
 } // Components
