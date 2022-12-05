@@ -141,6 +141,13 @@ void Punity::PEntity::destroy() {
     }
 }
 
+void Punity::PEntity::destroy_children() {
+    // Mark children entities as destroyed, next frame takes effect
+    for (auto child : m_children_entities) {
+        child->destroy();
+    }
+}
+
 void Punity::PEntity::report_enable_to_components() {
     for (auto component : m_components) {
         if (component->m_is_active) {
@@ -225,3 +232,4 @@ bool Punity::PEntity::is_active() {
 uint64_t Punity::PEntity::get_id() {
     return m_id;
 }
+

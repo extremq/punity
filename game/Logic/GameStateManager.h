@@ -26,7 +26,6 @@ constexpr uint8_t HEIGHT = 128;
 enum State {
     START_SCREEN,
     LEVEL_LOAD_SCREEN,
-    ROOM_LOAD_SCREEN,
     GAMEPLAY
 };
 
@@ -39,7 +38,7 @@ namespace Game {
         State state = START_SCREEN;
 
         uint8_t level = 0;
-        uint8_t room = 0;
+        uint8_t stage = 0;
 
         void on_start() override;
         void on_update() override;
@@ -52,8 +51,16 @@ namespace Game {
         void enable_level_load_state();
         void disable_level_load_state();
 
+        void enable_gameplay_state();
+        void disable_gameplay_state();
+
+        void invoked_transition_to_gameplay();
+
+        uint8_t get_level();
+        uint8_t get_stage();
+
         static GameStateManager* manager;
-        Punity::PEntity* world = nullptr, *UI = nullptr;
+        Punity::PEntity* world = nullptr, *UI = nullptr, *room = nullptr;
         Punity::PEntity* start_screen = nullptr;
         Punity::PEntity* load_screen = nullptr;
     };

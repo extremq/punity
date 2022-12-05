@@ -69,6 +69,7 @@ namespace Punity {
         bool is_active();
         uint64_t get_id();
         void destroy();
+        void destroy_children();
 
         // Public read-only
         Components::PTransform* const& transform = m_transform;

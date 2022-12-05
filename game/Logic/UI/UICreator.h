@@ -80,7 +80,7 @@ namespace Game::UICreator {
                 0
         );
         digit_2_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::level1,
+                Game::Sprites::level2,
                 Game::Sprites::level2_alpha,
                 Game::Sprites::level2_h,
                 Game::Sprites::level2_w,

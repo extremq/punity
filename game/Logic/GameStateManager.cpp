@@ -4,6 +4,8 @@
 
 #include "GameStateManager.h"
 #include "UI/UICreator.h"
+#include "punity/Utils/PInvokable.h"
+#include "game/Logic/GameLogic/Room.h"
 
 namespace Game {
     GameStateManager* GameStateManager::manager = nullptr;
@@ -31,6 +33,16 @@ namespace Game {
         // Set up UI
         UI = Punity::PEntity::make_entity("ui");
 
+        // Set up world entity
+        world = Punity::PEntity::make_entity("world");
+        world->set_active(false);
+
+        // Set up room
+        room = Punity::PEntity::make_entity("room");
+        room->add_component<Room>();
+        room->set_parent(world);
+        room->set_active(false);
+
         // Set up start screen
         start_screen = Game::UICreator::create_start_screen();
 
@@ -38,6 +50,8 @@ namespace Game {
         load_screen = Game::UICreator::create_loading_screen();
     }
 
+    // I make sure to clean up everything each time I change a state.
+    // All this does is check if the necessary conditions to change state are met.
     void GameStateManager::on_update() {
         switch(state) {
             case START_SCREEN:
@@ -50,8 +64,7 @@ namespace Game {
                 }
                 break;
             case LEVEL_LOAD_SCREEN:
-                break;
-            case ROOM_LOAD_SCREEN:
+                // Well, Level loading only calls an invoker
                 break;
             case GAMEPLAY:
                 break;
@@ -84,10 +97,43 @@ namespace Game {
                 digit->set_active(false);
             }
         }
+
+        // Just invoke with a delay, simulating a load.
+        // Little do players know nothing's happening
+        new Punity::Utils::PInvokable<GameStateManager>(
+                &GameStateManager::invoked_transition_to_gameplay,
+                this,
+                3.0f, // 3 second delay
+                entity->get_id()
+        );
     }
 
     void GameStateManager::disable_level_load_state() {
         // Cleanup
         load_screen->set_active(false);
+    }
+
+    void GameStateManager::invoked_transition_to_gameplay() {
+        disable_level_load_state();
+        enable_gameplay_state();
+    }
+
+    void GameStateManager::enable_gameplay_state() {
+        // Set the state
+        state = GAMEPLAY;
+
+        world->set_active(true);
+    }
+
+    void GameStateManager::disable_gameplay_state() {
+        world->set_active(false);
+    }
+
+    uint8_t GameStateManager::get_level() {
+        return level;
+    }
+
+    uint8_t GameStateManager::get_stage() {
+        return stage;
     }
 } // Game

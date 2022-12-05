@@ -47,6 +47,31 @@ namespace Punity::Utils {
             (*(m_pointer_to_class).*m_function)();
         }
     };
+
+    template <class T>
+    class PInvokableWithInt : protected PInvokableBase {
+    private:
+        void (T::* m_function)(int x) = nullptr;
+        int m_argument;
+        T* m_pointer_to_class = nullptr;
+        PInvokableWithInt() = default;
+    public:
+        PInvokableWithInt(const PInvokableWithInt&) = delete;
+
+        PInvokableWithInt(void (T::* function)(int x), int argument, T* pointer_to_entity, float delay_seconds, uint64_t entity_id) {
+            m_execution_time = delay_seconds + Punity::Time.time;
+            m_pointer_to_class = pointer_to_entity;
+            m_function = function;
+            m_entity_id = entity_id;
+            m_argument = argument;
+            Punity::Engine.register_invoker(this);
+        }
+
+        void execute_function() override {
+            // Call the function when event lifetime expires
+            (*(m_pointer_to_class).*m_function)(m_argument);
+        }
+    };
 }
 
 #endif //_PINVOKABLE_H

@@ -42,7 +42,7 @@ add_executable(${PROJ_NAME}
         punity/Components/PBoxCollider.cpp
         punity/Components/PBoxCollider.h
         game/sprites.cpp
-        game/sprites.h punity/Components/PUISpriteRenderer.h punity/Components/PBasicSprite.cpp punity/Components/PBasicSprite.h punity/Utils/PInvokable.h punity/Utils/PInvokable.fwd.h game/Logic/GameStateManager.cpp game/Logic/GameStateManager.h game/Logic/UI/UICreator.h game/Logic/UI/FloatingUI.h punity/Input/PButton.h)
+        game/sprites.h punity/Components/PUISpriteRenderer.h punity/Components/PBasicSprite.cpp punity/Components/PBasicSprite.h punity/Utils/PInvokable.h punity/Utils/PInvokable.fwd.h game/Logic/GameStateManager.cpp game/Logic/GameStateManager.h game/Logic/UI/UICreator.h game/Logic/UI/FloatingUI.h punity/Input/PButton.h game/Logic/GameLogic/Room.cpp game/Logic/GameLogic/Room.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

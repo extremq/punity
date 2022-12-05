@@ -178,7 +178,6 @@ namespace Punity {
             // Loop through all invokers and resolve them
             for (auto it = m_invokers.begin(); it != m_invokers.end(); ++it) {
                 // If execution time has reached its point, lets invoke the function
-                std::cout << (*it)->get_execution_time() << 'v' << Punity::Time.time << '\n';
                 if ((*it)->get_execution_time() <= Punity::Time.time) {
                     (*it)->execute_function();
                     delete *it;
