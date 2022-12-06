@@ -57,7 +57,6 @@ namespace Punity {
 
         // Sets... the framerate.
         void set_framerate(float);
-
         void start_game();
 
         PEntity* find_entity(std::string name);

@@ -80,7 +80,7 @@ void Punity::PEntity::remove_child_entity(Punity::PEntity* entity) {
 }
 
 void Punity::PEntity::set_parent(Punity::PEntity* parent) {
-    std::cout << "setting parent of " << name << " to " << parent->name << '\n';
+    std::cout << "setting parent of " << m_name << " to " << parent->m_name << '\n';
 
     if (parent->m_is_destroyed) Punity::Utils::Error("Setting as parent a destroyed entity.", m_name);
 
@@ -212,7 +212,7 @@ Punity::PEntity::~PEntity() {
         delete component;
 //        std::cout << "component called for " << name << '\n';
     }
-    std::cout << "Destructor called for " << name << '\n';
+    std::cout << "Destructor called for " << m_name << '\n';
 }
 
 Punity::PEntity *Punity::PEntity::make_entity() {
@@ -231,5 +231,17 @@ bool Punity::PEntity::is_active() {
 
 uint64_t Punity::PEntity::get_id() {
     return m_id;
+}
+
+std::string Punity::PEntity::get_name() {
+    return m_name;
+}
+
+Punity::PEntity *Punity::PEntity::get_parent() {
+    return m_parent_entity;
+}
+
+Punity::Components::PTransform *Punity::PEntity::get_transform() {
+    return m_transform;
 }
 

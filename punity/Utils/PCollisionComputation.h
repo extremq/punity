@@ -13,8 +13,8 @@
 namespace Punity::Collision {
     static bool solve_circle_rect(Components::PCircleCollider* circle, Components::PBoxCollider* rect) {
         Utils::PVector nearest_point;
-        Utils::PVector rect_pos = rect->entity->transform->global_position;
-        Utils::PVector circle_pos = circle->entity->transform->global_position;
+        Utils::PVector rect_pos = rect->entity->get_transform()->global_position;
+        Utils::PVector circle_pos = circle->entity->get_transform()->global_position;
 
         // Mathematics
         nearest_point.x = std::max(rect_pos.x - rect->width / 2, std::min(circle_pos.x, rect_pos.x + rect->width / 2));
@@ -35,7 +35,7 @@ namespace Punity::Collision {
         circle_pos.x -= ray_to_nearest_point.x / mag * overlap;
         circle_pos.y -= ray_to_nearest_point.y / mag * overlap;
 
-        circle->entity->transform->set_global(circle_pos);
+        circle->entity->get_transform()->set_global(circle_pos);
 
         return true;
     }

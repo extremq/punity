@@ -93,7 +93,7 @@ namespace Game {
 
         for (auto digit : load_screen->get_children()) {
             // Disable the other digits
-            if (digit->name != std::to_string(level)) {
+            if (digit->get_name() != std::to_string(level)) {
                 digit->set_active(false);
             }
         }

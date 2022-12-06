@@ -8,6 +8,7 @@
 #include "punity/Components/PComponent.fwd.h"
 #include "punity/Engine/PEngine.fwd.h"
 #include "punity/Components/PTransform.h"
+#include "punity/Utils/PError.h"
 
 #include <cstdint>
 #include <string>
@@ -64,31 +65,22 @@ namespace Punity {
         static PEntity* make_entity();
         static PEntity* make_entity(std::string const& new_name);
 
+        // Methods
         void set_name(std::string const& new_name);
+        void set_parent(PEntity* parent);
         void set_active(bool);
-        bool is_active();
-        uint64_t get_id();
         void destroy();
         void destroy_children();
-
-        // Public read-only
-        Components::PTransform* const& transform = m_transform;
-        PEntity* const & parent_of_entity = m_parent_entity;
-        std::string const& name = m_name;
-
-        // Return all children entities
-        std::list<PEntity*> const & get_children();
-
-        bool has_child(PEntity* entity);
-
         void remove_child_entity(PEntity* entity);
-
-        // Return components
-        std::list<Punity::Components::PComponent*> const & get_all_components();
-
-
-        // Add a new child entity
         void add_child(PEntity* entity);
+        bool has_child(PEntity* entity);
+        bool is_active();
+        std::list<PEntity*> const & get_children();
+        std::list<Punity::Components::PComponent*> const & get_all_components();
+        uint64_t get_id();
+        std::string get_name();
+        PEntity* get_parent();
+        Components::PTransform* get_transform();
 
         // Could use std::enable_if and std::is_base_of/std::is_convertible
         // so we dont compile for components not derived from PComponent.
@@ -97,14 +89,15 @@ namespace Punity {
         // Add a new component
         template <class T>
         T* add_component() {
-            // No checking if component exists, after all if
-            // you mistakenly insert more than once component
-            // you will still get the first component returned
-            // to you.
+            // Check if the component exists already
+            if (get_component<T>() != nullptr) Punity::Utils::Error("Cannot add same component twice.", m_name);
 
             // Also, it costs time to find a component, so no, thanks.
             Components::PComponent* component = (Components::PComponent*)(new T);
             component->set_parent(this);
+
+            // I push it to the front because it may save a few dynamic casts.
+            // That's because it's more likely you will use an added component.
             m_components.push_front(component);
             return (T*) component;
         }
@@ -120,8 +113,6 @@ namespace Punity {
             }
             return nullptr;
         }
-
-        void set_parent(PEntity* parent);
 
         ~PEntity();
     };

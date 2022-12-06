@@ -96,8 +96,8 @@ namespace Punity {
             // and be assured no weird stuff happens
             while (!to_be_destroyed.empty()) {
                 // Remove reference from parent
-                if (to_be_destroyed.front()->parent_of_entity != nullptr) {
-                    to_be_destroyed.front()->parent_of_entity->remove_child_entity(to_be_destroyed.front());
+                if (to_be_destroyed.front()->get_parent() != nullptr) {
+                    to_be_destroyed.front()->get_parent()->remove_child_entity(to_be_destroyed.front());
                 }
                 for (auto child : to_be_destroyed.front()->get_children()) {
                     // mark parents of destroyed child as nullptr
@@ -234,8 +234,8 @@ namespace Punity {
 //            std::cout << "sprites size " << sprites.size() << '\n';
             for (auto sprite : sprites) {
                 Punity::Screen.draw_sprite(
-                        sprite->entity->transform->global_position.x + sprite->offset.x,
-                        sprite->entity->transform->global_position.y + sprite->offset.y,
+                        sprite->entity->get_transform()->global_position.x + sprite->offset.x,
+                        sprite->entity->get_transform()->global_position.y + sprite->offset.y,
                         sprite->height,
                         sprite->width,
                         sprite->get_sprite(),
@@ -274,7 +274,7 @@ namespace Punity {
     }
     void PEngine::register_entity(PEntity* entity) {
         entity->report_enable_to_components();
-        std::cout << "registering " << entity->name << '\n';
+        std::cout << "registering " << entity->get_name() << '\n';
         m_all_entities.push_front(entity);
     }
 
@@ -295,7 +295,7 @@ namespace Punity {
     // Returns first active entity with this name
     PEntity *PEngine::find_entity(std::string name) {
         for (auto entity : m_all_entities) {
-            if (entity->name == name)
+            if (entity->get_name() == name)
                 return entity;
         }
         return nullptr;
