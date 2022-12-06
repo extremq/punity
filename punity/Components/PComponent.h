@@ -48,7 +48,7 @@ namespace Punity::Components {
     public:
         PComponent() = default;
         // Public read-only
-        Punity::PEntity *const & entity = m_parent_entity;
+        Punity::PEntity* get_entity();
         void set_active(bool);
 
         uint64_t get_id();

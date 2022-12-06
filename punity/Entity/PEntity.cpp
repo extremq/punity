@@ -14,16 +14,16 @@ void Punity::PEntity::set_active(bool state) {
     if (m_is_active == state) return;
         m_is_active = state;
 
+    // Activate children entities
+    for (auto child : m_children_entities) {
+        child->set_active(state);
+    }
+
     // If this is an enable, register ourselves
     // Otherwise, disables will be handled by the Engine
     if (state) {
         // Will report an enable event
         Punity::Engine.register_entity(this);
-    }
-
-    // Activate children entities
-    for (auto child : m_children_entities) {
-        child->set_active(state);
     }
 }
 

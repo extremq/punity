@@ -61,7 +61,6 @@ namespace Punity {
             update_time(frame_start_time);
 
             // Any deletion is committed only on next frame
-//            std::cout << "deletion\n";
             for (auto it = m_all_entities.begin(); it != m_all_entities.end(); ++it) {
                 if ((*it)->m_is_destroyed || !(*it)->m_is_active) {
                     if ((*it)->m_is_destroyed) {
@@ -73,6 +72,7 @@ namespace Punity {
                         (*it)->report_destroy_to_components();
                     } else {
                         // Disable the entity.
+                        std::cout << "Disabled " << (*it)->get_name() << '\n';
                         (*it)->report_disable_to_components();
                     }
 
@@ -91,7 +91,6 @@ namespace Punity {
                 }
             }
 
-//            std::cout << "del queue size " << to_be_destroyed.size() << '\n';
             // Now, finally, we can safely delete
             // and be assured no weird stuff happens
             while (!to_be_destroyed.empty()) {
@@ -101,7 +100,6 @@ namespace Punity {
                 }
                 for (auto child : to_be_destroyed.front()->get_children()) {
                     // mark parents of destroyed child as nullptr
-//                    std::cout << child->name << " has null parent now\n";
                     child->m_parent_entity = nullptr;
                 }
 
@@ -138,10 +136,8 @@ namespace Punity {
             // However, that only happens if in this frame they were committed
             // Otherwise, the next frame will remove them.
 
-//            std::cout << "Active entities size " << m_all_entities.size() << '\n';
             for (auto entity: m_all_entities) {
                 // Update the components
-//                std::cout << entity->name << '-' << entity << '\n';
                 entity->report_update_to_components();
 
                 // But also add the sprite.
@@ -198,9 +194,6 @@ namespace Punity {
                 }
             }
 
-
-//            std::cout << "DYnamic Colliders size: " << dynamic_colliders.size() << '\n';
-//            std::cout << "All Colliders size: " << all_colliders.size() << '\n';
             // Collision first, rendering second
             for (auto dynamic_collider : dynamic_colliders) {
                 for (auto common_collider : all_colliders) {
@@ -217,25 +210,24 @@ namespace Punity {
                         // If this is a new collision, add it and report the event
                         dynamic_collider->add_collider(common_collider);
                         common_collider->add_collider(dynamic_collider);
-                        dynamic_collider->entity->report_start_collision_to_components(common_collider);
-                        common_collider->entity->report_start_collision_to_components(dynamic_collider);
+                        dynamic_collider->get_entity()->report_start_collision_to_components(common_collider);
+                        common_collider->get_entity()->report_start_collision_to_components(dynamic_collider);
                     }
                     else if (!has_collided && collider_in_list != nullptr) {
                         // If this hasn't collided BUT it exists, delete it and report the event
                         dynamic_collider->delete_collider(common_collider);
                         common_collider->delete_collider(dynamic_collider);
-                        dynamic_collider->entity->report_end_collision_to_components(common_collider);
-                        common_collider->entity->report_end_collision_to_components(dynamic_collider);
+                        dynamic_collider->get_entity()->report_end_collision_to_components(common_collider);
+                        common_collider->get_entity()->report_end_collision_to_components(dynamic_collider);
                     }
                 }
             }
 
             // Now, draw the sprites!
-//            std::cout << "sprites size " << sprites.size() << '\n';
             for (auto sprite : sprites) {
                 Punity::Screen.draw_sprite(
-                        sprite->entity->get_transform()->global_position.x + sprite->offset.x,
-                        sprite->entity->get_transform()->global_position.y + sprite->offset.y,
+                        sprite->get_entity()->get_transform()->global_position.x + sprite->offset.x,
+                        sprite->get_entity()->get_transform()->global_position.y + sprite->offset.y,
                         sprite->height,
                         sprite->width,
                         sprite->get_sprite(),
@@ -245,7 +237,6 @@ namespace Punity {
 
 
             // Then draw the UI!
-//            std::cout << "ui sprites size " << sprites.size() << '\n';
             for (auto sprite : ui_sprites) {
                 Punity::Screen.draw_ui(
                         sprite->ui_position.x + sprite->offset.x,
@@ -274,7 +265,7 @@ namespace Punity {
     }
     void PEngine::register_entity(PEntity* entity) {
         entity->report_enable_to_components();
-        std::cout << "registering " << entity->get_name() << '\n';
+        std::cout << "Enabled " << entity->get_name() << '\n';
         m_all_entities.push_front(entity);
     }
 

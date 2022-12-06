@@ -11,8 +11,8 @@
 namespace Punity::Input {
     class PJoystick {
     private:
-
         // Allow one single init, basically a fake read-only
+        // This is why I need a class, too
         bool m_initialized = false;
 
         PJoystick() = default;

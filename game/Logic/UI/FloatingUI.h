@@ -11,7 +11,7 @@ namespace Game {
     class FloatingUI : public Punity::Components::PComponent {
     private:
         void on_update() override {
-           auto sprite = entity->get_component<Punity::Components::PUISpriteRenderer>();
+           auto sprite = get_entity()->get_component<Punity::Components::PUISpriteRenderer>();
            sprite->ui_position.y = (float) sin(Punity::Time.time * speed) * scale + base_y;
         }
     public:

@@ -5,7 +5,7 @@
 #ifndef _ROOM_H
 #define _ROOM_H
 
-#include "game/Logic/GameStateManager.h"
+#include "game/Logic/SceneManager.h"
 
 enum Tile {
     EMPTY,
@@ -17,7 +17,7 @@ constexpr uint8_t WALL_LAYER = 1;
 namespace Game {
 
     // Handles gameplay mostly, since it's all contained in rooms
-    class Room : public Punity::Components::PComponent {
+    class GameplaySceneBehaviour : public Punity::Components::PComponent {
     private:
         uint8_t counter_x = 0, counter_y = 0;
 

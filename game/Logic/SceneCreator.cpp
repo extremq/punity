@@ -1,27 +1,25 @@
 //
-// Created by god on 05.12.2022.
+// Created by god on 06.12.2022.
 //
 
-#ifndef _UICREATOR_H
-#define _UICREATOR_H
+#include "SceneCreator.h"
+#include "game/Logic/UI/FloatingUI.h"
+#include "game/Assets/sprites.h"
+#include "game/Logic/SceneManager.h"
+#include "game/Logic/Gameplay/LoadSceneBehaviour.h"
+#include "game/Logic/Gameplay/StartSceneBehaviour.h"
+#include "game/Logic/Gameplay/GameplaySceneBehaviour.h"
 
-#include "punity/Punity.h"
-#include "FloatingUI.h"
-#include "game/sprites.h"
-#include "game/Logic/GameStateManager.h"
-
-namespace Game::UICreator {
-    static Punity::PEntity* create_start_screen() {
-        // Get the game_manager component in order to communicate with it
-        auto game_manager = GameStateManager::manager;
-
+namespace Game::SceneCreator {
+    Punity::PEntity* create_start_scene() {
         // Create the start screen
-        auto start_screen_entity = Punity::PEntity::make_entity("start_screen");
-        start_screen_entity->set_parent(game_manager->UI);
+        auto start_scene_entity = Punity::PEntity::make_entity("StartScene");
+        start_scene_entity->add_component<StartSceneBehaviour>();
+        start_scene_entity->set_parent(SceneManager::UI);
 
         // Make the pain logo
-        auto pain_entity = Punity::PEntity::make_entity("pain_text");
-        pain_entity->set_parent(start_screen_entity);
+        auto pain_entity = Punity::PEntity::make_entity("PainText");
+        pain_entity->set_parent(start_scene_entity);
 
         pain_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
                 Game::Sprites::game_title,
@@ -32,8 +30,8 @@ namespace Game::UICreator {
         );
 
         // Make the start text
-        auto start_entity = Punity::PEntity::make_entity("start_text");
-        start_entity->set_parent(start_screen_entity);
+        auto start_entity = Punity::PEntity::make_entity("StartText");
+        start_entity->set_parent(start_scene_entity);
 
         // Make it floating!
         auto floater = start_entity->add_component<FloatingUI>();
@@ -48,17 +46,15 @@ namespace Game::UICreator {
                 0
         );
 
-        start_screen_entity->set_active(false);
-        return start_screen_entity;
+        start_scene_entity->set_active(false);
+        return start_scene_entity;
     }
 
-    static Punity::PEntity* create_loading_screen() {
-        // Get the game_manager component in order to communicate with it
-        auto game_manager = GameStateManager::manager;
-
+    Punity::PEntity* create_loading_scene() {
         // Create the start screen
-        auto load_screen_entity = Punity::PEntity::make_entity("load_screen");
-        load_screen_entity->set_parent(game_manager->UI);
+        auto load_scene_entity = Punity::PEntity::make_entity("LoadScene");
+        load_scene_entity->add_component<LoadSceneBehaviour>();
+        load_scene_entity->set_parent(SceneManager::UI);
 
         // Create the digits
         auto digit_1_entity = Punity::PEntity::make_entity("1");
@@ -66,9 +62,9 @@ namespace Game::UICreator {
         auto digit_3_entity = Punity::PEntity::make_entity("3");
 
         // Set parent to load screen
-        digit_1_entity->set_parent(load_screen_entity);
-        digit_2_entity->set_parent(load_screen_entity);
-        digit_3_entity->set_parent(load_screen_entity);
+        digit_1_entity->set_parent(load_scene_entity);
+        digit_2_entity->set_parent(load_scene_entity);
+        digit_3_entity->set_parent(load_scene_entity);
 
         // Set up sprites
         // They will be in the center by default.
@@ -94,10 +90,18 @@ namespace Game::UICreator {
                 0
         );
 
-        load_screen_entity->set_active(false);
-        return load_screen_entity;
+        load_scene_entity->set_active(false);
+        return load_scene_entity;
+    }
+
+    Punity::PEntity* create_gameplay_scene() {
+        // Create the gameplay scene
+        auto gameplay_scene_entity = Punity::PEntity::make_entity("GameplayScene");
+        gameplay_scene_entity->add_component<GameplaySceneBehaviour>();
+        gameplay_scene_entity->set_parent(SceneManager::world);
+
+        gameplay_scene_entity->set_active(false);
+        return gameplay_scene_entity;
     }
 
 } // Game
-
-#endif //_UICREATOR_H

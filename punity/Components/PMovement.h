@@ -9,7 +9,7 @@
 #include "PSpriteRenderer.h"
 #include "PCollider.h"
 #include "PBoxCollider.h"
-#include "game/sprites.h"
+#include "game/Assets/sprites.h"
 #include "punity/Utils/PInvokable.h"
 
 namespace Punity::Components {

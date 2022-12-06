@@ -2,27 +2,27 @@
 // Created by god on 05.12.2022.
 //
 
-#include "Room.h"
+#include "GameplaySceneBehaviour.h"
 #include "punity/Utils/PInvokable.h"
-#include "game/sprites.h"
+#include "game/Assets/sprites.h"
 
 namespace Game {
-    void Room::on_update() {
+    void GameplaySceneBehaviour::on_update() {
         PComponent::on_update();
     }
 
     // When this is enabled, setup the level!
     // Only enabled/disabled when entering from
     // Loading screens
-    void Room::on_enable() {
+    void GameplaySceneBehaviour::on_enable() {
         setup_level();
     }
 
-    void Room::on_disable() {
+    void GameplaySceneBehaviour::on_disable() {
         disintegrate_stage();
     }
 
-    void Room::generate_stage() {
+    void GameplaySceneBehaviour::generate_stage() {
         // Build the room in a BEAUTIFUL way.
         for (counter_x = 0; counter_x < 16; ++counter_x) {
             for (counter_y = 0; counter_y < 16; ++counter_y) {
@@ -36,31 +36,31 @@ namespace Game {
 
     // A bit complicated looking because my invoker is not
     // the most advanced on earth.
-    void Room::solve_tile() {
+    void GameplaySceneBehaviour::solve_tile() {
         switch(tiles[counter_x][counter_y]) {
             case EMPTY:
                 break;
             case WALL:
-                new Punity::Utils::PInvokableWithInt<Room>(
-                        &Room::make_wall,
+                new Punity::Utils::PInvokableWithInt<GameplaySceneBehaviour>(
+                        &GameplaySceneBehaviour::make_wall,
                         counter_x + counter_y * 16,
                         this,
                         counter_x * 0.025 + counter_y * 0.025,
-                        entity->get_id()
+                        get_entity()->get_id()
                 );
                 break;
         }
     }
 
-    void Room::disintegrate_stage() {
-        entity->destroy_children();
+    void GameplaySceneBehaviour::disintegrate_stage() {
+        get_entity()->destroy_children();
     }
 
-    void Room::setup_level() {
+    void GameplaySceneBehaviour::setup_level() {
         generate_stage();
     }
 
-    void Room::make_wall(int index) {
+    void GameplaySceneBehaviour::make_wall(int index) {
         auto tile = Punity::PEntity::make_entity("tile");
         auto sprite = tile->add_component<Punity::Components::PSpriteRenderer>();
         Punity::Utils::PVector pos(index % 16 * 8 - 60,
@@ -75,7 +75,7 @@ namespace Game {
                 WALL_LAYER
         );
 
-        tile->set_parent(entity);
+        tile->set_parent(get_entity());
     }
 
 } // Game

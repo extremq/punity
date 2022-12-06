@@ -12,6 +12,7 @@ namespace Punity::Input {
     class PButton {
     private:
         // Allow one single init, basically a fake read-only
+        // This is why I need a class, as well
         bool m_initialized = false;
         PButton() = default;
     public:

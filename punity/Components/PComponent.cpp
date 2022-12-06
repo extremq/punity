@@ -29,4 +29,8 @@ namespace Punity::Components {
     bool PComponent::is_active() {
         return m_is_active;
     }
+
+    Punity::PEntity* PComponent::get_entity() {
+        return m_parent_entity;
+    }
 } // Punity

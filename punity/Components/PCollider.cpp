@@ -25,7 +25,7 @@ namespace Punity::Components {
         for (auto collider : m_colliders) {
             collider.second->delete_collider(this);
 
-            collider.second->entity->report_end_collision_to_components(this);
+            collider.second->get_entity()->report_end_collision_to_components(this);
         }
 
         m_colliders.clear();
@@ -35,7 +35,7 @@ namespace Punity::Components {
         for (auto collider : m_colliders) {
             collider.second->delete_collider(this);
             // Only notify their component, ours is inactive anyways
-            collider.second->entity->report_end_collision_to_components(this);
+            collider.second->get_entity()->report_end_collision_to_components(this);
 
             delete_collider(collider.second);
         }
