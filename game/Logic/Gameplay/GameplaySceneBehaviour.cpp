@@ -5,6 +5,7 @@
 #include "GameplaySceneBehaviour.h"
 #include "punity/Utils/PInvokable.h"
 #include "game/Assets/sprites.h"
+#include "game/Logic/Gameplay/GameplayPrefabCreator.h"
 
 namespace Game {
     void GameplaySceneBehaviour::on_update() {
@@ -21,12 +22,12 @@ namespace Game {
     void GameplaySceneBehaviour::setup_stage() {
         // Make room and actors entities to group the tiles and the enemies
         if (room == nullptr) {
-            room = Punity::PEntity::make_entity("Room");
+            room = GameplayPrefabCreator::make_room();
             room->set_parent(this->get_entity());
         }
 
         if (enemies == nullptr) {
-            enemies = Punity::PEntity::make_entity("Enemies");
+            enemies = GameplayPrefabCreator::make_enemies();
             enemies->set_parent(this->get_entity());
         }
 
@@ -34,8 +35,8 @@ namespace Game {
         enemies->set_active(false);
 
         if (player == nullptr) {
-            player = Punity::PEntity::make_entity("Player");
-            enemies->set_parent(this->get_entity());
+            player = GameplayPrefabCreator::make_player();
+            player->set_parent(this->get_entity());
         }
 
         // Show the player at a later point

@@ -56,7 +56,7 @@ add_executable(${PROJ_NAME}
         game/Logic/Gameplay/GameplaySceneBehaviour.cpp
         game/Logic/Gameplay/GameplaySceneBehaviour.h
         game/Logic/Gameplay/LoadSceneBehaviour.h
-        game/Logic/Gameplay/StartSceneBehaviour.h punity/Utils/PError.cpp punity/Utils/PRandom.cpp punity/Utils/PCollisionComputation.cpp game/Logic/SceneCreator.cpp)
+        game/Logic/Gameplay/StartSceneBehaviour.h punity/Utils/PError.cpp punity/Utils/PRandom.cpp punity/Utils/PCollisionComputation.cpp game/Logic/SceneCreator.cpp game/Logic/Gameplay/PlayerMovement.cpp game/Logic/Gameplay/PlayerMovement.h game/Logic/Gameplay/GameplayPrefabCreator.cpp game/Logic/Gameplay/GameplayPrefabCreator.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

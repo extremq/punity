@@ -8,8 +8,8 @@
 #include "game/Logic/Gameplay/GameplaySceneBehaviour.h"
 
 namespace Game::SceneManager {
-    uint8_t level = 0;
-    uint8_t stage = 0;
+    uint8_t level = 1;
+    uint8_t stage = 1;
     Scene scene = START_SCENE;
 
     Punity::PEntity* UI = nullptr;
@@ -51,12 +51,15 @@ namespace Game::SceneManager {
 
         // Set up room
         gameplay_scene = Game::SceneCreator::create_gameplay_scene();
+        gameplay_scene->set_parent(SceneManager::world);
 
         // Set up start screen
         start_scene = Game::SceneCreator::create_start_scene();
+        start_scene->set_parent(SceneManager::UI);
 
         // Set up loading screen and digits
         load_scene = Game::SceneCreator::create_loading_scene();
+        load_scene->set_parent(SceneManager::UI);
     }
 
     // Called from other components when wanting to switch the state/scene

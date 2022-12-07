@@ -15,7 +15,6 @@ namespace Game::SceneCreator {
         // Create the start screen
         auto start_scene_entity = Punity::PEntity::make_entity("StartScene");
         start_scene_entity->add_component<StartSceneBehaviour>();
-        start_scene_entity->set_parent(SceneManager::UI);
 
         // Make the pain logo
         auto pain_entity = Punity::PEntity::make_entity("PainText");
@@ -54,7 +53,6 @@ namespace Game::SceneCreator {
         // Create the start screen
         auto load_scene_entity = Punity::PEntity::make_entity("LoadScene");
         load_scene_entity->add_component<LoadSceneBehaviour>();
-        load_scene_entity->set_parent(SceneManager::UI);
 
         // Create the digits
         auto digit_1_entity = Punity::PEntity::make_entity("1");
@@ -98,8 +96,6 @@ namespace Game::SceneCreator {
         // Create the gameplay scene
         auto gameplay_scene_entity = Punity::PEntity::make_entity("GameplayScene");
         gameplay_scene_entity->add_component<GameplaySceneBehaviour>();
-        gameplay_scene_entity->set_parent(SceneManager::world);
-
         gameplay_scene_entity->set_active(false);
         return gameplay_scene_entity;
     }

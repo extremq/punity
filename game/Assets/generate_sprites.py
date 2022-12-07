@@ -20,7 +20,7 @@ namespace Game::Sprites {
 """
 
 # Go through all files inside sprites directory
-sprite_directory = os.getcwd() + "/Assets/Sprites/"
+sprite_directory = "Sprites/"
 for file_name in os.listdir(sprite_directory):
     if not file_name.endswith(".png"):
         continue
