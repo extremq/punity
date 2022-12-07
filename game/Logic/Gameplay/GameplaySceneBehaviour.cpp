@@ -15,37 +15,88 @@ namespace Game {
     // Only enabled/disabled when entering from
     // Loading screens
     void GameplaySceneBehaviour::on_enable() {
-        setup_level();
+        setup_stage();
     }
 
-    void GameplaySceneBehaviour::on_disable() {
+    void GameplaySceneBehaviour::setup_stage() {
+        // Make room and actors entities to group the tiles and the enemies
+        if (room == nullptr) {
+            room = Punity::PEntity::make_entity("Room");
+            room->set_parent(this->get_entity());
+        }
+
+        if (enemies == nullptr) {
+            enemies = Punity::PEntity::make_entity("Enemies");
+            enemies->set_parent(this->get_entity());
+        }
+
+        // Show the enemies at a later point
+        enemies->set_active(false);
+
+        if (player == nullptr) {
+            player = Punity::PEntity::make_entity("Player");
+            enemies->set_parent(this->get_entity());
+        }
+
+        // Show the player at a later point
+        player->set_active(false);
+
+        // Start generating the map right away
+        generate_stage();
+
+        // Show the player with a delay of 1 second
+        new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
+                &GameplaySceneBehaviour::show_player,
+                this,
+                PLAYER_CREATION_DELAY_SECONDS,
+                get_entity()->get_id()
+        );
+
+        // Make the enemies with a delay of 2 seconds
+        new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
+                &GameplaySceneBehaviour::make_enemies,
+                this,
+                ENEMY_CREATION_DELAY_SECONDS,
+                get_entity()->get_id()
+        );
+    }
+
+    void GameplaySceneBehaviour::cleanup_stage() {
         disintegrate_stage();
     }
 
     void GameplaySceneBehaviour::generate_stage() {
-        // Build the room in a BEAUTIFUL way.
-        for (counter_x = 0; counter_x < 16; ++counter_x) {
-            for (counter_y = 0; counter_y < 16; ++counter_y) {
-                if (counter_y == 0 || counter_y == 15 || counter_x == 0 || counter_x == 15)
-                    tiles[counter_x][counter_y] = WALL;
-                solve_tile();
+        // Border the room
+        for (row_counter = 0; row_counter < 16; ++row_counter) {
+            for (column_counter = 0; column_counter < 16; ++column_counter) {
+                if (column_counter == 0 || column_counter == 15 || row_counter == 0 || row_counter == 15)
+                    tiles[row_counter][column_counter] = WALL;
+                else
+                    tiles[row_counter][column_counter] = EMPTY;
+            }
+        }
 
+        // Make each tile
+        for (int row = 0; row < 16; ++row) {
+            for (int column = 0; column < 16; ++column) {
+                solve_tile(row, column, (row + column) * 0.03, tiles[row][column]);
             }
         }
     }
 
     // A bit complicated looking because my invoker is not
     // the most advanced on earth.
-    void GameplaySceneBehaviour::solve_tile() {
-        switch(tiles[counter_x][counter_y]) {
+    void GameplaySceneBehaviour::solve_tile(uint8_t row, uint8_t column, float delay, Tile tile) {
+        switch(tile) {
             case EMPTY:
                 break;
             case WALL:
+                // Invoke the make_wall function with the specified delay
                 new Punity::Utils::PInvokableWithInt<GameplaySceneBehaviour>(
                         &GameplaySceneBehaviour::make_wall,
-                        counter_x + counter_y * 16,
+                        row + column * 16,
                         this,
-                        counter_x * 0.025 + counter_y * 0.025,
+                        delay,
                         get_entity()->get_id()
                 );
                 break;
@@ -56,17 +107,18 @@ namespace Game {
         get_entity()->destroy_children();
     }
 
-    void GameplaySceneBehaviour::setup_level() {
-        generate_stage();
-    }
-
     void GameplaySceneBehaviour::make_wall(int index) {
         auto tile = Punity::PEntity::make_entity("tile");
         auto sprite = tile->add_component<Punity::Components::PSpriteRenderer>();
+
+        // Compute the position based on tile index
         Punity::Utils::PVector pos(index % 16 * 8 - 60,
                                    index / 16 * 8 - 60);
+
+        // Set the position
         tile->get_transform()->set_global(pos);
 
+        // Choose sprite
         sprite->set_sprite(
                 Game::Sprites::placeholder_wall,
                 Game::Sprites::placeholder_wall_alpha,
@@ -75,7 +127,19 @@ namespace Game {
                 WALL_LAYER
         );
 
-        tile->set_parent(get_entity());
+        // Attach it to the room
+        tile->set_parent(room);
     }
 
+    void GameplaySceneBehaviour::show_player() {
+        player->set_active(true);
+    }
+
+    void GameplaySceneBehaviour::show_chest() {
+
+    }
+
+    void GameplaySceneBehaviour::make_enemies() {
+
+    }
 } // Game

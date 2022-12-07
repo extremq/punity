@@ -45,7 +45,7 @@ namespace Punity::Components {
 
         void toggle_ui() {
             std::cout << "ayo\n";
-            entity->get_component<PUISpriteRenderer>()->set_active(!entity->get_component<PUISpriteRenderer>()->is_active());
+            entity->get_component<PUISpriteRenderer>()->set_active(!entity->get_component<PUISpriteRenderer>()->is_globally_active());
         }
 
         void on_start_collision(PCollider* other) override {

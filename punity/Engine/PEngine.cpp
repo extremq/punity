@@ -62,7 +62,7 @@ namespace Punity {
 
             // Any deletion is committed only on next frame
             for (auto it = m_all_entities.begin(); it != m_all_entities.end(); ++it) {
-                if ((*it)->m_is_destroyed || !(*it)->m_is_active) {
+                if ((*it)->m_is_destroyed || !(*it)->m_globally_active || !(*it)->m_self_active) {
                     if ((*it)->m_is_destroyed) {
                         // Delete the entity, but don't use delete yet.
                         // Instead, add it to a queue.
@@ -136,6 +136,7 @@ namespace Punity {
             // However, that only happens if in this frame they were committed
             // Otherwise, the next frame will remove them.
 
+            print_tree_of_entities();
             for (auto entity: m_all_entities) {
                 // Update the components
                 entity->report_update_to_components();
@@ -264,8 +265,15 @@ namespace Punity {
         }
     }
     void PEngine::register_entity(PEntity* entity) {
-        entity->report_enable_to_components();
+        for (auto _entity : m_all_entities) {
+            if (_entity->get_id() == entity->get_id()) {
+                // If the entity is already registered, don't register it twice
+                return;
+            }
+        }
+
         std::cout << "Enabled " << entity->get_name() << '\n';
+        entity->report_enable_to_components();
         m_all_entities.push_front(entity);
     }
 
@@ -290,5 +298,11 @@ namespace Punity {
                 return entity;
         }
         return nullptr;
+    }
+
+    void PEngine::print_tree_of_entities() {
+        std::cout << "----- ENTITIES -----\n";
+        root_entity->print_tree(0);
+        std::cout << "--------------------\n";
     }
 }

@@ -45,11 +45,9 @@ namespace Game::SceneManager {
 
         // Set up UI
         UI = Punity::PEntity::make_entity("UI");
-        UI->set_active(true);
 
         // Set up world entity
         world = Punity::PEntity::make_entity("World");
-        world->set_active(true);
 
         // Set up room
         gameplay_scene = Game::SceneCreator::create_gameplay_scene();

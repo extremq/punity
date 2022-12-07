@@ -44,8 +44,12 @@ namespace Punity {
         // Entity transform
         Components::PTransform* m_transform;
 
-        bool m_is_active = true;
+        bool m_self_active = true;
+        bool m_globally_active = true;
         bool m_is_destroyed = false;
+
+        void activate_global_state_of_children();
+        void deactivate_global_state_of_children();
 
         void report_enable_to_components();
         void report_disable_to_components();
@@ -72,9 +76,11 @@ namespace Punity {
         void destroy();
         void destroy_children();
         void remove_child_entity(PEntity* entity);
+        void print_tree(uint8_t level);
         void add_child(PEntity* entity);
         bool has_child(PEntity* entity);
-        bool is_active();
+        bool is_globally_active();
+        bool is_self_active();
         std::list<PEntity*> const & get_children();
         std::list<Punity::Components::PComponent*> const & get_all_components();
         uint64_t get_id();

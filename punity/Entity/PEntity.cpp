@@ -6,25 +6,59 @@
 #include "PEntity.h"
 #include "punity/Punity.h"
 #include "punity/Components/PComponent.h"
+#include "punity/Utils/PError.h"
 
 uint64_t Punity::PEntity::entity_count = 0;
 
+void Punity::PEntity::activate_global_state_of_children() {
+    for (auto child: m_children_entities) {
+        if (child->is_self_active()) {
+            // The child is also self active! Propagate!
+            child->m_globally_active = true;
+            child->activate_global_state_of_children();
+            Punity::Engine.register_entity(child);
+        }
+    }
+}
+
+void Punity::PEntity::deactivate_global_state_of_children() {
+    for (auto child: m_children_entities) {
+        if (child->is_self_active()) {
+            // The child is also self active! Propagate!
+            child->m_globally_active = false;
+            child->deactivate_global_state_of_children();
+        }
+    }
+}
+
 void Punity::PEntity::set_active(bool state) {
-    // If the state is the same, nothing should happen.
-    if (m_is_active == state) return;
-        m_is_active = state;
+    // Don't call the root entity, bro
+    if (m_id == 0) Punity::Utils::Error("Don't use set_active on __Root.");
 
-    // Activate children entities
-    for (auto child : m_children_entities) {
-        child->set_active(state);
+    // Same state, no need to change anything
+    if (state == m_self_active) return;
+
+    // Check if the parent is globally active.
+    // Otherwise, the change has no effect.
+    if (m_parent_entity->is_globally_active()) {
+
+        // Oh, so we are globally active?
+        // Notify the rest of the squad
+        if (state) {
+            m_globally_active = true;
+            activate_global_state_of_children();
+            Punity::Engine.register_entity(this);
+        } else {
+            m_globally_active = false;
+            deactivate_global_state_of_children();
+        }
+    }
+    else {
+        m_globally_active = false;
     }
 
-    // If this is an enable, register ourselves
-    // Otherwise, disables will be handled by the Engine
-    if (state) {
-        // Will report an enable event
-        Punity::Engine.register_entity(this);
-    }
+    // Commit activeness
+    m_self_active = state;
 }
 
 std::list<Punity::PEntity*> const & Punity::PEntity::get_children() {
@@ -80,6 +114,7 @@ void Punity::PEntity::remove_child_entity(Punity::PEntity* entity) {
 }
 
 void Punity::PEntity::set_parent(Punity::PEntity* parent) {
+    if (m_id == 0) Punity::Utils::Error("Don't use set_parent on __Root.");
     std::cout << "setting parent of " << m_name << " to " << parent->m_name << '\n';
 
     if (parent->m_is_destroyed) Punity::Utils::Error("Setting as parent a destroyed entity.", m_name);
@@ -93,9 +128,23 @@ void Punity::PEntity::set_parent(Punity::PEntity* parent) {
 
     // Update parent pointer
     m_parent_entity = parent;
+
+    // Also force a state update on entity and its children
+    if (m_self_active) {
+        // We're self_active, so that should mean we need to check the parent's status
+        if (m_parent_entity->is_globally_active()) {
+            m_globally_active = true;
+            activate_global_state_of_children();
+        }
+        else {
+            m_globally_active = false;
+            deactivate_global_state_of_children();
+        }
+    }
 }
 
 void Punity::PEntity::set_name(const std::string &new_name) {
+    if (m_id == 0) Punity::Utils::Error("Don't use set_name on __Root.");
     m_name = new_name;
 }
 
@@ -105,7 +154,7 @@ Punity::PEntity::PEntity(const std::string &new_name) {
 
     // Any Entity should have the root_entity as a default parent
     // Except for root itself
-    if (new_name != "__Root") {
+    if (m_id != 0) {
         m_name = new_name;
         set_parent(Punity::Engine.root_entity);
         Punity::Engine.register_entity(this);
@@ -127,7 +176,8 @@ Punity::PEntity::PEntity() {
 
 void Punity::PEntity::destroy() {
     m_is_destroyed = true;
-    m_is_active = false;
+    m_globally_active = false;
+    m_self_active = false;
 
     // Also mark the subtree inactive.
     // A destroyed component is also inactive.
@@ -225,8 +275,12 @@ Punity::PEntity *Punity::PEntity::make_entity(const std::string &new_name) {
     return new PEntity(new_name);
 }
 
-bool Punity::PEntity::is_active() {
-    return m_is_active;
+bool Punity::PEntity::is_globally_active() {
+    return m_globally_active;
+}
+
+bool Punity::PEntity::is_self_active() {
+    return m_self_active;
 }
 
 uint64_t Punity::PEntity::get_id() {
@@ -245,3 +299,29 @@ Punity::Components::PTransform *Punity::PEntity::get_transform() {
     return m_transform;
 }
 
+void Punity::PEntity::print_tree(uint8_t level) {
+    for (uint8_t i = 0; i < level; ++i) {
+        std::cout << '\t';
+    }
+
+    if (m_globally_active) {
+        std::cout << "+";
+    }
+    else {
+        std::cout << "-";
+    }
+
+    std::cout << " '" << m_name << "', self: ";
+    if (m_self_active) {
+        std::cout << "true";
+    }
+    else {
+        std::cout << "false";
+    }
+
+    std::cout << '\n';
+
+    for (auto child : m_children_entities) {
+        child->print_tree(level + 1);
+    }
+}

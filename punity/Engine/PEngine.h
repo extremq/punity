@@ -59,6 +59,8 @@ namespace Punity {
         void set_framerate(float);
         void start_game();
 
+        void print_tree_of_entities();
+
         PEntity* find_entity(std::string name);
 
         // Root Entity, head of the Entity Tree
