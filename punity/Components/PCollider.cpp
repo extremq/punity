@@ -36,8 +36,8 @@ namespace Punity::Components {
             collider.second->delete_collider(this);
             // Only notify their component, ours is inactive anyways
             collider.second->get_entity()->report_end_collision_to_components(this);
-
-            delete_collider(collider.second);
         }
+
+        m_colliders.clear();
     }
 } // Components

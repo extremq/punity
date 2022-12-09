@@ -33,15 +33,15 @@ namespace Punity::Components {
         // Activated by set_active(true/false)
         // Also activated by parent entity, but only
         // when component itself is active.
-        virtual void on_enable() {}
-        virtual void on_disable() {}
+        virtual void on_enable();
+        virtual void on_disable();
 
-        virtual void on_start_collision(PCollider*) {}
-        virtual void on_end_collision(PCollider*) {}
+        virtual void on_start_collision(PCollider*);
+        virtual void on_end_collision(PCollider*);
 
-        virtual void on_update() {}
-        virtual void on_destroy() {}
-        virtual void on_start() {}
+        virtual void on_update();
+        virtual void on_destroy();
+        virtual void on_start();
 
         // No need to move components.
         void set_parent(Punity::PEntity* parent);

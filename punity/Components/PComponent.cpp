@@ -2,6 +2,7 @@
 // Created by god on 14.11.2022.
 //
 
+#include <iostream>
 #include "PComponent.h"
 
 uint64_t Punity::Components::PComponent::component_count = 0;
@@ -32,5 +33,34 @@ namespace Punity::Components {
 
     Punity::PEntity* PComponent::get_entity() {
         return m_parent_entity;
+    }
+
+    // Empty functions
+    void PComponent::on_enable() {
+
+    }
+
+    void PComponent::on_disable() {
+        std::cout << "im disabled\n";
+    }
+
+    void PComponent::on_start_collision(PCollider *) {
+
+    }
+
+    void PComponent::on_end_collision(PCollider *) {
+
+    }
+
+    void PComponent::on_update() {
+
+    }
+
+    void PComponent::on_destroy() {
+
+    }
+
+    void PComponent::on_start() {
+
     }
 } // Punity

@@ -233,8 +233,11 @@ void Punity::PEntity::report_enable_to_components() {
 
 // Called by the engine on disabling
 void Punity::PEntity::report_disable_to_components() {
+    std::cout << "i have " << m_components.size() << " components\n";
     for (auto component : m_components) {
+        std::cout << "Component: " << component << '\n';
         if (component->m_is_active) {
+            std::cout << "active.\n";
             component->on_disable();
         }
     }
