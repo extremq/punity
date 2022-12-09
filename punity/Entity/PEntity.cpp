@@ -15,8 +15,8 @@ void Punity::PEntity::activate_global_state_of_children() {
         if (child->is_self_active()) {
             // The child is also self active! Propagate!
             child->m_globally_active = true;
-            child->activate_global_state_of_children();
             Punity::Engine.register_entity(child);
+            child->activate_global_state_of_children();
         }
     }
 }
@@ -114,10 +114,12 @@ void Punity::PEntity::remove_child_entity(Punity::PEntity* entity) {
 }
 
 void Punity::PEntity::set_parent(Punity::PEntity* parent) {
+    if (parent == nullptr) Punity::Utils::Error("Don't use set_parent on null entity.");
+
     if (m_id == 0) Punity::Utils::Error("Don't use set_parent on __Root.");
-    std::cout << "setting parent of " << m_name << " to " << parent->m_name << '\n';
 
     if (parent->m_is_destroyed) Punity::Utils::Error("Setting as parent a destroyed entity.", m_name);
+    std::cout << "setting parent of " << m_name << " to " << parent->m_name << '\n';
 
     if (m_parent_entity != nullptr && !m_parent_entity->m_children_entities.empty()) {
         m_parent_entity->remove_child_entity(this);
@@ -134,6 +136,10 @@ void Punity::PEntity::set_parent(Punity::PEntity* parent) {
         // We're self_active, so that should mean we need to check the parent's status
         if (m_parent_entity->is_globally_active()) {
             m_globally_active = true;
+
+            // Also register! We already register the children
+            Punity::Engine.register_entity(this);
+
             activate_global_state_of_children();
         }
         else {
@@ -148,7 +154,7 @@ void Punity::PEntity::set_name(const std::string &new_name) {
     m_name = new_name;
 }
 
-Punity::PEntity::PEntity(const std::string &new_name) {
+Punity::PEntity::PEntity(const std::string &new_name, bool is_active) {
     // Set transform up
     m_transform = add_component<Components::PTransform>();
 
@@ -156,13 +162,28 @@ Punity::PEntity::PEntity(const std::string &new_name) {
     // Except for root itself
     if (m_id != 0) {
         m_name = new_name;
+        m_self_active = is_active;
         set_parent(Punity::Engine.root_entity);
-        Punity::Engine.register_entity(this);
     }
     else {
         // Also set name for root, but dont set any parent nor register
+        m_globally_active = true;
+        m_self_active = true;
         m_name = new_name;
     }
+}
+
+Punity::PEntity::PEntity(const std::string &new_name, Punity::PEntity *parent_entity, bool is_active) {
+    // Set transform up
+    m_transform = add_component<Components::PTransform>();
+
+    if (m_id == 0) Punity::Utils::Error("Cannot set parent of Root entity.");
+
+    m_name = new_name;
+    m_self_active = is_active;
+
+    // Set the parent - this also triggers an update of states
+    set_parent(parent_entity);
 }
 
 Punity::PEntity::PEntity() {
@@ -199,7 +220,11 @@ void Punity::PEntity::destroy_children() {
 }
 
 void Punity::PEntity::report_enable_to_components() {
+
     for (auto component : m_components) {
+        if (m_name == "Room") {
+            std::cout << component << '\n';
+        }
         if (component->m_is_active) {
             component->on_enable();
         }
@@ -265,14 +290,13 @@ Punity::PEntity::~PEntity() {
     std::cout << "Destructor called for " << m_name << '\n';
 }
 
-Punity::PEntity *Punity::PEntity::make_entity() {
+Punity::PEntity *Punity::PEntity::make_entity(const std::string &new_name, bool is_active) {
     // Create and return a reference to entity
-    return new PEntity();
+    return new PEntity(new_name, is_active);
 }
 
-Punity::PEntity *Punity::PEntity::make_entity(const std::string &new_name) {
-    // Create and return a reference to entity
-    return new PEntity(new_name);
+Punity::PEntity *Punity::PEntity::make_entity(const std::string &new_name, Punity::PEntity *parent_entity, bool is_active) {
+    return new PEntity(new_name, parent_entity, is_active);
 }
 
 bool Punity::PEntity::is_globally_active() {

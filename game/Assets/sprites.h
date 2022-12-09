@@ -5,10 +5,6 @@
 
 namespace Game::Sprites {
     
-	extern uint16_t const placeholder_wall [8 * 8];
-	extern bool const placeholder_wall_alpha [8 * 8];
-	extern uint16_t const placeholder_wall_w;
-	extern uint16_t const placeholder_wall_h;
 	extern uint16_t const game_title_start [35 * 8];
 	extern bool const game_title_start_alpha [35 * 8];
 	extern uint16_t const game_title_start_w;
@@ -21,6 +17,14 @@ namespace Game::Sprites {
 	extern bool const level2_alpha [20 * 20];
 	extern uint16_t const level2_w;
 	extern uint16_t const level2_h;
+	extern uint16_t const wall [8 * 8];
+	extern bool const wall_alpha [8 * 8];
+	extern uint16_t const wall_w;
+	extern uint16_t const wall_h;
+	extern uint16_t const chest [16 * 8];
+	extern bool const chest_alpha [16 * 8];
+	extern uint16_t const chest_w;
+	extern uint16_t const chest_h;
 	extern uint16_t const game_title [46 * 16];
 	extern bool const game_title_alpha [46 * 16];
 	extern uint16_t const game_title_w;

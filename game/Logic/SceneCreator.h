@@ -14,9 +14,9 @@
 // Let's not forget, singletons are a kind of static classes. If no encapsulation
 // is needed, then really they should've been namespaces.
 namespace Game::SceneCreator {
-    Punity::PEntity* create_start_scene();
-    Punity::PEntity* create_loading_scene();
-    Punity::PEntity* create_gameplay_scene();
+    Punity::PEntity* create_start_scene(Punity::PEntity* parent);
+    Punity::PEntity* create_loading_scene(Punity::PEntity* parent);
+    Punity::PEntity* create_gameplay_scene(Punity::PEntity* parent);
 } // Game
 
 #endif //_SCENECREATOR_H

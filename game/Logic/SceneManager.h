@@ -49,6 +49,7 @@ namespace Game::SceneManager {
 
     void start_manager();
     void init_entities();
+    void reset_progress();
     void switch_scene(Scene new_scene);
 } // Game
 

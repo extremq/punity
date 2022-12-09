@@ -21,4 +21,10 @@ namespace Punity::Components {
     PCircleCollider::PCircleCollider() {
         m_shape = CIRCLE;
     }
+
+    PCircleCollider *PCircleCollider::set_radius(float r) {
+        radius = r;
+        // Used for chaining functions
+        return this;
+    }
 } // Components

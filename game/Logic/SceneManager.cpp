@@ -44,22 +44,19 @@ namespace Game::SceneManager {
         // Gameplay scenes are children of WORLD
 
         // Set up UI
-        UI = Punity::PEntity::make_entity("UI");
+        UI = Punity::PEntity::make_entity("UI", true);
 
         // Set up world entity
-        world = Punity::PEntity::make_entity("World");
+        world = Punity::PEntity::make_entity("World", true);
 
         // Set up room
-        gameplay_scene = Game::SceneCreator::create_gameplay_scene();
-        gameplay_scene->set_parent(SceneManager::world);
+        gameplay_scene = Game::SceneCreator::create_gameplay_scene(SceneManager::world);
 
         // Set up start screen
-        start_scene = Game::SceneCreator::create_start_scene();
-        start_scene->set_parent(SceneManager::UI);
+        start_scene = Game::SceneCreator::create_start_scene(SceneManager::UI);
 
         // Set up loading screen and digits
-        load_scene = Game::SceneCreator::create_loading_scene();
-        load_scene->set_parent(SceneManager::UI);
+        load_scene = Game::SceneCreator::create_loading_scene(SceneManager::UI);
     }
 
     // Called from other components when wanting to switch the state/scene
@@ -113,5 +110,10 @@ namespace Game::SceneManager {
                 start_scene->set_active(true);
             }
         }
+    }
+
+    void reset_progress() {
+        level = 1;
+        stage = 1;
     }
 } // Game

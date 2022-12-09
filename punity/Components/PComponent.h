@@ -43,7 +43,7 @@ namespace Punity::Components {
         virtual void on_destroy() {}
         virtual void on_start() {}
 
-        // No need to move components for no reason.
+        // No need to move components.
         void set_parent(Punity::PEntity* parent);
     public:
         PComponent() = default;

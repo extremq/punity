@@ -7,12 +7,6 @@
 
 #include "game/Logic/SceneManager.h"
 
-enum Tile {
-    EMPTY,
-    WALL
-};
-
-constexpr uint8_t WALL_LAYER = 1;
 constexpr float PLAYER_CREATION_DELAY_SECONDS = 1.0f;
 constexpr float ENEMY_CREATION_DELAY_SECONDS = 2.0f;
 
@@ -29,26 +23,17 @@ namespace Game {
         // Player entity
         Punity::PEntity* player = nullptr;
 
-        uint8_t row_counter = 0, column_counter = 0;
-        bool is_fighting = false;
+        bool scene_ended = false;
 
         void on_update() override;
         void on_enable() override;
-        // Tiles used for dictating how the world should be generated
-        Tile tiles[16][16] = {EMPTY};
 
         // States
-        void setup_stage();
-        void cleanup_stage();
-        void show_chest();
+        void setup_scene();
         void show_player();
-        void make_enemies();
-        void make_wall(int index);
+        void make_chest_and_show_it();
+        void make_enemies_and_show_them();
 
-        // Room generation
-        void generate_stage();
-        void solve_tile(uint8_t row, uint8_t column, float delay, Tile tile);
-        void disintegrate_stage();
     public:
     };
 

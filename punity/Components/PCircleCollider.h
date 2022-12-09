@@ -12,6 +12,7 @@ namespace Punity::Components {
     public:
         PCircleCollider();
         float radius = 0.0f;
+        PCircleCollider* set_radius(float r);
         bool solve_collision(PCollider* other) override;
     };
 

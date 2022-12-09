@@ -44,8 +44,8 @@ namespace Punity {
         // Entity transform
         Components::PTransform* m_transform;
 
-        bool m_self_active = true;
-        bool m_globally_active = true;
+        bool m_self_active = false;
+        bool m_globally_active = false;
         bool m_is_destroyed = false;
 
         void activate_global_state_of_children();
@@ -63,11 +63,12 @@ namespace Punity {
         PEntity &operator=(const PEntity &);
 
         PEntity();
-        explicit PEntity(std::string const& new_name);
+        explicit PEntity(std::string const& new_name, bool is_active);
+        PEntity(std::string const& new_name, PEntity* parent_entity, bool is_active);
     public:
         // Let's make sure we create entities dynamically.
-        static PEntity* make_entity();
-        static PEntity* make_entity(std::string const& new_name);
+        static PEntity* make_entity(std::string const& new_name, bool is_active);
+        static PEntity* make_entity(std::string const& new_name, PEntity* parent_entity, bool is_active);
 
         // Methods
         void set_name(std::string const& new_name);
@@ -105,6 +106,12 @@ namespace Punity {
             // I push it to the front because it may save a few dynamic casts.
             // That's because it's more likely you will use an added component.
             m_components.push_front(component);
+
+            // If this entity is active, call on_enable on the component
+            if (m_globally_active && m_self_active) {
+                component->on_enable();
+            }
+
             return (T*) component;
         }
 

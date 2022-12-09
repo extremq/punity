@@ -15,4 +15,9 @@ namespace Punity::Components {
         Punity::Utils::Error("Box collisions not implemented.");
         return false;
     }
+
+    void PBoxCollider::set_size(float h, float w) {
+        height = h;
+        width = w;
+    }
 } // Components

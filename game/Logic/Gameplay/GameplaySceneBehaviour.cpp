@@ -4,46 +4,54 @@
 
 #include "GameplaySceneBehaviour.h"
 #include "punity/Utils/PInvokable.h"
-#include "game/Assets/sprites.h"
 #include "game/Logic/Gameplay/GameplayPrefabCreator.h"
+#include "PlayerBehaviour.h"
 
 namespace Game {
     void GameplaySceneBehaviour::on_update() {
-        PComponent::on_update();
+        if (player != nullptr && !scene_ended) {
+            auto player_behaviour = player->get_component<PlayerBehaviour>();
+            if (!player_behaviour->is_alive()) {
+                scene_ended = true;
+                // We are dead
+                // TODO make a death thingy? Use invokes.
+                SceneManager::reset_progress();
+                SceneManager::switch_scene(START_SCENE);
+            }
+            else if (player_behaviour->has_touched_chest()) {
+                scene_ended = true;
+                // Player touched chest go to next level i guess?
+                // TODO should only increment stage, actually
+                SceneManager::level = std::max(1, (SceneManager::level + 1) % 4);
+                SceneManager::switch_scene(LEVEL_LOAD_SCENE);
+            }
+        }
     }
 
     // When this is enabled, setup the level!
     // Only enabled/disabled when entering from
     // Loading screens
     void GameplaySceneBehaviour::on_enable() {
-        setup_stage();
+        setup_scene();
     }
 
-    void GameplaySceneBehaviour::setup_stage() {
+    void GameplaySceneBehaviour::setup_scene() {
+        scene_ended = false;
+
         // Make room and actors entities to group the tiles and the enemies
         if (room == nullptr) {
-            room = GameplayPrefabCreator::make_room();
-            room->set_parent(this->get_entity());
+            room = GameplayPrefabCreator::make_room(this->get_entity());
         }
 
-        if (enemies == nullptr) {
-            enemies = GameplayPrefabCreator::make_enemies();
-            enemies->set_parent(this->get_entity());
-        }
-
-        // Show the enemies at a later point
-        enemies->set_active(false);
+        // This entity is the first state of our automata
+        room->set_active(true);
 
         if (player == nullptr) {
-            player = GameplayPrefabCreator::make_player();
-            player->set_parent(this->get_entity());
+            player = GameplayPrefabCreator::make_player(this->get_entity());
         }
 
         // Show the player at a later point
         player->set_active(false);
-
-        // Start generating the map right away
-        generate_stage();
 
         // Show the player with a delay of 1 second
         new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
@@ -55,92 +63,30 @@ namespace Game {
 
         // Make the enemies with a delay of 2 seconds
         new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
-                &GameplaySceneBehaviour::make_enemies,
+                &GameplaySceneBehaviour::make_enemies_and_show_them,
                 this,
                 ENEMY_CREATION_DELAY_SECONDS,
                 get_entity()->get_id()
         );
-    }
 
-    void GameplaySceneBehaviour::cleanup_stage() {
-        disintegrate_stage();
-    }
-
-    void GameplaySceneBehaviour::generate_stage() {
-        // Border the room
-        for (row_counter = 0; row_counter < 16; ++row_counter) {
-            for (column_counter = 0; column_counter < 16; ++column_counter) {
-                if (column_counter == 0 || column_counter == 15 || row_counter == 0 || row_counter == 15)
-                    tiles[row_counter][column_counter] = WALL;
-                else
-                    tiles[row_counter][column_counter] = EMPTY;
-            }
-        }
-
-        // Make each tile
-        for (int row = 0; row < 16; ++row) {
-            for (int column = 0; column < 16; ++column) {
-                solve_tile(row, column, (row + column) * 0.03, tiles[row][column]);
-            }
-        }
-    }
-
-    // A bit complicated looking because my invoker is not
-    // the most advanced on earth.
-    void GameplaySceneBehaviour::solve_tile(uint8_t row, uint8_t column, float delay, Tile tile) {
-        switch(tile) {
-            case EMPTY:
-                break;
-            case WALL:
-                // Invoke the make_wall function with the specified delay
-                new Punity::Utils::PInvokableWithInt<GameplaySceneBehaviour>(
-                        &GameplaySceneBehaviour::make_wall,
-                        row + column * 16,
-                        this,
-                        delay,
-                        get_entity()->get_id()
-                );
-                break;
-        }
-    }
-
-    void GameplaySceneBehaviour::disintegrate_stage() {
-        get_entity()->destroy_children();
-    }
-
-    void GameplaySceneBehaviour::make_wall(int index) {
-        auto tile = Punity::PEntity::make_entity("tile");
-        auto sprite = tile->add_component<Punity::Components::PSpriteRenderer>();
-
-        // Compute the position based on tile index
-        Punity::Utils::PVector pos(index % 16 * 8 - 60,
-                                   index / 16 * 8 - 60);
-
-        // Set the position
-        tile->get_transform()->set_global(pos);
-
-        // Choose sprite
-        sprite->set_sprite(
-                Game::Sprites::placeholder_wall,
-                Game::Sprites::placeholder_wall_alpha,
-                Game::Sprites::placeholder_wall_h,
-                Game::Sprites::placeholder_wall_w,
-                WALL_LAYER
+        // TODO remove this
+        new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
+                &GameplaySceneBehaviour::make_chest_and_show_it,
+                this,
+                ENEMY_CREATION_DELAY_SECONDS + 3.0,
+                get_entity()->get_id()
         );
-
-        // Attach it to the room
-        tile->set_parent(room);
     }
 
     void GameplaySceneBehaviour::show_player() {
         player->set_active(true);
     }
 
-    void GameplaySceneBehaviour::show_chest() {
-
+    void GameplaySceneBehaviour::make_chest_and_show_it() {
+        GameplayPrefabCreator::make_chest(room)->set_active(true);
     }
 
-    void GameplaySceneBehaviour::make_enemies() {
-
+    void GameplaySceneBehaviour::make_enemies_and_show_them() {
+        GameplayPrefabCreator::make_enemies(room)->set_active(true);
     }
 } // Game

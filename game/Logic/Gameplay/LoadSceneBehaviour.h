@@ -23,6 +23,7 @@ namespace Game {
                 }
             }
 
+            // Load the next scene
             new Punity::Utils::PInvokable<LoadSceneBehaviour>(
                     &LoadSceneBehaviour::switch_scene_wrapper,
                     this,

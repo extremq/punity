@@ -21,6 +21,7 @@ namespace Punity::Utils {
 
         PVector &operator=(const PVector &v) = default;
 
+
         float mag() const {
             return std::sqrt(x * x + y * y);
         }
@@ -31,6 +32,15 @@ namespace Punity::Utils {
 
         float cross(const PVector &v) const {
             return this->x * v.y - this->y * v.x;
+        }
+
+        PVector norm() const {
+            float _mag = mag();
+
+            // If magnitude is extremely close to 0, the vector is 0, 0
+            if (std::abs(_mag) < 1e-8) return PVector(0, 0);
+
+            return PVector(x / _mag, y / _mag);
         }
 
         PVector operator+(const PVector &v) const {

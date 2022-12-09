@@ -73,7 +73,29 @@ namespace Punity {
                     } else {
                         // Disable the entity.
                         std::cout << "Disabled " << (*it)->get_name() << '\n';
+                        // TODO: investigate Player disable crash
                         (*it)->report_disable_to_components();
+                    }
+
+                    // Also remove invokers with this entity id
+                    for (auto invoker_it = m_invokers.begin(); invoker_it != m_invokers.end(); ++invoker_it) {
+                        // Same id
+                        if ((*invoker_it)->get_entity_id() == (*it)->get_id()) {
+                            delete *invoker_it;
+                            // Remove the invoker
+                            // Reached the end, don't care to save
+                            if ((invoker_it != m_invokers.end()) && (invoker_it == --m_invokers.end())) {
+                                m_invokers.pop_back();
+                                break;
+                            }
+
+                            // Swap with end and pop end.
+                            auto last = m_invokers.back();
+                            m_invokers.pop_back();
+
+                            *invoker_it = last;
+                            --invoker_it;
+                        }
                     }
 
                     // Reached the end, don't care to save
@@ -101,27 +123,6 @@ namespace Punity {
                 for (auto child : to_be_destroyed.front()->get_children()) {
                     // mark parents of destroyed child as nullptr
                     child->m_parent_entity = nullptr;
-                }
-
-                // Also remove invokers with this entity id
-                for (auto it = m_invokers.begin(); it != m_invokers.end(); ++it) {
-                    // If execution time has reached its point, lets invoke the function
-                    if ((*it)->get_entity_id() == to_be_destroyed.front()->get_id()) {
-                        delete *it;
-                        // Remove the invoker
-                        // Reached the end, don't care to save
-                        if ((it != m_invokers.end()) && (it == --m_invokers.end())) {
-                            m_invokers.pop_back();
-                            break;
-                        }
-
-                        // Swap with end and pop end.
-                        auto last = m_invokers.back();
-                        m_invokers.pop_back();
-
-                        *it = last;
-                        --it;
-                    }
                 }
 
                 delete to_be_destroyed.front();
@@ -284,7 +285,7 @@ namespace Punity {
     }
 
     PEngine::PEngine() {
-        root_entity = new PEntity("__Root");
+        root_entity = new PEntity("__Root", true);
     }
 
     void PEngine::register_invoker(Utils::PInvokableBase * invoker) {
