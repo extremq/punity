@@ -19,8 +19,6 @@ namespace Game {
         // Tiles used for dictating how the world should be generated
         Tile tiles[16][16] = {EMPTY};
 
-        uint8_t row_counter = 0, column_counter = 0;
-
         void on_enable() override;
         void on_disable() override;
     public:

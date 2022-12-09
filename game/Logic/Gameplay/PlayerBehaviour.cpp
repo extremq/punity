@@ -16,10 +16,10 @@ namespace Game {
 
     void PlayerBehaviour::on_start_collision(Punity::Components::PCollider *other) {
         // Testing only
-        if (!m_has_touched_chest && other->get_entity()->get_name() == "Chest") {
+        if (other->get_entity()->get_name() == "Chest") {
             m_has_touched_chest = true;
         }
-        else if (m_is_alive && other->get_entity()->get_name() == "Wall"){
+        else if (other->get_entity()->get_name() == "Wall"){
             m_is_alive = false;
         }
     }

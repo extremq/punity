@@ -16,6 +16,9 @@ namespace Punity::Components {
     class PCollider : public PComponent {
     private:
         std::map<uint64_t, PCollider*> m_colliders;
+
+        // Information.
+        uint8_t m_info = 0;
     protected:
         friend class Punity::PEngine;
 

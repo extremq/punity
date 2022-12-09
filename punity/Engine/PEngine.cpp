@@ -73,7 +73,6 @@ namespace Punity {
                     } else {
                         // Disable the entity.
                         std::cout << "Disabled " << (*it)->get_name() << '\n';
-                        // TODO: investigate Player disable crash
                         (*it)->report_disable_to_components();
                     }
 
@@ -137,7 +136,7 @@ namespace Punity {
             // However, that only happens if in this frame they were committed
             // Otherwise, the next frame will remove them.
 
-            print_tree_of_entities();
+//            print_tree_of_entities();
             for (auto entity: m_all_entities) {
                 // Update the components
                 entity->report_update_to_components();

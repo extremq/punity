@@ -30,7 +30,6 @@ add_executable(${PROJ_NAME}
         punity/Entity/PEntity.h
         punity/Utils/PTime.h
         punity/Input/PJoystick.h
-        punity/Components/PMovement.h
         punity/Components/PSpriteRenderer.fwd.h
         punity/Utils/PError.h
         punity/Utils/PRandom.h

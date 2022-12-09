@@ -41,7 +41,7 @@ namespace Punity::Components {
     }
 
     void PComponent::on_disable() {
-        std::cout << "im disabled\n";
+
     }
 
     void PComponent::on_start_collision(PCollider *) {
