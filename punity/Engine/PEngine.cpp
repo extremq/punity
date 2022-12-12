@@ -69,7 +69,7 @@ namespace Punity {
                         (*it)->report_destroy_to_components();
                     } else {
                         // Disable the entity.
-                        std::cout << "Disabled " << (*it)->get_name() << '\n';
+//                        std::cout << "Disabled " << (*it)->get_name() << '\n';
                         (*it)->report_disable_to_components();
                     }
 
@@ -272,7 +272,7 @@ namespace Punity {
             }
         }
 
-        std::cout << "Enabled " << entity->get_name() << '\n';
+//        std::cout << "Enabled " << entity->get_name() << '\n';
         entity->report_enable_to_components();
         m_all_entities.push_front(entity);
     }

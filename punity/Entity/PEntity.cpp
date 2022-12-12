@@ -119,7 +119,7 @@ void Punity::PEntity::set_parent(Punity::PEntity* parent) {
     if (m_id == 0) Punity::Utils::Error("Don't use set_parent on __Root.");
 
     if (parent->m_is_destroyed) Punity::Utils::Error("Setting as parent a destroyed entity.", m_name);
-    std::cout << "setting parent of " << m_name << " to " << parent->m_name << '\n';
+//    std::cout << "setting parent of " << m_name << " to " << parent->m_name << '\n';
 
     if (m_parent_entity != nullptr && !m_parent_entity->m_children_entities.empty()) {
         m_parent_entity->remove_child_entity(this);
@@ -204,7 +204,7 @@ void Punity::PEntity::destroy() {
     // A destroyed component is also inactive.
     // Destruction has priority over disabling in event execution order.
 
-    std::cout << "destroyed " << m_name << '\n';
+//    std::cout << "destroyed " << m_name << '\n';
 
     Engine.queue_destruction(this);
 
@@ -286,7 +286,7 @@ Punity::PEntity::~PEntity() {
         delete component;
 //        std::cout << "component called for " << name << '\n';
     }
-    std::cout << "Destructor called for " << m_name << '\n';
+//    std::cout << "Destructor called for " << m_name << '\n';
 }
 
 Punity::PEntity *Punity::PEntity::make_entity(const std::string &new_name, bool is_active) {

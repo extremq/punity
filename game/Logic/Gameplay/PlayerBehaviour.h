@@ -6,6 +6,7 @@
 #define _PLAYERBEHAVIOUR_H
 
 #include "punity/Punity.h"
+#include "Weapon.h"
 
 namespace Game {
     class PlayerBehaviour : public Punity::Components::PComponent {
@@ -13,6 +14,7 @@ namespace Game {
         bool m_has_touched_chest = false;
         Punity::PEntity* enemies = nullptr;
         Punity::PEntity* room = nullptr;
+        Weapon* weapon = nullptr;
 
         void on_start_collision(Punity::Components::PCollider* other) override;
         void on_update() override;

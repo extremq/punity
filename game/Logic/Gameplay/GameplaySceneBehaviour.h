@@ -28,13 +28,8 @@ namespace Game {
         // Player entity
         Punity::PEntity* player = nullptr;
 
+        // Current wave
         uint8_t wave = 1;
-
-        bool scene_ended = false;
-        bool scene_started = false;
-        bool waves_have_ended = false;
-        bool wave_is_loading = false;
-        bool stage_switching = false;
 
         void on_update() override;
         void on_enable() override;

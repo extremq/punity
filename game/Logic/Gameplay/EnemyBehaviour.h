@@ -10,7 +10,12 @@
 namespace Game {
 
     class EnemyBehaviour : public Punity::Components::PComponent {
+        Punity::PEntity* player;
+        Punity::PEntity* room;
+
         void on_start_collision(Punity::Components::PCollider* other) override;
+        void on_update() override;
+        void on_enable() override;
     };
 
 } // Game

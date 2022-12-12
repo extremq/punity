@@ -6,6 +6,9 @@
 
 namespace Game {
     void ActorBehaviour::set_hitpoints(uint8_t hitpoints) {
+        if (hitpoints > 0) m_is_dead = false;
+        else m_is_dead = true;
+
         m_hitpoints = hitpoints;
     }
 

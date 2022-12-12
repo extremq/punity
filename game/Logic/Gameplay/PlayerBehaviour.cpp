@@ -6,8 +6,9 @@
 #include "punity/Components/PCollider.h"
 #include "ActorBehaviour.h"
 #include "GameplayPrefabCreator.h"
-#include "Projectile.h"
+#include "GameplaySceneManager.h"
 #include "punity/Utils/PCollisionComputation.h" // for dist
+#include "Weapon.h"
 
 namespace Game {
 
@@ -16,7 +17,7 @@ namespace Game {
     }
 
     void PlayerBehaviour::on_start_collision(Punity::Components::PCollider *other) {
-        if (other->get_entity()->get_name() == "Chest") {
+        if (GameplaySceneManager::chest_loaded && other->get_entity()->get_name() == "Chest") {
             m_has_touched_chest = true;
         }
         else if (other->information == COLLIDER_ENEMY_PROJECTILE) {
@@ -30,21 +31,36 @@ namespace Game {
     }
 
     void PlayerBehaviour::reset_status() {
-        enemies = Punity::Engine.find_entity("Enemies");
         room = Punity::Engine.find_entity("Room");
+        enemies = Punity::Engine.find_entity("Enemies");
+
+        // Store weapon
+        weapon = get_entity()->get_component<Weapon>();
+
+        // Reset touching status
         m_has_touched_chest = false;
-        get_entity()->get_transform()->set_global({0, 0});
+
+        // Place player back
+        get_entity()->get_transform()->set_global({0, -40});
     }
 
     void PlayerBehaviour::on_update() {
         compute_movement();
+
+        // Wait for enemies to be loaded!
+        if (!GameplaySceneManager::enemies_loaded) return;
+
+        // Get nearest enemy
         Punity::Utils::PVector nearest_enemy = compute_nearest_enemy();
 
         // Shoot test!
         if (Punity::Button.read_button(ACTION_BTN)) {
-            auto bullet = GameplayPrefabCreator::make_player_bullet(room);
-            bullet->get_transform()->set_global(get_entity()->get_transform()->global_position);
-            bullet->get_component<Projectile>()->set_target_point(nearest_enemy);
+            weapon->shoot(
+                    get_entity()->get_transform()->global_position,
+                    nearest_enemy,
+                    room,
+                    true
+                    );
         }
     }
 

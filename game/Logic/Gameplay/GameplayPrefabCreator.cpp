@@ -12,6 +12,7 @@
 #include "ActorBehaviour.h"
 #include "Projectile.h"
 #include "EnemyBehaviour.h"
+#include "Weapon.h"
 
 /*
  * Unity has things called "Prefabs". Basically, they are game objects (my Punity::PEntity)
@@ -31,13 +32,18 @@ namespace Game::GameplayPrefabCreator {
                 Game::Sprites::Layers::PLAYER
         );
 
-        // Add behaviour and Circle collider
+        // Add components
         player_entity->add_component<PlayerBehaviour>();
         player_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::player_h / 2.0f)
                 ->set_static(false)
                 ->set_information(COLLIDER_PLAYER);
         player_entity->add_component<ActorBehaviour>();
+        player_entity->add_component<Weapon>()
+                ->set_attack_radius_degrees(90)
+                ->set_bullet_count(10)
+                ->set_bullet_speed(100)
+                ->set_shots_per_second(2);
 
         return player_entity;
     }
@@ -123,6 +129,13 @@ namespace Game::GameplayPrefabCreator {
 
         // Set actor behaviour
         enemy_entity->add_component<ActorBehaviour>();
+
+        // TODO use level and scene to change these
+        enemy_entity->add_component<Weapon>()
+                ->set_attack_radius_degrees(10)
+                ->set_bullet_count(2)
+                ->set_bullet_speed(40)
+                ->set_shots_per_second(0.5f);
 
         // Entity for selector that appears above enemy when player aims at
         auto selector_entity = Punity::PEntity::make_entity("Selector", enemy_entity, false);

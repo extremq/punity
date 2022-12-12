@@ -55,7 +55,7 @@ add_executable(${PROJ_NAME}
         game/Logic/Gameplay/GameplaySceneBehaviour.cpp
         game/Logic/Gameplay/GameplaySceneBehaviour.h
         game/Logic/Gameplay/LoadSceneBehaviour.h
-        game/Logic/Gameplay/StartSceneBehaviour.h punity/Utils/PError.cpp punity/Utils/PRandom.cpp punity/Utils/PCollisionComputation.cpp game/Logic/SceneCreator.cpp game/Logic/Gameplay/GameplayPrefabCreator.cpp game/Logic/Gameplay/GameplayPrefabCreator.h game/Logic/Gameplay/PlayerBehaviour.cpp game/Logic/Gameplay/PlayerBehaviour.h game/Logic/Gameplay/RoomBehaviour.cpp game/Logic/Gameplay/RoomBehaviour.h game/Assets/sprite_layers.h game/Logic/Gameplay/ActorBehaviour.cpp game/Logic/Gameplay/ActorBehaviour.h game/Logic/Gameplay/Projectile.cpp game/Logic/Gameplay/Projectile.h game/Logic/Gameplay/EnemyBehaviour.cpp game/Logic/Gameplay/EnemyBehaviour.h)
+        game/Logic/Gameplay/StartSceneBehaviour.h punity/Utils/PError.cpp punity/Utils/PRandom.cpp punity/Utils/PCollisionComputation.cpp game/Logic/SceneCreator.cpp game/Logic/Gameplay/GameplayPrefabCreator.cpp game/Logic/Gameplay/GameplayPrefabCreator.h game/Logic/Gameplay/PlayerBehaviour.cpp game/Logic/Gameplay/PlayerBehaviour.h game/Logic/Gameplay/RoomBehaviour.cpp game/Logic/Gameplay/RoomBehaviour.h game/Assets/sprite_layers.h game/Logic/Gameplay/ActorBehaviour.cpp game/Logic/Gameplay/ActorBehaviour.h game/Logic/Gameplay/Projectile.cpp game/Logic/Gameplay/Projectile.h game/Logic/Gameplay/EnemyBehaviour.cpp game/Logic/Gameplay/EnemyBehaviour.h game/Logic/Gameplay/Weapon.cpp game/Logic/Gameplay/Weapon.h game/Logic/Gameplay/GameplaySceneManager.cpp game/Logic/Gameplay/GameplaySceneManager.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

@@ -6,12 +6,11 @@
 #include "punity/Utils/PInvokable.h"
 #include "game/Logic/Gameplay/GameplayPrefabCreator.h"
 #include "PlayerBehaviour.h"
+#include "GameplaySceneManager.h"
 
 namespace Game {
     void GameplaySceneBehaviour::on_update() {
-        if (!scene_started) return;
-        if (scene_ended) return;
-        if (player == nullptr) return;
+        if (!GameplaySceneManager::player_loaded) return;
 
         auto player_behaviour = player->get_component<PlayerBehaviour>();
         auto player_actor_behaviour = player->get_component<ActorBehaviour>();
@@ -30,19 +29,16 @@ namespace Game {
 
         // Check if player is dead
         if (player_actor_behaviour->is_dead()) {
-            scene_ended = true;
             // TODO make a death thingy? Use invokes.
             SceneManager::reset_progress();
             SceneManager::switch_scene(START_SCENE);
-        } else if (enemies_are_dead && !waves_have_ended && !wave_is_loading) {
+        } else if (enemies_are_dead && GameplaySceneManager::enemies_loaded) {
+            // Mark as unloaded
+            GameplaySceneManager::enemies_loaded = false;
+
             // Player finished this wave
             if (wave == MAX_WAVE) {
-                // Make sure only this is done once
-                waves_have_ended = true;
-
                 // Finished stage
-                wave = 1;
-
                 // Show the chest and move on
                 new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
                         &GameplaySceneBehaviour::make_chest_and_show_it,
@@ -54,8 +50,6 @@ namespace Game {
                 // Load next wave
                 wave++;
 
-                wave_is_loading = true;
-
                 // Make new enemies with a delay
                 new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
                         &GameplaySceneBehaviour::make_enemies,
@@ -64,13 +58,14 @@ namespace Game {
                         get_entity()->get_id()
                 );
             }
-        } else if (player_behaviour->has_touched_chest() && !stage_switching) {
+        } else if (player_behaviour->has_touched_chest() && GameplaySceneManager::chest_loaded) {
             // Make it once!
-            stage_switching = true;
+            GameplaySceneManager::chest_loaded = false;
+            GameplaySceneManager::player_loaded = false;
+            GameplaySceneManager::enemies_loaded = false;
 
             if (SceneManager::stage == MAX_STAGE) {
                 // NOW we switch level
-                scene_ended = true;
                 SceneManager::level = std::max(1, (SceneManager::level + 1) % (MAX_LEVEL + 1));
                 SceneManager::switch_scene(LEVEL_LOAD_SCENE);
             } else {
@@ -86,6 +81,8 @@ namespace Game {
                 }
 
                 player->set_active(false);
+
+                wave = 1;
 
                 // Make new stage
                 new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
@@ -104,12 +101,15 @@ namespace Game {
     void GameplaySceneBehaviour::on_enable() {
         wave = 1;
 
+        if (SceneManager::level == 1 && player != nullptr) {
+            // Reset player health
+            player->get_component<ActorBehaviour>()->set_hitpoints(6);
+        }
+
         // Reset scene status
-        scene_ended = false;
-        waves_have_ended = false;
-        stage_switching = false;
-        scene_started = false;
-        wave_is_loading = true;
+        GameplaySceneManager::player_loaded = false;
+        GameplaySceneManager::enemies_loaded = false;
+        GameplaySceneManager::chest_loaded = false;
 
         setup_stage();
     }
@@ -119,10 +119,6 @@ namespace Game {
     // each load.
     void GameplaySceneBehaviour::setup_stage() {
         // Reset stage status
-        waves_have_ended = false;
-        stage_switching = false;
-        scene_started = false;
-        wave_is_loading = true;
 
         // Make room and actors entities to group the tiles and the enemies
         if (room == nullptr) {
@@ -160,13 +156,13 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::show_player() {
-        scene_started = true;
         player->set_active(true);
-        player->get_transform()->set_global({0, -40});
+        GameplaySceneManager::player_loaded = true;
     }
 
     void GameplaySceneBehaviour::make_chest_and_show_it() {
         GameplayPrefabCreator::make_chest(room);
+        GameplaySceneManager::chest_loaded = true;
     }
 
     void GameplaySceneBehaviour::make_enemies() {
@@ -184,7 +180,7 @@ namespace Game {
         place_enemies();
 
         // Enemies are placed and ready to go
-        wave_is_loading = false;
+        GameplaySceneManager::enemies_loaded = true;
     }
 
     void GameplaySceneBehaviour::place_enemies() {
