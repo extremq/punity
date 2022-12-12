@@ -13,6 +13,7 @@
 #include <cstdint>
 #include <list>
 #include <set>
+#include <queue>
 
 namespace Punity {
     // Comparator for sprites
@@ -36,6 +37,7 @@ namespace Punity {
         uint64_t m_frame_delay_us = 16666; // Assume 60 fps
         std::list<PEntity*> m_all_entities;
         std::list<Utils::PInvokableBase*> m_invokers;
+        std::queue<PEntity*> m_to_be_destroyed;
 
         void update_time(uint64_t);
     public:
@@ -54,6 +56,7 @@ namespace Punity {
         std::list<PEntity*> const& entity_list = m_all_entities;
         void register_entity(PEntity*);
         void register_invoker(Utils::PInvokableBase*);
+        void queue_destruction(PEntity*);
 
         // Sets... the framerate.
         void set_framerate(float);

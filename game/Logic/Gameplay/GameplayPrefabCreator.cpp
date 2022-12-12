@@ -9,6 +9,7 @@
 #include "RoomBehaviour.h"
 #include "game/Assets/sprite_layers.h"
 #include "punity/Components/PBoxCollider.h"
+#include "ActorBehaviour.h"
 
 
 /*
@@ -34,6 +35,7 @@ namespace Game::GameplayPrefabCreator {
         player_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::player_h / 2.0f)
                 ->is_static = false;
+        player_entity->add_component<ActorBehaviour>();
 
         return player_entity;
     }
@@ -112,6 +114,9 @@ namespace Game::GameplayPrefabCreator {
         enemy_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::first_enemy_type_h / 2)
                 ->is_static = true;
+
+        // Set actor behaviour
+        enemy_entity->add_component<ActorBehaviour>();
 
         // TODO add enemy behaviour and actor behaviour
 

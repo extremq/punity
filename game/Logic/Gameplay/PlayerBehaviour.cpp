@@ -4,11 +4,9 @@
 
 #include "PlayerBehaviour.h"
 #include "punity/Components/PCollider.h"
+#include "ActorBehaviour.h"
 
 namespace Game {
-    bool PlayerBehaviour::is_alive() {
-        return m_is_alive;
-    }
 
     bool PlayerBehaviour::has_touched_chest() {
         return m_has_touched_chest;
@@ -19,8 +17,9 @@ namespace Game {
         if (other->get_entity()->get_name() == "Chest") {
             m_has_touched_chest = true;
         }
-        else if (other->get_entity()->get_name() == "Wall"){
-            m_is_alive = false;
+        else if (other->get_entity()->get_name() == "Enemy") {
+            other->get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(6);
+            other->get_entity()->set_active(false);
         }
     }
 
@@ -30,7 +29,6 @@ namespace Game {
     }
 
     void PlayerBehaviour::reset_status() {
-        m_is_alive = true;
         m_has_touched_chest = false;
         get_entity()->get_transform()->set_global({0, 0});
     }

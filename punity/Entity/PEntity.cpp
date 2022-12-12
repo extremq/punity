@@ -206,6 +206,8 @@ void Punity::PEntity::destroy() {
 
     std::cout << "destroyed " << m_name << '\n';
 
+    Engine.queue_destruction(this);
+
     // Mark children entities as destroyed, next frame takes effect
     for (auto child : m_children_entities) {
         child->destroy();
@@ -222,9 +224,6 @@ void Punity::PEntity::destroy_children() {
 void Punity::PEntity::report_enable_to_components() {
 
     for (auto component : m_components) {
-        if (m_name == "Room") {
-            std::cout << component << '\n';
-        }
         if (component->m_is_active) {
             component->on_enable();
         }
@@ -233,11 +232,8 @@ void Punity::PEntity::report_enable_to_components() {
 
 // Called by the engine on disabling
 void Punity::PEntity::report_disable_to_components() {
-    std::cout << "i have " << m_components.size() << " components\n";
     for (auto component : m_components) {
-        std::cout << "Component: " << component << '\n';
         if (component->m_is_active) {
-            std::cout << "active.\n";
             component->on_disable();
         }
     }

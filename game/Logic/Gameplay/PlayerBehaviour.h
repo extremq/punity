@@ -10,7 +10,6 @@
 namespace Game {
     class PlayerBehaviour : public Punity::Components::PComponent {
     private:
-        bool m_is_alive = true;
         bool m_has_touched_chest = false;
 
         void on_start_collision(Punity::Components::PCollider* other) override;
@@ -20,7 +19,6 @@ namespace Game {
         void compute_movement();
         void reset_status();
     public:
-        bool is_alive();
         bool has_touched_chest();
     };
 } // Game

@@ -18,7 +18,6 @@ namespace Punity {
 
     void PEngine::start_game() {
         // Game loop
-        std::queue<PEntity *> to_be_destroyed;
 
         // Let's first report the on_start event to every entity.
         // Time does not need to be updated. It will assume t = 0s.
@@ -65,10 +64,8 @@ namespace Punity {
                 if ((*it)->m_is_destroyed || !(*it)->m_globally_active || !(*it)->m_self_active) {
                     if ((*it)->m_is_destroyed) {
                         // Delete the entity, but don't use delete yet.
-                        // Instead, add it to a queue.
                         // Why? Since inside an on_destroy() event somebody can
                         // create more stuff.
-                        to_be_destroyed.push(*it);
                         (*it)->report_destroy_to_components();
                     } else {
                         // Disable the entity.
@@ -114,18 +111,18 @@ namespace Punity {
 
             // Now, finally, we can safely delete
             // and be assured no weird stuff happens
-            while (!to_be_destroyed.empty()) {
+            while (!m_to_be_destroyed.empty()) {
                 // Remove reference from parent
-                if (to_be_destroyed.front()->get_parent() != nullptr) {
-                    to_be_destroyed.front()->get_parent()->remove_child_entity(to_be_destroyed.front());
+                if (m_to_be_destroyed.front()->get_parent() != nullptr) {
+                    m_to_be_destroyed.front()->get_parent()->remove_child_entity(m_to_be_destroyed.front());
                 }
-                for (auto child : to_be_destroyed.front()->get_children()) {
+                for (auto child : m_to_be_destroyed.front()->get_children()) {
                     // mark parents of destroyed child as nullptr
                     child->m_parent_entity = nullptr;
                 }
 
-                delete to_be_destroyed.front();
-                to_be_destroyed.pop();
+                delete m_to_be_destroyed.front();
+                m_to_be_destroyed.pop();
             }
 
             Punity::Screen.load_background();
@@ -304,5 +301,9 @@ namespace Punity {
         std::cout << "----- ENTITIES -----\n";
         root_entity->print_tree(0);
         std::cout << "--------------------\n";
+    }
+
+    void PEngine::queue_destruction(PEntity *entity) {
+        m_to_be_destroyed.push(entity);
     }
 }

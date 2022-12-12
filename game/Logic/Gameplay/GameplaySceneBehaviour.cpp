@@ -6,24 +6,94 @@
 #include "punity/Utils/PInvokable.h"
 #include "game/Logic/Gameplay/GameplayPrefabCreator.h"
 #include "PlayerBehaviour.h"
+#include "RoomBehaviour.h"
 
 namespace Game {
     void GameplaySceneBehaviour::on_update() {
-        if (player != nullptr && !scene_ended) {
-            auto player_behaviour = player->get_component<PlayerBehaviour>();
-            if (!player_behaviour->is_alive()) {
-                scene_ended = true;
-                // We are dead
-                // TODO make a death thingy? Use invokes.
-                SceneManager::reset_progress();
-                SceneManager::switch_scene(START_SCENE);
+        if (!scene_started) return;
+        if (scene_ended) return;
+        if (player == nullptr) return;
+
+        auto player_behaviour = player->get_component<PlayerBehaviour>();
+        auto player_actor_behaviour = player->get_component<ActorBehaviour>();
+
+        // Assume players are dead
+        bool enemies_are_dead = true;
+
+        for (size_t i = 0; i < 3; ++i) {
+            if (enemy_actor_behaviours[i] == nullptr) enemies_are_dead = false;
+            enemies_are_dead = enemies_are_dead && enemy_actor_behaviours[i]->is_dead();
+        }
+
+        // Check if player is dead
+        if (player_actor_behaviour->is_dead()) {
+            scene_ended = true;
+            // TODO make a death thingy? Use invokes.
+            SceneManager::reset_progress();
+            SceneManager::switch_scene(START_SCENE);
+        } else if (enemies_are_dead && !waves_ended) {
+            // Player finished this wave
+            if (wave == MAX_WAVE) {
+                // Make sure only this is done once
+                waves_ended = true;
+
+                // Finished stage
+                wave = 1;
+
+                // Show the chest and move on
+                new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
+                        &GameplaySceneBehaviour::make_chest_and_show_it,
+                        this,
+                        ENEMY_CREATION_DELAY_SECONDS,
+                        get_entity()->get_id()
+                );
+            } else {
+                // Load next wave
+                wave++;
+                std::cout << "Wave " << (int) wave << '\n';
+                // Destroy the children
+                enemies->destroy_children();
+                for (size_t i = 0; i < 3; ++i) {
+                    enemy_actor_behaviours[i] = nullptr;
+                }
+
+                // Make new enemies with a delay
+                new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
+                        &GameplaySceneBehaviour::make_enemies,
+                        this,
+                        MIDGAME_ENEMY_CREATION_DELAY_SECONDS,
+                        get_entity()->get_id()
+                );
             }
-            else if (player_behaviour->has_touched_chest()) {
+        } else if (player_behaviour->has_touched_chest() && !stage_switching) {
+            // Make it once!
+            stage_switching = true;
+
+            if (SceneManager::stage == MAX_STAGE) {
+                // NOW we switch level
                 scene_ended = true;
-                // Player touched chest go to next level i guess?
-                // TODO should only increment stage, actually
-                SceneManager::level = std::max(1, (SceneManager::level + 1) % 4);
+                SceneManager::level = std::max(1, (SceneManager::level + 1) % (MAX_LEVEL + 1));
                 SceneManager::switch_scene(LEVEL_LOAD_SCENE);
+            } else {
+                SceneManager::stage++;
+
+                // Disable things temporarily
+                room->destroy();
+                room = nullptr;
+
+                for (size_t i = 0; i < 3; ++i) {
+                    enemy_actor_behaviours[i] = nullptr;
+                }
+
+                player->set_active(false);
+
+                // Make new stage
+                new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
+                        &GameplaySceneBehaviour::setup_stage,
+                        this,
+                        STAGE_SWITCH_DELAY_SECONDS,
+                        get_entity()->get_id()
+                );
             }
         }
     }
@@ -32,14 +102,21 @@ namespace Game {
     // Only enabled/disabled when entering from
     // Loading screens
     void GameplaySceneBehaviour::on_enable() {
-        setup_scene();
+        wave = 1;
+        scene_ended = false;
+        waves_ended = false;
+        stage_switching = false;
+        scene_started = false;
+        setup_stage();
     }
 
     // Room and players are made once since they need to remain in memory
     // Everything else is a child of room. Children of room get destroyed
     // each load.
-    void GameplaySceneBehaviour::setup_scene() {
-        scene_ended = false;
+    void GameplaySceneBehaviour::setup_stage() {
+        waves_ended = false;
+        stage_switching = false;
+        scene_started = false;
 
         // Make room and actors entities to group the tiles and the enemies
         if (room == nullptr) {
@@ -71,17 +148,10 @@ namespace Game {
                 ENEMY_CREATION_DELAY_SECONDS,
                 get_entity()->get_id()
         );
-
-        // TODO remove this
-//        new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
-//                &GameplaySceneBehaviour::make_chest_and_show_it,
-//                this,
-//                ENEMY_CREATION_DELAY_SECONDS + 3.0,
-//                get_entity()->get_id()
-//        );
     }
 
     void GameplaySceneBehaviour::show_player() {
+        scene_started = true;
         player->set_active(true);
         player->get_transform()->set_global({0, -40});
     }
@@ -95,7 +165,6 @@ namespace Game {
         enemies = GameplayPrefabCreator::make_enemies_entity(room);
 
         make_enemies();
-        place_enemies();
     }
 
     void GameplaySceneBehaviour::make_enemies() {
@@ -104,9 +173,17 @@ namespace Game {
         enemy[0] = GameplayPrefabCreator::make_enemy(enemies);
         enemy[1] = GameplayPrefabCreator::make_enemy(enemies);
         enemy[2] = GameplayPrefabCreator::make_enemy(enemies);
+
+        // Set behaviours so we don't use dynamic_cast on each frame
+        enemy_actor_behaviours[0] = enemy[0]->get_component<ActorBehaviour>();
+        enemy_actor_behaviours[1] = enemy[1]->get_component<ActorBehaviour>();
+        enemy_actor_behaviours[2] = enemy[2]->get_component<ActorBehaviour>();
+
+        place_enemies();
     }
 
     void GameplaySceneBehaviour::place_enemies() {
+        // TODO maybe play with their placement?
         enemy[0]->get_transform()->set_global({0, 40});
         enemy[1]->get_transform()->set_global({40, 0});
         enemy[2]->get_transform()->set_global({-40, 0});
