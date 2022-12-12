@@ -17,7 +17,6 @@ namespace Game {
         uint8_t  get_hitpoints();
         void add_hitpoints(uint8_t hitpoints);
         void subtract_hitpoints(uint8_t hitpoints);
-
         bool is_dead();
     };
 } // Game

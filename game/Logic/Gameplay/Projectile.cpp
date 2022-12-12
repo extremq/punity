@@ -14,7 +14,6 @@ namespace Game {
         // I also support an exception, however. If we shoot from inside the player,
         // I may not want it to be destroyed instantly.
 
-        std::cout << "Hit with " << other->get_entity()->get_name() << ' ' << (int)other->information << " and have exp " << (int)self << '\n';
         if (other->information == exception || other->information == self) return;
 
         get_entity()->destroy();
@@ -32,8 +31,6 @@ namespace Game {
         float radians = -std::atan2(target_point.y, target_point.x) + 1.57079632679f;
         direction = {std::sin(radians) , std::cos(radians)};
 
-        std::cout << radians << direction << target_point << current_position << '\n';
-
         return this;
     }
 
@@ -49,6 +46,11 @@ namespace Game {
 
     Projectile *Projectile::set_self(uint8_t _self) {
         self = _self;
+        return this;
+    }
+
+    Projectile *Projectile::set_speed(float _speed) {
+        speed = _speed;
         return this;
     }
 }

@@ -79,6 +79,7 @@ namespace Punity {
         void remove_child_entity(PEntity* entity);
         void print_tree(uint8_t level);
         void add_child(PEntity* entity);
+        size_t get_children_count();
         bool has_child(PEntity* entity);
         bool is_globally_active();
         bool is_self_active();
@@ -87,6 +88,7 @@ namespace Punity {
         uint64_t get_id();
         std::string get_name();
         PEntity* get_parent();
+        PEntity* get_child_by_name(std::string name);
         Components::PTransform* get_transform();
 
         // Could use std::enable_if and std::is_base_of/std::is_convertible

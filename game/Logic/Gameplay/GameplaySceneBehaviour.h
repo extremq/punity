@@ -32,7 +32,8 @@ namespace Game {
 
         bool scene_ended = false;
         bool scene_started = false;
-        bool waves_ended = false;
+        bool waves_have_ended = false;
+        bool wave_is_loading = false;
         bool stage_switching = false;
 
         void on_update() override;
@@ -42,7 +43,6 @@ namespace Game {
         void setup_stage();
         void show_player();
         void make_chest_and_show_it();
-        void make_enemies_entity_and_show_it();
         void make_enemies();
         void place_enemies();
     public:

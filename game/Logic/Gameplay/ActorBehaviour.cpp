@@ -31,7 +31,6 @@ namespace Game {
         // TODO fix this underflow check
 
         if (m_hitpoints == 0) {
-            std::cout << "I died\n";
             m_is_dead = true;
         }
     }

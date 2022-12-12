@@ -26,6 +26,10 @@ namespace Game::Sprites {
 	bool const chest_alpha [16 * 8] = { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 	uint16_t const chest_w = 16;
 	uint16_t const chest_h = 8;
+	uint16_t const enemy_selected_arrow [6 * 3] = { 0xc024, 0xc024, 0xc024, 0xc024, 0xc024, 0xc024, 0xfe41, 0xc024, 0xc024, 0xc024, 0xc024, 0xfe41, 0x0, 0xfe41, 0xfe41, 0xfe41, 0xfe41, 0x0 };
+	bool const enemy_selected_arrow_alpha [6 * 3] = { true, true, true, true, true, true, true, true, true, true, true, true, false, true, true, true, true, false };
+	uint16_t const enemy_selected_arrow_w = 6;
+	uint16_t const enemy_selected_arrow_h = 3;
 	uint16_t const enemy_bullet [3 * 3] = { 0x0, 0xe8e4, 0x0, 0xe8e4, 0xff80, 0xe8e4, 0x0, 0xe8e4, 0x0 };
 	bool const enemy_bullet_alpha [3 * 3] = { false, true, false, true, true, true, false, true, false };
 	uint16_t const enemy_bullet_w = 3;

@@ -348,3 +348,18 @@ void Punity::PEntity::print_tree(uint8_t level) {
         child->print_tree(level + 1);
     }
 }
+
+size_t Punity::PEntity::get_children_count() {
+    return m_children_entities.size();
+}
+
+Punity::PEntity *Punity::PEntity::get_child_by_name(std::string name) {
+    // returns FIRST child with same name
+    for (auto child : m_children_entities) {
+        if (name == child->m_name) {
+            return child;
+        }
+    }
+
+    return nullptr;
+}

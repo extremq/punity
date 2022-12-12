@@ -11,6 +11,7 @@
 #include "punity/Components/PBoxCollider.h"
 #include "ActorBehaviour.h"
 #include "Projectile.h"
+#include "EnemyBehaviour.h"
 
 /*
  * Unity has things called "Prefabs". Basically, they are game objects (my Punity::PEntity)
@@ -102,6 +103,7 @@ namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_enemy(Punity::PEntity* parent) {
         auto enemy_entity = Punity::PEntity::make_entity("Enemy", parent, true);
 
+
         // Choose sprite
         enemy_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                 Game::Sprites::first_enemy_type,
@@ -116,10 +118,23 @@ namespace Game::GameplayPrefabCreator {
                 ->set_radius(Game::Sprites::first_enemy_type_h / 2)
                 ->set_information(COLLIDER_ENEMY);
 
+        // Set enemy behaviour
+        enemy_entity->add_component<EnemyBehaviour>();
+
         // Set actor behaviour
         enemy_entity->add_component<ActorBehaviour>();
 
-        // TODO add enemy behaviour and actor behaviour
+        // Entity for selector that appears above enemy when player aims at
+        auto selector_entity = Punity::PEntity::make_entity("Selector", enemy_entity, false);
+
+        selector_entity->get_transform()->set_local({0, -8});
+        selector_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                Game::Sprites::enemy_selected_arrow,
+                Game::Sprites::enemy_selected_arrow_alpha,
+                Game::Sprites::enemy_selected_arrow_h,
+                Game::Sprites::enemy_selected_arrow_w,
+                Game::Sprites::Layers::SELECTOR
+        );
 
         return enemy_entity;
     }

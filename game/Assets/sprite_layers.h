@@ -12,6 +12,7 @@ namespace Game::Sprites::Layers {
     constexpr uint8_t WALL = 2;
     constexpr uint8_t CHEST = 3;
     constexpr uint8_t BULLET = 3;
+    constexpr uint8_t SELECTOR = 4;
 }
 
 #endif //_SPRITE_LAYERS_H

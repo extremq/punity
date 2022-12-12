@@ -24,6 +24,7 @@ namespace Game {
         Projectile* set_target_point(Punity::Utils::PVector target_point);
         Projectile* set_exception(uint8_t exp);
         Projectile* set_self(uint8_t _self);
+        Projectile* set_speed(float _speed);
     };
 }
 
