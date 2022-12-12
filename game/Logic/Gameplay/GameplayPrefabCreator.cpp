@@ -38,15 +38,9 @@ namespace Game::GameplayPrefabCreator {
         return player_entity;
     }
 
-    Punity::PEntity* make_enemies(Punity::PEntity* parent) {
-        auto enemies_entity = Punity::PEntity::make_entity("Enemies", parent, false);
-        return enemies_entity;
-    }
-
     Punity::PEntity* make_room(Punity::PEntity* parent) {
-        std::cout << "Making room\n";
         auto room_entity = Punity::PEntity::make_entity("Room", parent, false);
-        std::cout << "Haven't added the component\n";
+
         // Add the room_behaviour
         room_entity->add_component<RoomBehaviour>();
 
@@ -54,7 +48,7 @@ namespace Game::GameplayPrefabCreator {
     }
 
     Punity::PEntity* make_chest(Punity::PEntity* parent) {
-        auto chest_entity = Punity::PEntity::make_entity("Chest", parent, false);
+        auto chest_entity = Punity::PEntity::make_entity("Chest", parent, true);
 
         // Choose sprite
         chest_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
@@ -95,5 +89,32 @@ namespace Game::GameplayPrefabCreator {
         );
 
         return wall_entity;
+    }
+
+    Punity::PEntity* make_enemies_entity(Punity::PEntity* parent) {
+        auto enemies_entity = Punity::PEntity::make_entity("Enemies", parent, true);
+        return enemies_entity;
+    }
+
+    Punity::PEntity* make_enemy(Punity::PEntity* parent) {
+        auto enemy_entity = Punity::PEntity::make_entity("Enemy", parent, true);
+
+        // Choose sprite
+        enemy_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                Game::Sprites::first_enemy_type,
+                Game::Sprites::first_enemy_type_alpha,
+                Game::Sprites::first_enemy_type_h,
+                Game::Sprites::first_enemy_type_w,
+                Game::Sprites::Layers::PLAYER
+                );
+
+        // Set the collider
+        enemy_entity->add_component<Punity::Components::PCircleCollider>()
+                ->set_radius(Game::Sprites::first_enemy_type_h / 2)
+                ->is_static = true;
+
+        // TODO add enemy behaviour and actor behaviour
+
+        return enemy_entity;
     }
 } // GameplayPrefabCreator

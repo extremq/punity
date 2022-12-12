@@ -17,6 +17,7 @@ constexpr uint8_t TFT_DC = 16;
 constexpr uint8_t JOY_X = 26;
 constexpr uint8_t JOY_Y = 27;
 constexpr uint8_t JOY_BTN = 0;
+constexpr uint8_t ACTION_BTN = 1;
 
 constexpr uint8_t MAX_LEVEL = 3;
 

@@ -7,6 +7,10 @@
 #include "punity/Components/PBoxCollider.h"
 
 namespace Punity::Collision {
+    float distance(Punity::Utils::PVector const& a, Punity::Utils::PVector const& b) {
+        return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+    }
+
     bool solve_circle_rect(Components::PCircleCollider* circle, Components::PBoxCollider* rect) {
         Utils::PVector nearest_point;
         Utils::PVector rect_pos = rect->get_entity()->get_transform()->global_position;
@@ -32,6 +36,28 @@ namespace Punity::Collision {
         circle_pos.y -= ray_to_nearest_point.y / mag * overlap;
 
         circle->get_entity()->get_transform()->set_global(circle_pos);
+
+        return true;
+    }
+
+    bool solve_circle_circle(Components::PCircleCollider* circle1, Components::PCircleCollider* circle2) {
+        Utils::PVector circle1_pos = circle1->get_entity()->get_transform()->global_position;
+        Utils::PVector circle2_pos = circle2->get_entity()->get_transform()->global_position;
+
+        float dist = distance(circle1_pos, circle2_pos);
+
+        // Not intersecting
+        if (dist > circle1->radius + circle2->radius) return false;
+
+        // get the vector from the center of circle2 that points
+        // to center of circle1
+        // normalize it and multiply it by the sum of radii
+        Utils::PVector tg;
+        tg.x = (circle2_pos.x - circle1_pos.x) / dist;
+        tg.y = (circle2_pos.y - circle1_pos.y) / dist;
+
+        circle1_pos = circle2_pos - tg * (circle1->radius + circle2->radius);
+        circle1->get_entity()->get_transform()->set_global(circle1_pos);
 
         return true;
     }

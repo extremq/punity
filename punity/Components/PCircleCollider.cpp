@@ -12,8 +12,7 @@ namespace Punity::Components {
             case BOX:
                 return Punity::Collision::solve_circle_rect(this, (PBoxCollider*) other);
             case CIRCLE:
-                Punity::Utils::Error("Circle-Circle collision not defined.");
-                return false;
+                return Punity::Collision::solve_circle_circle(this, (PCircleCollider*) other);
         }
         return false;
     }

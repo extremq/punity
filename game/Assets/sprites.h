@@ -9,6 +9,10 @@ namespace Game::Sprites {
 	extern bool const game_title_start_alpha [35 * 8];
 	extern uint16_t const game_title_start_w;
 	extern uint16_t const game_title_start_h;
+	extern uint16_t const first_enemy_type [8 * 8];
+	extern bool const first_enemy_type_alpha [8 * 8];
+	extern uint16_t const first_enemy_type_w;
+	extern uint16_t const first_enemy_type_h;
 	extern uint16_t const level3 [20 * 20];
 	extern bool const level3_alpha [20 * 20];
 	extern uint16_t const level3_w;

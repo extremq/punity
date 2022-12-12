@@ -9,7 +9,8 @@
 
 namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_player(Punity::PEntity* parent);
-    Punity::PEntity* make_enemies(Punity::PEntity* parent);
+    Punity::PEntity* make_enemies_entity(Punity::PEntity* parent);
+    Punity::PEntity* make_enemy(Punity::PEntity* parent);
     Punity::PEntity* make_room(Punity::PEntity* parent);
     Punity::PEntity* make_chest(Punity::PEntity* parent);
     Punity::PEntity* make_wall(Punity::PEntity* parent);

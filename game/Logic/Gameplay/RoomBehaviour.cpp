@@ -12,7 +12,7 @@ namespace Game {
         // Border the room
         for (int row = 0; row < 16; ++row) {
             for (int column = 0; column < 16; ++column) {
-                if (column <= 1 || column >= 14 || row <= 1 || row >= 14)
+                if (column == 0 || column == 15 || row == 0 || row == 15)
                     tiles[row][column] = WALL;
                 else
                     tiles[row][column] = EMPTY;

@@ -35,6 +35,9 @@ namespace Game {
         setup_scene();
     }
 
+    // Room and players are made once since they need to remain in memory
+    // Everything else is a child of room. Children of room get destroyed
+    // each load.
     void GameplaySceneBehaviour::setup_scene() {
         scene_ended = false;
 
@@ -63,30 +66,50 @@ namespace Game {
 
         // Make the enemies with a delay of 2 seconds
         new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
-                &GameplaySceneBehaviour::make_enemies_and_show_them,
+                &GameplaySceneBehaviour::make_enemies_entity_and_show_it,
                 this,
                 ENEMY_CREATION_DELAY_SECONDS,
                 get_entity()->get_id()
         );
 
         // TODO remove this
-        new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
-                &GameplaySceneBehaviour::make_chest_and_show_it,
-                this,
-                ENEMY_CREATION_DELAY_SECONDS + 3.0,
-                get_entity()->get_id()
-        );
+//        new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
+//                &GameplaySceneBehaviour::make_chest_and_show_it,
+//                this,
+//                ENEMY_CREATION_DELAY_SECONDS + 3.0,
+//                get_entity()->get_id()
+//        );
     }
 
     void GameplaySceneBehaviour::show_player() {
         player->set_active(true);
+        player->get_transform()->set_global({0, -40});
     }
 
     void GameplaySceneBehaviour::make_chest_and_show_it() {
-        GameplayPrefabCreator::make_chest(room)->set_active(true);
+        GameplayPrefabCreator::make_chest(room);
     }
 
-    void GameplaySceneBehaviour::make_enemies_and_show_them() {
-        GameplayPrefabCreator::make_enemies(room)->set_active(true);
+    void GameplaySceneBehaviour::make_enemies_entity_and_show_it() {
+        // Create parent entity
+        enemies = GameplayPrefabCreator::make_enemies_entity(room);
+
+        make_enemies();
+        place_enemies();
     }
+
+    void GameplaySceneBehaviour::make_enemies() {
+        // Create enemies and store them
+        // TODO play with difficulty
+        enemy[0] = GameplayPrefabCreator::make_enemy(enemies);
+        enemy[1] = GameplayPrefabCreator::make_enemy(enemies);
+        enemy[2] = GameplayPrefabCreator::make_enemy(enemies);
+    }
+
+    void GameplaySceneBehaviour::place_enemies() {
+        enemy[0]->get_transform()->set_global({0, 40});
+        enemy[1]->get_transform()->set_global({40, 0});
+        enemy[2]->get_transform()->set_global({-40, 0});
+    }
+
 } // Game

@@ -26,6 +26,7 @@ namespace Game::SceneManager {
         // Configure the joystick pins
         Punity::Joystick.config(JOY_X, JOY_Y);
         Punity::Button.config_button(JOY_BTN);
+        Punity::Button.config_button(ACTION_BTN);
 
         // Set up entities
         init_entities();
