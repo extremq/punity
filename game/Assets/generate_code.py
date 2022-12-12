@@ -1,10 +1,10 @@
 def declare_extern(name, size):
     # Creates 4 declarations, one for buffer, one for alpha and two for sizes
     return f"\textern uint16_t const {name} [{size[0]} * {size[1]}];\n" \
-            f"\textern bool const {name}_alpha [{size[0]} * {size[1]}];\n" \
-            f"\textern uint16_t const {name}_w;\n" \
-            f"\textern uint16_t const {name}_h;\n"
-        
+           f"\textern bool const {name}_alpha [{size[0]} * {size[1]}];\n" \
+           f"\textern uint16_t const {name}_w;\n" \
+           f"\textern uint16_t const {name}_h;\n"
+
 
 def write_sprite(name, pixels, size):
     # Returns a string with the buffer and alpha arrays
@@ -20,6 +20,7 @@ def write_sprite(name, pixels, size):
     buffer_code = buffer_code[:-1] + " };\n"
     alpha_code = alpha_code[:-1] + " };\n"
     return buffer_code + alpha_code + sprite_width + sprite_height
+
 
 def rgb888_to_rgb565(r, g, b):
     return ((r >> 3) << 11) + ((g >> 2) << 5) + (b >> 3)

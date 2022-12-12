@@ -21,8 +21,8 @@ namespace Game {
         bool enemies_are_dead = true;
 
         for (size_t i = 0; i < 3; ++i) {
-            if (enemy_actor_behaviours[i] == nullptr) enemies_are_dead = false;
-            enemies_are_dead = enemies_are_dead && enemy_actor_behaviours[i]->is_dead();
+            if (enemy_actor_behaviour[i] == nullptr) enemies_are_dead = false;
+            enemies_are_dead = enemies_are_dead && enemy_actor_behaviour[i]->is_dead();
         }
 
         // Check if player is dead
@@ -54,7 +54,7 @@ namespace Game {
                 // Destroy the children
                 enemies->destroy_children();
                 for (size_t i = 0; i < 3; ++i) {
-                    enemy_actor_behaviours[i] = nullptr;
+                    enemy_actor_behaviour[i] = nullptr;
                 }
 
                 // Make new enemies with a delay
@@ -82,7 +82,7 @@ namespace Game {
                 room = nullptr;
 
                 for (size_t i = 0; i < 3; ++i) {
-                    enemy_actor_behaviours[i] = nullptr;
+                    enemy_actor_behaviour[i] = nullptr;
                 }
 
                 player->set_active(false);
@@ -175,9 +175,9 @@ namespace Game {
         enemy[2] = GameplayPrefabCreator::make_enemy(enemies);
 
         // Set behaviours so we don't use dynamic_cast on each frame
-        enemy_actor_behaviours[0] = enemy[0]->get_component<ActorBehaviour>();
-        enemy_actor_behaviours[1] = enemy[1]->get_component<ActorBehaviour>();
-        enemy_actor_behaviours[2] = enemy[2]->get_component<ActorBehaviour>();
+        enemy_actor_behaviour[0] = enemy[0]->get_component<ActorBehaviour>();
+        enemy_actor_behaviour[1] = enemy[1]->get_component<ActorBehaviour>();
+        enemy_actor_behaviour[2] = enemy[2]->get_component<ActorBehaviour>();
 
         place_enemies();
     }

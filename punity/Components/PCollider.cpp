@@ -40,4 +40,22 @@ namespace Punity::Components {
 
         m_colliders.clear();
     }
+
+    PCollider *PCollider::set_static(bool _static) {
+        is_static = _static;
+
+        return this;
+    }
+
+    PCollider *PCollider::set_trigger(bool _trigger) {
+        is_trigger = _trigger;
+
+        return this;
+    }
+
+    PCollider *PCollider::set_information(uint8_t _information) {
+        information = _information;
+
+        return this;
+    }
 } // Components

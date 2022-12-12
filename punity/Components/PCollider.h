@@ -17,8 +17,6 @@ namespace Punity::Components {
     private:
         std::map<uint64_t, PCollider*> m_colliders;
 
-        // Information.
-        uint8_t m_info = 0;
     protected:
         friend class Punity::PEngine;
 
@@ -43,6 +41,14 @@ namespace Punity::Components {
 
         // trigger = only acts as a boundary
         bool is_trigger = false;
+
+        // Information.
+        uint8_t information = 0;
+
+        // Chain-calling
+        PCollider* set_static(bool _static);
+        PCollider* set_trigger(bool _trigger);
+        PCollider* set_information(uint8_t _information);
 
         Shape get_shape() { return m_shape; }
     };

@@ -28,8 +28,8 @@ namespace Punity::Collision {
 
         if (overlap < -1e-5) return false;
 
-        // If rect is a trigger return before modifying position of circle
-        if (rect->is_trigger) return true;
+        // If is a trigger return before modifying position of circle
+        if (rect->is_trigger || circle->is_trigger) return true;
 
         // Resolution
         circle_pos.x -= ray_to_nearest_point.x / mag * overlap;
@@ -48,6 +48,9 @@ namespace Punity::Collision {
 
         // Not intersecting
         if (dist > circle1->radius + circle2->radius) return false;
+
+        // No resolution should be made
+        if (circle1->is_trigger || circle2->is_trigger) return true;
 
         // get the vector from the center of circle2 that points
         // to center of circle1

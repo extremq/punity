@@ -10,7 +10,7 @@
 #include "game/Assets/sprite_layers.h"
 #include "punity/Components/PBoxCollider.h"
 #include "ActorBehaviour.h"
-
+#include "Projectile.h"
 
 /*
  * Unity has things called "Prefabs". Basically, they are game objects (my Punity::PEntity)
@@ -34,7 +34,8 @@ namespace Game::GameplayPrefabCreator {
         player_entity->add_component<PlayerBehaviour>();
         player_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::player_h / 2.0f)
-                ->is_static = false;
+                ->set_static(false)
+                ->set_information(COLLIDER_PLAYER);
         player_entity->add_component<ActorBehaviour>();
 
         return player_entity;
@@ -113,7 +114,7 @@ namespace Game::GameplayPrefabCreator {
         // Set the collider
         enemy_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::first_enemy_type_h / 2)
-                ->is_static = true;
+                ->set_information(COLLIDER_ENEMY);
 
         // Set actor behaviour
         enemy_entity->add_component<ActorBehaviour>();
@@ -121,5 +122,54 @@ namespace Game::GameplayPrefabCreator {
         // TODO add enemy behaviour and actor behaviour
 
         return enemy_entity;
+    }
+
+
+    Punity::PEntity* make_player_bullet(Punity::PEntity* parent) {
+        auto bullet_entity = Punity::PEntity::make_entity("PBullet", parent, true);
+
+        bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                Game::Sprites::player_bullet,
+                Game::Sprites::player_bullet_alpha,
+                Game::Sprites::player_bullet_h,
+                Game::Sprites::player_bullet_w,
+                Game::Sprites::Layers::BULLET
+                );
+
+        bullet_entity->add_component<Punity::Components::PCircleCollider>()
+                ->set_radius(Game::Sprites::player_bullet_h / 2)
+                ->set_information(COLLIDER_PLAYER_PROJECTILE)
+                ->set_trigger(true)
+                ->set_static(false);
+
+        bullet_entity->add_component<Projectile>()
+                ->set_exception(COLLIDER_PLAYER)
+                ->set_self(COLLIDER_PLAYER_PROJECTILE);
+
+        return bullet_entity;
+    }
+
+    Punity::PEntity* make_enemy_bullet(Punity::PEntity* parent) {
+        auto bullet_entity = Punity::PEntity::make_entity("EBullet", parent, true);
+
+        bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                Game::Sprites::enemy_bullet,
+                Game::Sprites::enemy_bullet_alpha,
+                Game::Sprites::enemy_bullet_h,
+                Game::Sprites::enemy_bullet_w,
+                Game::Sprites::Layers::BULLET
+        );
+
+        bullet_entity->add_component<Punity::Components::PCircleCollider>()
+                ->set_radius(Game::Sprites::enemy_bullet_h / 2)
+                ->set_information(COLLIDER_ENEMY_PROJECTILE)
+                ->set_trigger(true)
+                ->set_static(false);
+
+        bullet_entity->add_component<Projectile>()
+                ->set_exception(COLLIDER_ENEMY)
+                ->set_self(COLLIDER_ENEMY_PROJECTILE);
+
+        return bullet_entity;
     }
 } // GameplayPrefabCreator

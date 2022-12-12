@@ -5,6 +5,8 @@
 #include "PlayerBehaviour.h"
 #include "punity/Components/PCollider.h"
 #include "ActorBehaviour.h"
+#include "GameplayPrefabCreator.h"
+#include "Projectile.h"
 
 namespace Game {
 
@@ -35,6 +37,15 @@ namespace Game {
 
     void PlayerBehaviour::on_update() {
         compute_movement();
+
+        // Shoot test!
+        if (Punity::Button.read_button(ACTION_BTN)) {
+            auto bullet = GameplayPrefabCreator::make_player_bullet(
+                    Punity::Engine.find_entity("Room")
+                    );
+            bullet->get_transform()->set_global(get_entity()->get_transform()->global_position);
+            bullet->get_component<Projectile>()->set_target_point({0, 0});
+        }
     }
 
     void PlayerBehaviour::compute_movement() {

@@ -2,6 +2,8 @@ from PIL import Image
 import os
 from generate_code import *
 
+print("RUN THIS SCRIPT FROM SAME FOLDER AS FILE.")
+
 # sprites.h
 output_header = """#ifndef _SPRITES_
 #define _SPRITES_
@@ -24,7 +26,7 @@ sprite_directory = "Sprites/"
 for file_name in os.listdir(sprite_directory):
     if not file_name.endswith(".png"):
         continue
-    
+
     file_path = sprite_directory + file_name
     sprite_name = file_name[:-4]
 
@@ -49,3 +51,5 @@ output_header_file.write(output_header)
 output_code += "\n}"
 output_code_file = open("sprites.cpp", "w")
 output_code_file.write(output_code)
+
+print("Done!")

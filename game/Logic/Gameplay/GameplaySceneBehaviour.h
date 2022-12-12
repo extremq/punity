@@ -23,7 +23,7 @@ namespace Game {
         Punity::PEntity* room = nullptr;
         Punity::PEntity* enemies = nullptr;
         Punity::PEntity* enemy[3] = {nullptr, nullptr, nullptr};
-        Game::ActorBehaviour* enemy_actor_behaviours[3] = {nullptr, nullptr, nullptr};
+        Game::ActorBehaviour* enemy_actor_behaviour[3] = {nullptr, nullptr, nullptr};
 
         // Player entity
         Punity::PEntity* player = nullptr;
@@ -45,7 +45,6 @@ namespace Game {
         void make_enemies_entity_and_show_it();
         void make_enemies();
         void place_enemies();
-
     public:
     };
 

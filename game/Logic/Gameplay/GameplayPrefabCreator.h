@@ -14,6 +14,8 @@ namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_room(Punity::PEntity* parent);
     Punity::PEntity* make_chest(Punity::PEntity* parent);
     Punity::PEntity* make_wall(Punity::PEntity* parent);
+    Punity::PEntity* make_player_bullet(Punity::PEntity* parent);
+    Punity::PEntity* make_enemy_bullet(Punity::PEntity* parent);
 } // GameplayPrefabCreator
 
 #endif //_GAMEPLAYPREFABCREATOR_H

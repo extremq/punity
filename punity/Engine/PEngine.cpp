@@ -111,19 +111,22 @@ namespace Punity {
 
             // Now, finally, we can safely delete
             // and be assured no weird stuff happens
-            while (!m_to_be_destroyed.empty()) {
+            for (auto to_be_destroyed : m_to_be_destroyed) {
+
                 // Remove reference from parent
-                if (m_to_be_destroyed.front()->get_parent() != nullptr) {
-                    m_to_be_destroyed.front()->get_parent()->remove_child_entity(m_to_be_destroyed.front());
+                if (to_be_destroyed->get_parent() != nullptr) {
+                    to_be_destroyed->get_parent()->remove_child_entity(to_be_destroyed);
                 }
-                for (auto child : m_to_be_destroyed.front()->get_children()) {
+                for (auto child : to_be_destroyed->get_children()) {
                     // mark parents of destroyed child as nullptr
                     child->m_parent_entity = nullptr;
                 }
 
-                delete m_to_be_destroyed.front();
-                m_to_be_destroyed.pop();
+                delete to_be_destroyed;
             }
+
+            // All finished
+            m_to_be_destroyed.clear();
 
             Punity::Screen.load_background();
 
@@ -304,6 +307,6 @@ namespace Punity {
     }
 
     void PEngine::queue_destruction(PEntity *entity) {
-        m_to_be_destroyed.push(entity);
+        m_to_be_destroyed.insert(entity);
     }
 }
