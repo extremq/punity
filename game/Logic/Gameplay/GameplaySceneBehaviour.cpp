@@ -101,6 +101,12 @@ namespace Game {
     void GameplaySceneBehaviour::on_enable() {
         wave = 1;
 
+        // Reset all pointers
+        for (size_t i = 0; i < 3; ++i) {
+            enemy_actor_behaviour[i] = nullptr;
+            enemy[i] = nullptr;
+        }
+
         if (SceneManager::level == 1 && player != nullptr) {
             // Reset player health
             player->get_component<ActorBehaviour>()->set_hitpoints(6);
