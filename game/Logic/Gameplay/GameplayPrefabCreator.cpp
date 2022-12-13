@@ -134,7 +134,7 @@ namespace Game::GameplayPrefabCreator {
         enemy_entity->add_component<Weapon>()
                 ->set_attack_radius_degrees(10)
                 ->set_bullet_count(2)
-                ->set_bullet_speed(40)
+                ->set_bullet_speed(50)
                 ->set_shots_per_second(0.5f);
 
         // Entity for selector that appears above enemy when player aims at
@@ -199,5 +199,56 @@ namespace Game::GameplayPrefabCreator {
                 ->set_self(COLLIDER_ENEMY_PROJECTILE);
 
         return bullet_entity;
+    }
+
+    Punity::PEntity* make_gameplay_UI(Punity::PEntity* parent) {
+        auto gameplay_UI_entity = Punity::PEntity::make_entity("GameplayUI", parent, true);
+
+        auto hearts_entity = Punity::PEntity::make_entity("Hearts", gameplay_UI_entity, true);
+        auto heart1 = Punity::PEntity::make_entity("Heart1", hearts_entity, true);
+        auto heart2 = Punity::PEntity::make_entity("Heart2", hearts_entity, true);
+        auto heart3 = Punity::PEntity::make_entity("Heart3", hearts_entity, true);
+
+        // Place and set hearts
+        heart1->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Sprites::heart,
+                Game::Sprites::heart_alpha,
+                Game::Sprites::heart_h,
+                Game::Sprites::heart_w,
+                Game::Sprites::Layers::HEART
+                );
+
+        heart1->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+                - 64.0f + Game::Sprites::heart_w * 0.5f,
+                - 64.0f + Game::Sprites::heart_h * 0.5f
+        };
+
+        heart2->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Sprites::heart,
+                Game::Sprites::heart_alpha,
+                Game::Sprites::heart_h,
+                Game::Sprites::heart_w,
+                Game::Sprites::Layers::HEART
+        );
+
+        heart2->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+                - 64.0f + 0.5f + Game::Sprites::heart_w * 1.5f,
+                - 64.0f + Game::Sprites::heart_h * 0.5f
+        };
+
+        heart3->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Sprites::heart,
+                Game::Sprites::heart_alpha,
+                Game::Sprites::heart_h,
+                Game::Sprites::heart_w,
+                Game::Sprites::Layers::HEART
+        );
+
+        heart3->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+                - 64.0f + 1.5f + Game::Sprites::heart_w * 2.5f,
+                - 64.0f + Game::Sprites::heart_h * 0.5f
+        };
+
+        return gameplay_UI_entity;
     }
 } // GameplayPrefabCreator

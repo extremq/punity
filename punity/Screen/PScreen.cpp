@@ -91,9 +91,9 @@ namespace Punity {
         // It would be better to wrap these calls to a common function
         // Shouldn't be repeating code.
         int32_t cam_far_w = m_width / 2;
-        int32_t cam_near_w = -m_width / 2;
+        int32_t cam_near_w = -m_width / 2 - 1;
         int32_t cam_far_h = m_width / 2;
-        int32_t cam_near_h = -m_width / 2;
+        int32_t cam_near_h = -m_width / 2 - 1;
 
         if (col > cam_far_w || row > cam_far_h || col + w <= cam_near_w || row + h <= cam_near_h) return;
         if (h == 0 || w == 0) Punity::Utils::Error("Zero width/height sprite.");

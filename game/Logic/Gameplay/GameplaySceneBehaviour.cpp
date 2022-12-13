@@ -25,6 +25,9 @@ namespace Game {
             }
         }
 
+        // Update the hearts to reflect current player health
+        update_hearts(player_actor_behaviour);
+
         bool enemies_are_dead = enemies->get_children_count() == 0;
 
         // Check if player is dead
@@ -67,6 +70,7 @@ namespace Game {
             if (SceneManager::stage == MAX_STAGE) {
                 // NOW we switch level
                 SceneManager::level = std::max(1, (SceneManager::level + 1) % (MAX_LEVEL + 1));
+                SceneManager::stage = 1;
                 SceneManager::switch_scene(LEVEL_LOAD_SCENE);
             } else {
                 SceneManager::stage++;
@@ -109,7 +113,7 @@ namespace Game {
 
         if (SceneManager::level == 1 && player != nullptr) {
             // Reset player health
-            player->get_component<ActorBehaviour>()->set_hitpoints(6);
+            player->get_component<ActorBehaviour>()->set_hitpoints(3);
         }
 
         // Reset scene status
@@ -117,6 +121,7 @@ namespace Game {
         GameplaySceneManager::enemies_loaded = false;
         GameplaySceneManager::chest_loaded = false;
 
+        setup_scene();
         setup_stage();
     }
 
@@ -126,20 +131,11 @@ namespace Game {
     void GameplaySceneBehaviour::setup_stage() {
         // Reset stage status
 
-        // Make room and actors entities to group the tiles and the enemies
-        if (room == nullptr) {
-            room = GameplayPrefabCreator::make_room(this->get_entity());
-        }
-
-        // This entity is the first state of our automata
         room->set_active(true);
 
-        if (player == nullptr) {
-            player = GameplayPrefabCreator::make_player(this->get_entity());
-        }
-
-        // Show the player at a later point
+        // Show the player and hearts later
         player->set_active(false);
+        hud->get_child_by_name("Hearts")->set_active(false);
 
         // Create enemies entity (it's deleted each time)
         enemies = GameplayPrefabCreator::make_enemies_entity(room);
@@ -163,6 +159,8 @@ namespace Game {
 
     void GameplaySceneBehaviour::show_player() {
         player->set_active(true);
+        hud->get_child_by_name("Hearts")->set_active(true);
+
         GameplaySceneManager::player_loaded = true;
     }
 
@@ -194,6 +192,49 @@ namespace Game {
         enemy[0]->get_transform()->set_global({0, 40});
         enemy[1]->get_transform()->set_global({40, 0});
         enemy[2]->get_transform()->set_global({-40, 0});
+    }
+
+    void GameplaySceneBehaviour::setup_scene() {
+        if (hud == nullptr) {
+            hud = GameplayPrefabCreator::make_gameplay_UI(get_entity());
+        }
+
+        if (player == nullptr) {
+            player = GameplayPrefabCreator::make_player(get_entity());
+        }
+
+        // Make room and actors entities to group the tiles and the enemies
+        if (room == nullptr) {
+            room = GameplayPrefabCreator::make_room(get_entity());
+        }
+
+    }
+
+    void GameplaySceneBehaviour::update_hearts(ActorBehaviour* player_actor) {
+        if (!GameplaySceneManager::player_loaded) return;
+
+        uint8_t player_hitpoints = player_actor->get_hitpoints();
+        auto hearts = hud->get_child_by_name("Hearts");
+        auto heart1 = hearts->get_child_by_name("Heart1");
+        auto heart2 = hearts->get_child_by_name("Heart2");
+        auto heart3 = hearts->get_child_by_name("Heart3");
+
+
+        heart1->set_active(false);
+        heart2->set_active(false);
+        heart3->set_active(false);
+
+        if (player_hitpoints >= 1) {
+            heart1->set_active(true);
+        }
+
+        if (player_hitpoints >= 2) {
+            heart2->set_active(true);
+        }
+
+        if (player_hitpoints >= 3) {
+            heart3->set_active(true);
+        }
     }
 
 } // Game

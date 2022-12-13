@@ -10,9 +10,10 @@
 namespace Game {
     class ActorBehaviour : public Punity::Components::PComponent {
     private:
-        uint8_t m_hitpoints = 6;
+        uint8_t m_hitpoints = 3;
         bool m_is_dead = false;
     public:
+        // TODO make max_health and replenish_health
         void set_hitpoints(uint8_t hitpoints);
         uint8_t  get_hitpoints();
         void add_hitpoints(uint8_t hitpoints);

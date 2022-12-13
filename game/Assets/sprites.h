@@ -53,6 +53,10 @@ namespace Game::Sprites {
 	extern bool const level1_alpha [20 * 20];
 	extern uint16_t const level1_w;
 	extern uint16_t const level1_h;
+	extern uint16_t const heart [7 * 6];
+	extern bool const heart_alpha [7 * 6];
+	extern uint16_t const heart_w;
+	extern uint16_t const heart_h;
 
 }
 

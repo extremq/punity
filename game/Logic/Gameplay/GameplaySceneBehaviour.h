@@ -25,6 +25,9 @@ namespace Game {
         Punity::PEntity* enemy[3] = {nullptr, nullptr, nullptr};
         Game::ActorBehaviour* enemy_actor_behaviour[3] = {nullptr, nullptr, nullptr};
 
+        // Gameplay UI
+        Punity::PEntity* hud = nullptr;
+
         // Player entity
         Punity::PEntity* player = nullptr;
 
@@ -40,6 +43,8 @@ namespace Game {
         void make_chest_and_show_it();
         void make_enemies();
         void place_enemies();
+        void setup_scene();
+        void update_hearts(ActorBehaviour* player_actor);
     public:
     };
 
