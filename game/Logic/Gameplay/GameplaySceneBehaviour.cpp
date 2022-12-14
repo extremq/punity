@@ -100,8 +100,7 @@ namespace Game {
     }
 
     // When this is enabled, setup the level!
-    // Only enabled/disabled when entering from
-    // Loading screens
+    // Only enabled/disabled when entering start
     void GameplaySceneBehaviour::on_enable() {
         wave = 1;
 
@@ -113,7 +112,7 @@ namespace Game {
 
         if (SceneManager::level == 1 && player != nullptr) {
             // Reset player health
-            player->get_component<ActorBehaviour>()->set_hitpoints(3);
+            player->get_component<ActorBehaviour>()->replenish_hitpoints();
         }
 
         // Reset scene status

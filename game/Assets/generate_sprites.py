@@ -21,8 +21,11 @@ namespace Game::Sprites {
 
 """
 
+split_file = __file__.split('/')
+split_file = '/'.join(split_file[:-1]) + '/'
+
 # Go through all files inside sprites directory
-sprite_directory = "Sprites/"
+sprite_directory = split_file + "Sprites/"
 for file_name in os.listdir(sprite_directory):
     if not file_name.endswith(".png"):
         continue
@@ -44,12 +47,12 @@ for file_name in os.listdir(sprite_directory):
 
 # Generate header
 output_header += "\n}\n\n#endif"
-output_header_file = open("sprites.h", "w")
+output_header_file = open(split_file + "sprites.h", "w")
 output_header_file.write(output_header)
 
 # Generate cpp
 output_code += "\n}"
-output_code_file = open("sprites.cpp", "w")
+output_code_file = open(split_file + "sprites.cpp", "w")
 output_code_file.write(output_code)
 
 print("Done!")
