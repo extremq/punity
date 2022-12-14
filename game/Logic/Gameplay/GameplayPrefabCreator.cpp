@@ -3,12 +3,16 @@
 //
 
 #include "GameplayPrefabCreator.h"
+
 #include "game/Assets/sprites.h"
+#include "game/Assets/sprite_layers.h"
+#include "game/Assets/colliders.h"
+
 #include "punity/Components/PCircleCollider.h"
+#include "punity/Components/PBoxCollider.h"
+
 #include "PlayerBehaviour.h"
 #include "RoomBehaviour.h"
-#include "game/Assets/sprite_layers.h"
-#include "punity/Components/PBoxCollider.h"
 #include "ActorBehaviour.h"
 #include "Projectile.h"
 #include "EnemyBehaviour.h"
@@ -37,7 +41,7 @@ namespace Game::GameplayPrefabCreator {
         player_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::player_h / 2.0f)
                 ->set_static(false)
-                ->set_information(COLLIDER_PLAYER);
+                ->set_information(Game::Colliders::COLLIDER_PLAYER);
         player_entity->add_component<ActorBehaviour>();
         player_entity->add_component<Weapon>()->set_weapon(Weapons::starting_weapon);
 
@@ -118,7 +122,7 @@ namespace Game::GameplayPrefabCreator {
         // Set the collider
         enemy_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::first_enemy_type_h / 2)
-                ->set_information(COLLIDER_ENEMY);
+                ->set_information(Game::Colliders::COLLIDER_ENEMY);
 
         // Set enemy behaviour
         enemy_entity->add_component<EnemyBehaviour>();
@@ -158,13 +162,12 @@ namespace Game::GameplayPrefabCreator {
 
         bullet_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::player_bullet_h / 2)
-                ->set_information(COLLIDER_PLAYER_PROJECTILE)
+                ->set_information(Game::Colliders::COLLIDER_PLAYER_PROJECTILE_1)
                 ->set_trigger(true)
                 ->set_static(false);
 
         bullet_entity->add_component<Projectile>()
-                ->set_exception(COLLIDER_PLAYER)
-                ->set_self(COLLIDER_PLAYER_PROJECTILE);
+                ->set_exception(Game::Colliders::COLLIDER_PLAYER);
 
         return bullet_entity;
     }
@@ -182,13 +185,12 @@ namespace Game::GameplayPrefabCreator {
 
         bullet_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::enemy_bullet_h / 2)
-                ->set_information(COLLIDER_ENEMY_PROJECTILE)
+                ->set_information(Game::Colliders::COLLIDER_ENEMY_PROJECTILE_1)
                 ->set_trigger(true)
                 ->set_static(false);
 
         bullet_entity->add_component<Projectile>()
-                ->set_exception(COLLIDER_ENEMY)
-                ->set_self(COLLIDER_ENEMY_PROJECTILE);
+                ->set_exception(Game::Colliders::COLLIDER_ENEMY);
 
         return bullet_entity;
     }

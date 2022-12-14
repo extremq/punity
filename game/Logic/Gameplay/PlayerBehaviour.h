@@ -23,20 +23,22 @@ namespace Game {
         // Weapon picked up by player
         Weapons::WeaponConfig equipped_weapon = Weapons::empty_weapon;
 
-        // Weapons use bullets
-        int16_t remaining_bullets = 100;
+        // Weapons use energy
+        int16_t remaining_energy = 99;
 
         void on_start_collision(Punity::Components::PCollider* other) override;
         void on_update() override;
         void on_enable() override;
 
         void change_weapon(Weapons::WeaponConfig weaponConfig);
+        void compute_damage_dealt_by_projectile(uint8_t projectile_type);
 
         void compute_movement();
         void reset_status_for_new_stage();
 
         Punity::Utils::PVector compute_nearest_enemy();
     public:
+        int16_t get_remaining_energy();
         void fully_reset_player();
         bool has_touched_chest();
     };

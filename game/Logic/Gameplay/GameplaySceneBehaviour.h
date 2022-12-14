@@ -7,6 +7,7 @@
 
 #include "game/Logic/SceneManager.h"
 #include "ActorBehaviour.h"
+#include "PlayerBehaviour.h"
 
 constexpr float PLAYER_CREATION_DELAY_SECONDS = 1.0f;
 constexpr float STAGE_SWITCH_DELAY_SECONDS = 1.0f;
@@ -45,6 +46,7 @@ namespace Game {
         void place_enemies();
         void setup_scene();
         void update_hearts(ActorBehaviour* player_actor);
+        void update_energy(PlayerBehaviour* player_behaviour);
     public:
     };
 

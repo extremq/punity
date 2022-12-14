@@ -7,6 +7,7 @@
 #include "game/Logic/Gameplay/GameplayPrefabCreator.h"
 #include "PlayerBehaviour.h"
 #include "GameplaySceneManager.h"
+#include "game/Assets/sprite_layers.h"
 
 namespace Game {
     void GameplaySceneBehaviour::on_update() {
@@ -27,6 +28,9 @@ namespace Game {
 
         // Update the hearts to reflect current player health
         update_hearts(player_actor_behaviour);
+
+        // Update energy
+        update_energy(player_behaviour);
 
         bool enemies_are_dead = enemies->get_children_count() == 0;
 
@@ -237,6 +241,192 @@ namespace Game {
         if (player_hitpoints >= 3) {
             heart3->set_active(true);
         }
+    }
+
+    void GameplaySceneBehaviour::update_energy(PlayerBehaviour *player_behaviour) {
+        if (!GameplaySceneManager::player_loaded) return;
+
+        // Change digits
+        uint8_t player_energy = player_behaviour->get_remaining_energy();
+        auto first_digit = hud->get_child_by_name("EnergyHUD")
+                ->get_child_by_name("EnergyD1")
+                ->get_component<Punity::Components::PUISpriteRenderer>();
+        auto second_digit = hud->get_child_by_name("EnergyHUD")
+                ->get_child_by_name("EnergyD2")
+                ->get_component<Punity::Components::PUISpriteRenderer>();
+
+        // Set first digit
+        switch(player_energy / 10) {
+            case 0:
+                first_digit->set_sprite(
+                        Game::Sprites::zero,
+                        Game::Sprites::zero_alpha,
+                        Game::Sprites::zero_h,
+                        Game::Sprites::zero_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 1:
+                first_digit->set_sprite(
+                        Game::Sprites::one,
+                        Game::Sprites::one_alpha,
+                        Game::Sprites::one_h,
+                        Game::Sprites::one_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 2:
+                first_digit->set_sprite(
+                        Game::Sprites::two,
+                        Game::Sprites::two_alpha,
+                        Game::Sprites::two_h,
+                        Game::Sprites::two_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 3:
+                first_digit->set_sprite(
+                        Game::Sprites::three,
+                        Game::Sprites::three_alpha,
+                        Game::Sprites::three_h,
+                        Game::Sprites::three_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 4:
+                first_digit->set_sprite(
+                        Game::Sprites::four,
+                        Game::Sprites::four_alpha,
+                        Game::Sprites::four_h,
+                        Game::Sprites::four_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 5:
+                first_digit->set_sprite(
+                        Game::Sprites::five,
+                        Game::Sprites::five_alpha,
+                        Game::Sprites::five_h,
+                        Game::Sprites::five_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 6:
+                first_digit->set_sprite(
+                        Game::Sprites::six,
+                        Game::Sprites::six_alpha,
+                        Game::Sprites::six_h,
+                        Game::Sprites::six_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 7:
+                first_digit->set_sprite(
+                        Game::Sprites::seven,
+                        Game::Sprites::seven_alpha,
+                        Game::Sprites::seven_h,
+                        Game::Sprites::seven_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 8:
+                first_digit->set_sprite(
+                        Game::Sprites::eight,
+                        Game::Sprites::eight_alpha,
+                        Game::Sprites::eight_h,
+                        Game::Sprites::eight_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 9:
+                first_digit->set_sprite(
+                        Game::Sprites::nine,
+                        Game::Sprites::nine_alpha,
+                        Game::Sprites::nine_h,
+                        Game::Sprites::nine_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            default:
+                break;
+        }
+
+        // Set second digit
+        switch(player_energy % 10) {
+            case 0:
+                second_digit->set_sprite(
+                        Game::Sprites::zero,
+                        Game::Sprites::zero_alpha,
+                        Game::Sprites::zero_h,
+                        Game::Sprites::zero_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 1:
+                second_digit->set_sprite(
+                        Game::Sprites::one,
+                        Game::Sprites::one_alpha,
+                        Game::Sprites::one_h,
+                        Game::Sprites::one_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 2:
+                second_digit->set_sprite(
+                        Game::Sprites::two,
+                        Game::Sprites::two_alpha,
+                        Game::Sprites::two_h,
+                        Game::Sprites::two_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 3:
+                second_digit->set_sprite(
+                        Game::Sprites::three,
+                        Game::Sprites::three_alpha,
+                        Game::Sprites::three_h,
+                        Game::Sprites::three_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 4:
+                second_digit->set_sprite(
+                        Game::Sprites::four,
+                        Game::Sprites::four_alpha,
+                        Game::Sprites::four_h,
+                        Game::Sprites::four_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 5:
+                second_digit->set_sprite(
+                        Game::Sprites::five,
+                        Game::Sprites::five_alpha,
+                        Game::Sprites::five_h,
+                        Game::Sprites::five_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 6:
+                second_digit->set_sprite(
+                        Game::Sprites::six,
+                        Game::Sprites::six_alpha,
+                        Game::Sprites::six_h,
+                        Game::Sprites::six_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 7:
+                second_digit->set_sprite(
+                        Game::Sprites::seven,
+                        Game::Sprites::seven_alpha,
+                        Game::Sprites::seven_h,
+                        Game::Sprites::seven_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 8:
+                second_digit->set_sprite(
+                        Game::Sprites::eight,
+                        Game::Sprites::eight_alpha,
+                        Game::Sprites::eight_h,
+                        Game::Sprites::eight_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 9:
+                second_digit->set_sprite(
+                        Game::Sprites::nine,
+                        Game::Sprites::nine_alpha,
+                        Game::Sprites::nine_h,
+                        Game::Sprites::nine_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            default:
+                break;
+        }
+
     }
 
 } // Game

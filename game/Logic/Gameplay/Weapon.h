@@ -23,7 +23,9 @@ namespace Game {
 
         void set_weapon(Weapons::WeaponConfig weaponConfig);
 
-        uint8_t  get_bullet_count();
+        uint8_t get_bullet_count();
+        uint8_t get_energy_cost();
+        uint8_t get_projectile_type();
 
         void shoot(Punity::Utils::PVector start_pos, Punity::Utils::PVector target_pos, Punity::PEntity* parent, bool is_player);
 

@@ -13,6 +13,7 @@ namespace Game {
         Punity::PEntity* player;
         Punity::PEntity* room;
 
+        void compute_damage_dealt_by_projectile(uint8_t projectile_type);
         void on_start_collision(Punity::Components::PCollider* other) override;
         void on_update() override;
         void on_enable() override;

@@ -46,7 +46,10 @@ namespace Game {
 
                 if (config.bullet_count == 1) {
                     // If there's one bullet just send it straight to the target
-                    bullet->get_component<Projectile>()->set_target_point(target_pos)->set_speed(config.bullet_speed);
+                    bullet->get_component<Projectile>()
+                            ->set_target_point(target_pos)
+                            ->set_speed(config.bullet_speed)
+                            ->set_self(config.projectile_type);
                     continue;
                 }
 
@@ -56,7 +59,10 @@ namespace Game {
                 // Translate back
                 computed_rotation += start_pos;
 
-                bullet->get_component<Projectile>()->set_target_point(computed_rotation)->set_speed(config.bullet_speed);
+                bullet->get_component<Projectile>()
+                        ->set_target_point(computed_rotation)
+                        ->set_speed(config.bullet_speed)
+                        ->set_self(config.projectile_type);
             }
         }
     }
@@ -71,11 +77,19 @@ namespace Game {
         return vector;
     }
 
+    void Weapon::set_weapon(Weapons::WeaponConfig weaponConfig) {
+        config = weaponConfig;
+    }
+
     uint8_t Weapon::get_bullet_count() {
         return config.bullet_count;
     }
 
-    void Weapon::set_weapon(Weapons::WeaponConfig weaponConfig) {
-        config = weaponConfig;
+    uint8_t Weapon::get_energy_cost() {
+        return config.energy_cost;
+    }
+
+    uint8_t Weapon::get_projectile_type() {
+        return config.projectile_type;
     }
 } // Game

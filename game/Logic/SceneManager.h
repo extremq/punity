@@ -26,12 +26,6 @@ constexpr uint8_t MAX_WAVE = 3;
 constexpr uint8_t WIDTH = 128;
 constexpr uint8_t HEIGHT = 128;
 
-// Codes used by collider info
-constexpr uint8_t COLLIDER_PLAYER = 1;
-constexpr uint8_t COLLIDER_ENEMY = 2;
-constexpr uint8_t COLLIDER_PLAYER_PROJECTILE = 3;
-constexpr uint8_t COLLIDER_ENEMY_PROJECTILE = 4;
-
 enum Scene {
     START_SCENE,
     LEVEL_LOAD_SCENE,

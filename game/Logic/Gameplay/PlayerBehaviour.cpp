@@ -6,7 +6,9 @@
 #include "punity/Components/PCollider.h"
 #include "ActorBehaviour.h"
 #include "GameplayPrefabCreator.h"
+#include "game/Assets/colliders.h"
 #include "GameplaySceneManager.h"
+#include "game/Assets/colliders.h"
 #include "punity/Utils/PCollisionComputation.h" // for dist
 #include "Weapon.h"
 
@@ -20,9 +22,17 @@ namespace Game {
         if (GameplaySceneManager::chest_loaded && other->get_entity()->get_name() == "Chest") {
             m_has_touched_chest = true;
         }
-        else if (other->information == COLLIDER_ENEMY_PROJECTILE) {
-            // Subtract hit-point
-            get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(1);
+        else
+            compute_damage_dealt_by_projectile(other->information);
+    }
+
+    void PlayerBehaviour::compute_damage_dealt_by_projectile(uint8_t projectile_type) {
+        switch (projectile_type) {
+            case Colliders::COLLIDER_ENEMY_PROJECTILE_1:
+                get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(1);
+                break;
+            default:
+                break;
         }
     }
 
@@ -34,7 +44,7 @@ namespace Game {
         m_has_picked_up_any_weapon = false;
 
         // Restore bullets
-        remaining_bullets = 100;
+        remaining_energy = 100;
 
         // Reset touching status
         m_has_touched_chest = false;
@@ -85,10 +95,11 @@ namespace Game {
         if (Punity::Button.read_button(ACTION_BTN)) {
             // You need enough bullets to be able to shoot
             // However starting weapon uses no ammo, just magic
-            if (!m_is_using_starting_weapon && remaining_bullets - weapon_component->get_bullet_count() < 0) return;
+            if (!m_is_using_starting_weapon && remaining_energy - weapon_component->get_bullet_count() < 0) return;
 
             // Subtract bullets and shoot
-            remaining_bullets -= weapon_component->get_bullet_count();
+            remaining_energy -= weapon_component->get_energy_cost();
+            std::cout << (int) remaining_energy << '\n';
             weapon_component->shoot(
                     get_entity()->get_transform()->global_position,
                     nearest_enemy,
@@ -143,4 +154,9 @@ namespace Game {
     void PlayerBehaviour::change_weapon(Weapons::WeaponConfig weaponConfig) {
         weapon_component->set_weapon(weaponConfig);
     }
+
+    int16_t PlayerBehaviour::get_remaining_energy() {
+        return remaining_energy;
+    }
+
 } // Game

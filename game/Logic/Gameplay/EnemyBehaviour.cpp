@@ -4,15 +4,24 @@
 
 #include "EnemyBehaviour.h"
 #include "punity/Components/PCollider.h"
+#include "game/Assets/colliders.h"
 #include "ActorBehaviour.h"
 #include "GameplaySceneManager.h"
 #include "Weapon.h"
 
 namespace Game {
     void EnemyBehaviour::on_start_collision(Punity::Components::PCollider *other) {
-        if (other->information == COLLIDER_PLAYER_PROJECTILE) {
-            // Subtract hitpoint
-            get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(1);
+        compute_damage_dealt_by_projectile(other->information);
+    }
+
+    void EnemyBehaviour::compute_damage_dealt_by_projectile(uint8_t projectile_type) {
+        // Get projectile type and subtract hitpoints based on that
+        switch(projectile_type) {
+            case Game::Colliders::COLLIDER_PLAYER_PROJECTILE_1:
+                get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(1);
+                break;
+            default:
+                break;
         }
     }
 
