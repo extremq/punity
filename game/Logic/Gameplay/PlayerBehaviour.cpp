@@ -38,7 +38,6 @@ namespace Game {
 
         // Reset touching status
         m_has_touched_chest = false;
-
     }
 
     void PlayerBehaviour::on_enable() {
@@ -51,6 +50,9 @@ namespace Game {
 
         // Store weapon component
         weapon_component = get_entity()->get_component<Weapon>();
+
+        // Reset chest touch
+        m_has_touched_chest = false;
 
         // Place player back
         get_entity()->get_transform()->set_global({0, -40});

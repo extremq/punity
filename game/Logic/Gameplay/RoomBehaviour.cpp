@@ -10,9 +10,9 @@
 namespace Game {
     void RoomBehaviour::generate_stage() {
         // Border the room
-        for (int row = 0; row < 16; ++row) {
-            for (int column = 0; column < 16; ++column) {
-                if (column == 0 || column == 15 || row == 0 || row == 15)
+        for (int row = 1; row < 15; ++row) {
+            for (int column = 1; column < 15; ++column) {
+                if (column == 1 || column == 14 || row == 1 || row == 14)
                     tiles[row][column] = WALL;
                 else
                     tiles[row][column] = EMPTY;

@@ -15,7 +15,7 @@ namespace Game::Weapons {
 
     const WeaponConfig starting_weapon = {
         1,
-        1.0f,
+        10.0f,
         0,
         100.0f,
     };

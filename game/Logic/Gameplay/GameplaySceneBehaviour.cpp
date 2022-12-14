@@ -70,6 +70,9 @@ namespace Game {
             GameplaySceneManager::player_loaded = false;
             GameplaySceneManager::enemies_loaded = false;
 
+            // Reset wave level
+            wave = 1;
+
             if (SceneManager::stage == MAX_STAGE) {
                 // NOW we switch level
                 SceneManager::level = std::max(1, (SceneManager::level + 1) % (MAX_LEVEL + 1));
@@ -79,17 +82,14 @@ namespace Game {
                 SceneManager::stage++;
 
                 // Disable things temporarily
-                room->destroy();
-                room = nullptr;
+                room->set_active(false);
+                player->set_active(false);
+                hud->set_active(false);
 
                 for (size_t i = 0; i < 3; ++i) {
                     enemy_actor_behaviour[i] = nullptr;
                     enemy[i] = nullptr;
                 }
-
-                player->set_active(false);
-
-                wave = 1;
 
                 // Make new stage
                 new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
@@ -132,12 +132,11 @@ namespace Game {
     // each load.
     void GameplaySceneBehaviour::setup_stage() {
         // Reset stage status
-
         room->set_active(true);
 
-        // Show the player and hearts later
+        // Show the player and hud later
         player->set_active(false);
-        hud->get_child_by_name("Hearts")->set_active(false);
+        hud->set_active(false);
 
         // Create enemies entity (it's deleted each time)
         enemies = GameplayPrefabCreator::make_enemies_entity(room);
@@ -160,8 +159,9 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::show_player() {
+        // Show the player-related things
         player->set_active(true);
-        hud->get_child_by_name("Hearts")->set_active(true);
+        hud->set_active(true);
 
         GameplaySceneManager::player_loaded = true;
     }

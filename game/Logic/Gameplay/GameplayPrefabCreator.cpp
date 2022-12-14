@@ -196,6 +196,7 @@ namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_gameplay_UI(Punity::PEntity* parent) {
         auto gameplay_UI_entity = Punity::PEntity::make_entity("GameplayUI", parent, true);
 
+        // Hearts system
         auto hearts_entity = Punity::PEntity::make_entity("Hearts", gameplay_UI_entity, true);
         auto heart1 = Punity::PEntity::make_entity("Heart1", hearts_entity, true);
         auto heart2 = Punity::PEntity::make_entity("Heart2", hearts_entity, true);
@@ -207,11 +208,12 @@ namespace Game::GameplayPrefabCreator {
                 Game::Sprites::heart_alpha,
                 Game::Sprites::heart_h,
                 Game::Sprites::heart_w,
-                Game::Sprites::Layers::HEART
+                Game::Sprites::Layers::HUD
                 );
 
+        // Beware esoteric computations
         heart1->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
-                - 64.0f + Game::Sprites::heart_w * 0.5f,
+                - 56.0f + Game::Sprites::heart_w * 0.5f,
                 - 64.0f + Game::Sprites::heart_h * 0.5f
         };
 
@@ -220,11 +222,11 @@ namespace Game::GameplayPrefabCreator {
                 Game::Sprites::heart_alpha,
                 Game::Sprites::heart_h,
                 Game::Sprites::heart_w,
-                Game::Sprites::Layers::HEART
+                Game::Sprites::Layers::HUD
         );
 
         heart2->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
-                - 64.0f + 0.5f + Game::Sprites::heart_w * 1.5f,
+                - 48.0f + Game::Sprites::heart_w * 0.5f,
                 - 64.0f + Game::Sprites::heart_h * 0.5f
         };
 
@@ -233,12 +235,58 @@ namespace Game::GameplayPrefabCreator {
                 Game::Sprites::heart_alpha,
                 Game::Sprites::heart_h,
                 Game::Sprites::heart_w,
-                Game::Sprites::Layers::HEART
+                Game::Sprites::Layers::HUD
         );
 
         heart3->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
-                - 64.0f + 1.5f + Game::Sprites::heart_w * 2.5f,
+                - 40.0f + Game::Sprites::heart_w * 0.5f,
                 - 64.0f + Game::Sprites::heart_h * 0.5f
+        };
+
+        // Energy counting system
+        auto energy_hud_entity = Punity::PEntity::make_entity("EnergyHUD", gameplay_UI_entity, true);
+        auto energy_image = Punity::PEntity::make_entity("EnergyImg", energy_hud_entity, true);
+
+        energy_image->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Sprites::energy,
+                Game::Sprites::energy_alpha,
+                Game::Sprites::energy_h,
+                Game::Sprites::energy_w,
+                Game::Sprites::Layers::HUD
+        );
+
+        energy_image->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+                54.0f - Game::Sprites::energy_w * 0.5f,
+                - 64.0f + Game::Sprites::energy_h * 0.5f
+        };
+
+        auto energy_digit_1 = Punity::PEntity::make_entity("EnergyD1", energy_hud_entity, true);
+        auto energy_digit_2 = Punity::PEntity::make_entity("EnergyD2", energy_hud_entity, true);
+
+        energy_digit_1->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Sprites::nine,
+                Game::Sprites::nine_alpha,
+                Game::Sprites::nine_h,
+                Game::Sprites::nine_w,
+                Game::Sprites::Layers::HUD
+        );
+
+        energy_digit_1->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+                40.0f - Game::Sprites::nine_w * 0.5f,
+                - 65.0f + Game::Sprites::nine_h * 0.5f
+        };
+
+        energy_digit_2->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Sprites::nine,
+                Game::Sprites::nine_alpha,
+                Game::Sprites::nine_h,
+                Game::Sprites::nine_w,
+                Game::Sprites::Layers::HUD
+        );
+
+        energy_digit_2->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+                48.0f - Game::Sprites::nine_w * 0.5f,
+                - 65.0f + Game::Sprites::nine_h * 0.5f
         };
 
         return gameplay_UI_entity;
