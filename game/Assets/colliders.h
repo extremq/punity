@@ -12,7 +12,13 @@ namespace Game::Colliders {
     constexpr uint8_t COLLIDER_PLAYER = 1;
     constexpr uint8_t COLLIDER_ENEMY = 2;
     constexpr uint8_t COLLIDER_PLAYER_PROJECTILE_1 = 3;
-    constexpr uint8_t COLLIDER_ENEMY_PROJECTILE_1 = 4;
+    constexpr uint8_t COLLIDER_PLAYER_PROJECTILE_2 = 4;
+    constexpr uint8_t COLLIDER_PLAYER_PROJECTILE_3 = 5;
+    constexpr uint8_t COLLIDER_PLAYER_PROJECTILE_4 = 6;
+    constexpr uint8_t COLLIDER_ENEMY_PROJECTILE_1 = 7;
+    constexpr uint8_t COLLIDER_ENEMY_PROJECTILE_2 = 8;
+    constexpr uint8_t COLLIDER_ENEMY_PROJECTILE_3 = 9;
+    constexpr uint8_t COLLIDER_ENEMY_PROJECTILE_4 = 10;
 
 }
 

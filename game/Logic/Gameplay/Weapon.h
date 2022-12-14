@@ -18,6 +18,7 @@ namespace Game {
     public:
         Weapon* set_shots_per_second(float bullets);
         Weapon* set_bullet_count(uint8_t count);
+        Weapon* set_projectile_type(uint8_t type);
         Weapon* set_attack_radius_degrees(float radius);
         Weapon* set_bullet_speed(float speed);
 

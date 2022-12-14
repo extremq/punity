@@ -20,6 +20,12 @@ namespace Game {
             case Game::Colliders::COLLIDER_PLAYER_PROJECTILE_1:
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(1);
                 break;
+            case Game::Colliders::COLLIDER_PLAYER_PROJECTILE_2:
+                get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(2);
+                break;
+            case Game::Colliders::COLLIDER_PLAYER_PROJECTILE_3:
+                get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(3);
+                break;
             default:
                 break;
         }

@@ -31,6 +31,12 @@ namespace Game {
             case Colliders::COLLIDER_ENEMY_PROJECTILE_1:
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(1);
                 break;
+            case Colliders::COLLIDER_ENEMY_PROJECTILE_2:
+                get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(2);
+                break;
+            case Colliders::COLLIDER_ENEMY_PROJECTILE_3:
+                get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(3);
+                break;
             default:
                 break;
         }
@@ -99,7 +105,7 @@ namespace Game {
 
             // Subtract bullets and shoot
             remaining_energy -= weapon_component->get_energy_cost();
-            std::cout << (int) remaining_energy << '\n';
+
             weapon_component->shoot(
                     get_entity()->get_transform()->global_position,
                     nearest_enemy,

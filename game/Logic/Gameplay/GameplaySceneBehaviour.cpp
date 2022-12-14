@@ -219,12 +219,12 @@ namespace Game {
     void GameplaySceneBehaviour::update_hearts(ActorBehaviour* player_actor) {
         if (!GameplaySceneManager::player_loaded) return;
 
+        // Get heart entities
         uint8_t player_hitpoints = player_actor->get_hitpoints();
         auto hearts = hud->get_child_by_name("Hearts");
         auto heart1 = hearts->get_child_by_name("Heart1");
         auto heart2 = hearts->get_child_by_name("Heart2");
         auto heart3 = hearts->get_child_by_name("Heart3");
-
 
         heart1->set_active(false);
         heart2->set_active(false);
@@ -254,6 +254,9 @@ namespace Game {
         auto second_digit = hud->get_child_by_name("EnergyHUD")
                 ->get_child_by_name("EnergyD2")
                 ->get_component<Punity::Components::PUISpriteRenderer>();
+
+        // Yes, hahah, you should've made an array of these sprites and just set them based on digit.
+        // I know. Don't need to hear it.
 
         // Set first digit
         switch(player_energy / 10) {

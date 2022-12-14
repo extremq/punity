@@ -27,6 +27,11 @@ namespace Game {
         return this;
     }
 
+    Weapon *Weapon::set_projectile_type(uint8_t type) {
+        config.projectile_type = type;
+        return this;
+    }
+
     void Weapon::shoot(Punity::Utils::PVector start_pos, Punity::Utils::PVector target_pos, Punity::PEntity* parent, bool is_player) {
         if (Punity::Time.time - last_shoot_time >= 1.0f / config.shots_per_second) {
             last_shoot_time = Punity::Time.time;
@@ -37,9 +42,9 @@ namespace Game {
             for (int i = 0; i < config.bullet_count; ++i) {
                 Punity::PEntity* bullet;
                 if (is_player)
-                    bullet = GameplayPrefabCreator::make_player_bullet(parent);
+                    bullet = GameplayPrefabCreator::make_player_bullet(parent, config.projectile_type);
                 else
-                    bullet = GameplayPrefabCreator::make_enemy_bullet(parent);
+                    bullet = GameplayPrefabCreator::make_enemy_bullet(parent, config.projectile_type);
 
                 // Set the spawn position
                 bullet->get_transform()->set_global(start_pos);

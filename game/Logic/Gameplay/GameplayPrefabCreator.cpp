@@ -149,46 +149,108 @@ namespace Game::GameplayPrefabCreator {
     }
 
 
-    Punity::PEntity* make_player_bullet(Punity::PEntity* parent) {
+    Punity::PEntity* make_player_bullet(Punity::PEntity* parent, uint8_t projectile_type) {
         auto bullet_entity = Punity::PEntity::make_entity("PBullet", parent, true);
 
-        bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::player_bullet,
-                Game::Sprites::player_bullet_alpha,
-                Game::Sprites::player_bullet_h,
-                Game::Sprites::player_bullet_w,
-                Game::Sprites::Layers::BULLET
-                );
+        // Set sprite according to projectile type
+        auto collider = bullet_entity->add_component<Punity::Components::PCircleCollider>();
 
-        bullet_entity->add_component<Punity::Components::PCircleCollider>()
-                ->set_radius(Game::Sprites::player_bullet_h / 2)
-                ->set_information(Game::Colliders::COLLIDER_PLAYER_PROJECTILE_1)
+        switch (projectile_type) {
+            // For each projectile, set the sprite and set the according size for the circle collider
+            case Colliders::COLLIDER_PLAYER_PROJECTILE_1:
+                bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                        Game::Sprites::player_bullet_1,
+                        Game::Sprites::player_bullet_1_alpha,
+                        Game::Sprites::player_bullet_1_h,
+                        Game::Sprites::player_bullet_1_w,
+                        Game::Sprites::Layers::BULLET
+                );
+                collider->set_radius(Game::Sprites::player_bullet_1_w / 2.0f);
+                break;
+            case Colliders::COLLIDER_PLAYER_PROJECTILE_2:
+                bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                        Game::Sprites::player_bullet_2,
+                        Game::Sprites::player_bullet_2_alpha,
+                        Game::Sprites::player_bullet_2_h,
+                        Game::Sprites::player_bullet_2_w,
+                        Game::Sprites::Layers::BULLET
+                );
+                collider->set_radius(Game::Sprites::player_bullet_2_w / 2.0f);
+                break;
+            case Colliders::COLLIDER_PLAYER_PROJECTILE_3:
+                bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                        Game::Sprites::player_bullet_3,
+                        Game::Sprites::player_bullet_3_alpha,
+                        Game::Sprites::player_bullet_3_h,
+                        Game::Sprites::player_bullet_3_w,
+                        Game::Sprites::Layers::BULLET
+                );
+                collider->set_radius(Game::Sprites::player_bullet_3_w / 2.0f);
+                break;
+            default:
+                break;
+        }
+
+        // Set the rest of the collider info
+        collider->set_information(projectile_type)
                 ->set_trigger(true)
                 ->set_static(false);
 
+        // And add the projectile
         bullet_entity->add_component<Projectile>()
                 ->set_exception(Game::Colliders::COLLIDER_PLAYER);
 
         return bullet_entity;
     }
 
-    Punity::PEntity* make_enemy_bullet(Punity::PEntity* parent) {
+    Punity::PEntity* make_enemy_bullet(Punity::PEntity* parent, uint8_t projectile_type) {
         auto bullet_entity = Punity::PEntity::make_entity("EBullet", parent, true);
 
-        bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::enemy_bullet,
-                Game::Sprites::enemy_bullet_alpha,
-                Game::Sprites::enemy_bullet_h,
-                Game::Sprites::enemy_bullet_w,
-                Game::Sprites::Layers::BULLET
-        );
+        // Set sprite according to projectile type
+        auto collider = bullet_entity->add_component<Punity::Components::PCircleCollider>();
 
-        bullet_entity->add_component<Punity::Components::PCircleCollider>()
-                ->set_radius(Game::Sprites::enemy_bullet_h / 2)
-                ->set_information(Game::Colliders::COLLIDER_ENEMY_PROJECTILE_1)
+        switch (projectile_type) {
+            // For each projectile, set the sprite and set the according size for the circle collider
+            case Colliders::COLLIDER_ENEMY_PROJECTILE_1:
+                bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                        Game::Sprites::enemy_bullet_1,
+                        Game::Sprites::enemy_bullet_1_alpha,
+                        Game::Sprites::enemy_bullet_1_h,
+                        Game::Sprites::enemy_bullet_1_w,
+                        Game::Sprites::Layers::BULLET
+                );
+                collider->set_radius(Game::Sprites::enemy_bullet_1_w / 2.0f);
+                break;
+            case Colliders::COLLIDER_ENEMY_PROJECTILE_2:
+                bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                        Game::Sprites::enemy_bullet_2,
+                        Game::Sprites::enemy_bullet_2_alpha,
+                        Game::Sprites::enemy_bullet_2_h,
+                        Game::Sprites::enemy_bullet_2_w,
+                        Game::Sprites::Layers::BULLET
+                );
+                collider->set_radius(Game::Sprites::enemy_bullet_2_w / 2.0f);
+                break;
+            case Colliders::COLLIDER_ENEMY_PROJECTILE_3:
+                bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                        Game::Sprites::enemy_bullet_3,
+                        Game::Sprites::enemy_bullet_3_alpha,
+                        Game::Sprites::enemy_bullet_3_h,
+                        Game::Sprites::enemy_bullet_3_w,
+                        Game::Sprites::Layers::BULLET
+                );
+                collider->set_radius(Game::Sprites::enemy_bullet_3_w / 2.0f);
+                break;
+            default:
+                break;
+        }
+
+        // Set the rest of the collider info
+        collider->set_information(projectile_type)
                 ->set_trigger(true)
                 ->set_static(false);
 
+        // And add the projectile
         bullet_entity->add_component<Projectile>()
                 ->set_exception(Game::Colliders::COLLIDER_ENEMY);
 
