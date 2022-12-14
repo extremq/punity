@@ -39,11 +39,7 @@ namespace Game::GameplayPrefabCreator {
                 ->set_static(false)
                 ->set_information(COLLIDER_PLAYER);
         player_entity->add_component<ActorBehaviour>();
-        player_entity->add_component<Weapon>()
-                ->set_attack_radius_degrees(90)
-                ->set_bullet_count(10)
-                ->set_bullet_speed(100)
-                ->set_shots_per_second(2);
+        player_entity->add_component<Weapon>()->set_weapon(Weapons::starting_weapon);
 
         return player_entity;
     }
@@ -131,11 +127,7 @@ namespace Game::GameplayPrefabCreator {
         enemy_entity->add_component<ActorBehaviour>();
 
         // TODO use level and scene to change these
-        enemy_entity->add_component<Weapon>()
-                ->set_attack_radius_degrees(10)
-                ->set_bullet_count(2)
-                ->set_bullet_speed(50)
-                ->set_shots_per_second(0.5f);
+        enemy_entity->add_component<Weapon>()->set_weapon(Weapons::enemy_weapon);
 
         // Entity for selector that appears above enemy when player aims at
         auto selector_entity = Punity::PEntity::make_entity("Selector", enemy_entity, false);

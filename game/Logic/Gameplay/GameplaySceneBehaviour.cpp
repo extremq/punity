@@ -33,6 +33,9 @@ namespace Game {
         // Check if player is dead
         if (player_actor_behaviour->is_dead()) {
             // TODO make a death thingy? Use invokes.
+            player_behaviour->fully_reset_player();
+
+            // GO back to start
             SceneManager::reset_progress();
             SceneManager::switch_scene(START_SCENE);
         } else if (enemies_are_dead && GameplaySceneManager::enemies_loaded) {

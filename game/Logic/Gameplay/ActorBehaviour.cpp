@@ -44,6 +44,6 @@ namespace Game {
 
     void ActorBehaviour::replenish_hitpoints() {
         // Replenishes the hitpoints of the actor fully
-        m_hitpoints = m_max_hitpoints;
+        set_hitpoints(m_max_hitpoints);
     }
 } // Game

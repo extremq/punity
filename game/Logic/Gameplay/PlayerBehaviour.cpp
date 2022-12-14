@@ -26,19 +26,31 @@ namespace Game {
         }
     }
 
-    void PlayerBehaviour::on_enable() {
-        reset_status();
-    }
+    void PlayerBehaviour::fully_reset_player() {
+        // Replace weapon
+        change_weapon(Weapons::starting_weapon);
+        m_is_using_starting_weapon = true;
+        equipped_weapon = Weapons::empty_weapon;
+        m_has_picked_up_any_weapon = false;
 
-    void PlayerBehaviour::reset_status() {
-        room = Punity::Engine.find_entity("Room");
-        enemies = Punity::Engine.find_entity("Enemies");
-
-        // Store weapon
-        weapon = get_entity()->get_component<Weapon>();
+        // Restore bullets
+        remaining_bullets = 100;
 
         // Reset touching status
         m_has_touched_chest = false;
+
+    }
+
+    void PlayerBehaviour::on_enable() {
+        reset_status_for_new_stage();
+    }
+
+    void PlayerBehaviour::reset_status_for_new_stage() {
+        room = Punity::Engine.find_entity("Room");
+        enemies = Punity::Engine.find_entity("Enemies");
+
+        // Store weapon component
+        weapon_component = get_entity()->get_component<Weapon>();
 
         // Place player back
         get_entity()->get_transform()->set_global({0, -40});
@@ -53,9 +65,29 @@ namespace Game {
         // Get nearest enemy
         Punity::Utils::PVector nearest_enemy = compute_nearest_enemy();
 
+        // TODO Pick up weapon
+        // Switching weapons
+        if (m_has_picked_up_any_weapon && Punity::Button.read_button(JOY_BTN)) {
+            // Switch between starting weapon and equipped weapon
+            if (m_is_using_starting_weapon) {
+                m_is_using_starting_weapon = false;
+                change_weapon(equipped_weapon);
+            }
+            else {
+                m_is_using_starting_weapon = true;
+                change_weapon(Weapons::starting_weapon);
+            }
+        }
+
         // Shoot test!
         if (Punity::Button.read_button(ACTION_BTN)) {
-            weapon->shoot(
+            // You need enough bullets to be able to shoot
+            // However starting weapon uses no ammo, just magic
+            if (!m_is_using_starting_weapon && remaining_bullets - weapon_component->get_bullet_count() < 0) return;
+
+            // Subtract bullets and shoot
+            remaining_bullets -= weapon_component->get_bullet_count();
+            weapon_component->shoot(
                     get_entity()->get_transform()->global_position,
                     nearest_enemy,
                     room,
@@ -104,5 +136,9 @@ namespace Game {
         }
 
         return nearest_enemy;
+    }
+
+    void PlayerBehaviour::change_weapon(Weapons::WeaponConfig weaponConfig) {
+        weapon_component->set_weapon(weaponConfig);
     }
 } // Game
