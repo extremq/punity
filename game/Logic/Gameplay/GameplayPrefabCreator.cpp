@@ -17,7 +17,7 @@
 #include "Projectile.h"
 #include "EnemyBehaviour.h"
 #include "Weapon.h"
-#include "EnergyPickup.h"
+#include "AttractablePickup.h"
 
 /*
  * Unity has things called "Prefabs". Basically, they are game objects (my Punity::PEntity)
@@ -411,7 +411,7 @@ namespace Game::GameplayPrefabCreator {
                 Game::Sprites::energy_alpha,
                 Game::Sprites::energy_h,
                 Game::Sprites::energy_w,
-                Game::Sprites::Layers::ENERGY_PICKUP
+                Game::Sprites::Layers::PICKUP
                 );
 
         // A static trigger type.
@@ -421,9 +421,32 @@ namespace Game::GameplayPrefabCreator {
                 ->set_trigger(true)
                 ->set_static(true);
 
-        energy_pickup_entity->add_component<EnergyPickup>();
+        energy_pickup_entity->add_component<AttractablePickup>();
 
         return energy_pickup_entity;
+    }
+
+    Punity::PEntity* make_heart_pickup(Punity::PEntity* parent) {
+        auto heart_pickup_entity = Punity::PEntity::make_entity("HeartPickup", parent, true);
+
+        heart_pickup_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                Game::Sprites::heart,
+                Game::Sprites::heart_alpha,
+                Game::Sprites::heart_h,
+                Game::Sprites::heart_w,
+                Game::Sprites::Layers::PICKUP
+        );
+
+        // A static trigger type.
+        heart_pickup_entity->add_component<Punity::Components::PCircleCollider>()
+                ->set_radius(Game::Sprites::heart_w / 2.0f)
+                ->set_information(Colliders::COLLIDER_HEART_PICKUP)
+                ->set_trigger(true)
+                ->set_static(true);
+
+        heart_pickup_entity->add_component<AttractablePickup>();
+
+        return heart_pickup_entity;
     }
 
 } // GameplayPrefabCreator

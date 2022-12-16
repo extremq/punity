@@ -12,8 +12,8 @@ namespace Game {
     constexpr float INTERPOLATION_TIME = 1.5f;
     constexpr float APPROACHING_DISTANCE = 40.0f;
 
-    // Class used by energy pickups
-    class EnergyPickup : public Punity::Components::PComponent {
+    // Class used by various pickups
+    class AttractablePickup : public Punity::Components::PComponent {
         Punity::PEntity* player = nullptr;
 
         float time_of_approaching_start = 0;

@@ -21,16 +21,19 @@ namespace Game {
     void PlayerBehaviour::on_start_collision(Punity::Components::PCollider *other) {
         if (GameplaySceneManager::chest_loaded && other->get_entity()->get_name() == "Chest") {
             m_has_touched_chest = true;
-
             return;
         }
+        // If its a heart or energy pickup, destroy them
+        if(other->information == Colliders::COLLIDER_ENERGY_PICKUP || other->information == Colliders::COLLIDER_HEART_PICKUP) {
 
-        // Add energy
-        if(other->information == Colliders::COLLIDER_ENERGY_PICKUP) {
-            // Cap it to 99
-            remaining_energy = std::min(99, remaining_energy + 3);
+            if (other->information == Colliders::COLLIDER_ENERGY_PICKUP)
+                // Add energy and cap it to 99
+                remaining_energy = std::min(99, remaining_energy + 3);
+            else
+                // Add one hitpoint
+                get_entity()->get_component<ActorBehaviour>()->add_hitpoints(1);
 
-            // And destroy the energy pickup
+            // Destroy the pickup
             other->get_entity()->destroy();
 
             // Early exit to be safe

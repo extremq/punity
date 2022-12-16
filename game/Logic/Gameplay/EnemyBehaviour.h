@@ -10,14 +10,19 @@
 namespace Game {
 
     class EnemyBehaviour : public Punity::Components::PComponent {
-        Punity::PEntity* player;
-        Punity::PEntity* room;
+        Punity::PEntity* player = nullptr;
+        Punity::PEntity* room = nullptr;
 
         void compute_damage_dealt_by_projectile(uint8_t projectile_type);
         void on_start_collision(Punity::Components::PCollider* other) override;
         void on_update() override;
         void on_enable() override;
         void on_destroy() override;
+
+        // Death drops
+        void determine_drop();
+        void drop_random_energy(uint8_t count);
+        void drop_random_heart();
     };
 
 } // Game

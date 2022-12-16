@@ -23,6 +23,7 @@ namespace Game::Colliders {
     constexpr uint8_t COLLIDER_ENEMY_PROJECTILE_4 = 10;
 
     constexpr uint8_t COLLIDER_ENERGY_PICKUP = 11;
+    constexpr uint8_t COLLIDER_HEART_PICKUP = 12;
 }
 
 #endif //_COLLIDERS_H

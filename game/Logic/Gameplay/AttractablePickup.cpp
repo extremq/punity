@@ -2,7 +2,7 @@
 // Created by god on 16.12.2022.
 //
 
-#include "EnergyPickup.h"
+#include "AttractablePickup.h"
 #include "GameplaySceneManager.h"
 #include "punity/Utils/PCollisionComputation.h"
 
@@ -19,7 +19,7 @@ namespace Game {
         return interpolated;
     }
 
-    void EnergyPickup::on_update() {
+    void AttractablePickup::on_update() {
         if (!GameplaySceneManager::player_loaded) return;
 
         if (player == nullptr) {
@@ -27,7 +27,7 @@ namespace Game {
         }
 
         if (is_approaching_player) {
-            // Set position of energy to lerped value
+            // Set position of pickup to lerped value
             get_entity()->get_transform()->set_global(
                 lerp(
                 get_entity()->get_transform()->global_position,

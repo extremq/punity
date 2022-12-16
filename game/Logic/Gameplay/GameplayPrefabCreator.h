@@ -18,6 +18,7 @@ namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_enemy_bullet(Punity::PEntity* parent, uint8_t projectile_type);
     Punity::PEntity* make_gameplay_UI(Punity::PEntity* parent);
     Punity::PEntity* make_energy_pickup(Punity::PEntity* parent);
+    Punity::PEntity* make_heart_pickup(Punity::PEntity* parent);
 } // GameplayPrefabCreator
 
 #endif //_GAMEPLAYPREFABCREATOR_H
