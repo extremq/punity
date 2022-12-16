@@ -118,15 +118,17 @@ namespace Game {
             // However starting weapon uses no ammo, just magic
             if (!m_is_using_starting_weapon && remaining_energy - weapon_component->get_bullet_count() < 0) return;
 
-            // Subtract bullets and shoot
-            remaining_energy -= weapon_component->get_energy_cost();
 
-            weapon_component->shoot(
+            // If we actually shoot and aren't on cooldown
+            if (weapon_component->shoot(
                     get_entity()->get_transform()->global_position,
                     nearest_enemy,
                     room,
                     true
-                    );
+                    )) {
+                // Subtract energy and shoot
+                remaining_energy -= weapon_component->get_energy_cost();
+            }
         }
     }
 
