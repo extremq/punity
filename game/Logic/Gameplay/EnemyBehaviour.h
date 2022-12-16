@@ -17,6 +17,7 @@ namespace Game {
         void on_start_collision(Punity::Components::PCollider* other) override;
         void on_update() override;
         void on_enable() override;
+        void on_destroy() override;
     };
 
 } // Game

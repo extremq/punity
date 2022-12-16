@@ -17,6 +17,7 @@
 #include "Projectile.h"
 #include "EnemyBehaviour.h"
 #include "Weapon.h"
+#include "EnergyPickup.h"
 
 /*
  * Unity has things called "Prefabs". Basically, they are game objects (my Punity::PEntity)
@@ -353,6 +354,76 @@ namespace Game::GameplayPrefabCreator {
                 - 65.0f + Game::Sprites::nine_h * 0.5f
         };
 
+        // Level - stage hud
+        auto counter_entity = Punity::PEntity::make_entity("Counter", gameplay_UI_entity, true);
+        auto level_counter_entity = Punity::PEntity::make_entity("LevelCounter", counter_entity, true);
+        auto dash_entity = Punity::PEntity::make_entity("DashChar", counter_entity, true);
+        auto stage_counter_entity = Punity::PEntity::make_entity("StageCounter", counter_entity, true);
+
+        level_counter_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Sprites::one,
+                Game::Sprites::one_alpha,
+                Game::Sprites::one_h,
+                Game::Sprites::one_w,
+                Game::Sprites::Layers::HUD
+        );
+
+        level_counter_entity->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+                - 11.0f + Game::Sprites::one_w * 0.5f,
+                - 65.0f + Game::Sprites::one_h * 0.5f
+        };
+
+        dash_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Sprites::dash,
+                Game::Sprites::dash_alpha,
+                Game::Sprites::dash_h,
+                Game::Sprites::dash_w,
+                Game::Sprites::Layers::HUD
+        );
+
+        dash_entity->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+                0,
+                - 63.0f + Game::Sprites::dash_h * 0.5f
+        };
+
+        stage_counter_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Sprites::one,
+                Game::Sprites::one_alpha,
+                Game::Sprites::one_h,
+                Game::Sprites::one_w,
+                Game::Sprites::Layers::HUD
+        );
+
+        stage_counter_entity->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+                12.0f - Game::Sprites::one_w * 0.5f,
+                - 65.0f + Game::Sprites::one_h * 0.5f
+        };
+
+
         return gameplay_UI_entity;
     }
+
+    Punity::PEntity* make_energy_pickup(Punity::PEntity* parent) {
+        auto energy_pickup_entity = Punity::PEntity::make_entity("EnergyPickup", parent, true);
+
+        energy_pickup_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                Game::Sprites::energy,
+                Game::Sprites::energy_alpha,
+                Game::Sprites::energy_h,
+                Game::Sprites::energy_w,
+                Game::Sprites::Layers::ENERGY_PICKUP
+                );
+
+        // A static trigger type.
+        energy_pickup_entity->add_component<Punity::Components::PCircleCollider>()
+                ->set_radius(Game::Sprites::energy_w / 2.0f)
+                ->set_information(Colliders::COLLIDER_ENERGY_PICKUP)
+                ->set_trigger(true)
+                ->set_static(true);
+
+        energy_pickup_entity->add_component<EnergyPickup>();
+
+        return energy_pickup_entity;
+    }
+
 } // GameplayPrefabCreator

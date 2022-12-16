@@ -32,6 +32,9 @@ namespace Game {
         // Update energy
         update_energy(player_behaviour);
 
+        // Update the level and stage
+        update_level_stage_counter();
+
         bool enemies_are_dead = enemies->get_children_count() == 0;
 
         // Check if player is dead
@@ -430,6 +433,74 @@ namespace Game {
                 break;
         }
 
+    }
+
+    void GameplaySceneBehaviour::update_level_stage_counter() {
+        auto counter = hud->get_child_by_name("Counter");
+        auto level_counter = counter->get_child_by_name("LevelCounter")
+                ->get_component<Punity::Components::PUISpriteRenderer>();
+        auto stage_counter = counter->get_child_by_name("StageCounter")
+                ->get_component<Punity::Components::PUISpriteRenderer>();
+
+        // Set the level
+        switch (SceneManager::level) {
+            case 1:
+                level_counter->set_sprite(
+                        Game::Sprites::one,
+                        Game::Sprites::one_alpha,
+                        Game::Sprites::one_h,
+                        Game::Sprites::one_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 2:
+                level_counter->set_sprite(
+                        Game::Sprites::two,
+                        Game::Sprites::two_alpha,
+                        Game::Sprites::two_h,
+                        Game::Sprites::two_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 3:
+                level_counter->set_sprite(
+                        Game::Sprites::three,
+                        Game::Sprites::three_alpha,
+                        Game::Sprites::three_h,
+                        Game::Sprites::three_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            default:
+                break;
+        }
+
+        // And set the stage
+        switch (SceneManager::stage) {
+            case 1:
+                stage_counter->set_sprite(
+                        Game::Sprites::one,
+                        Game::Sprites::one_alpha,
+                        Game::Sprites::one_h,
+                        Game::Sprites::one_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 2:
+                stage_counter->set_sprite(
+                        Game::Sprites::two,
+                        Game::Sprites::two_alpha,
+                        Game::Sprites::two_h,
+                        Game::Sprites::two_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            case 3:
+                stage_counter->set_sprite(
+                        Game::Sprites::three,
+                        Game::Sprites::three_alpha,
+                        Game::Sprites::three_h,
+                        Game::Sprites::three_w,
+                        Game::Sprites::Layers::HUD);
+                break;
+            default:
+                break;
+        }
     }
 
 } // Game

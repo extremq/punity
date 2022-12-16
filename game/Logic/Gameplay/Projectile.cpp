@@ -14,6 +14,8 @@ namespace Game {
         // I also support an exception, however. If we shoot from inside the player,
         // I may not want it to be destroyed instantly.
 
+        // Also ignore triggers
+        if (other->is_trigger) return;
         if (other->information == exception || other->information == self) return;
 
         get_entity()->destroy();

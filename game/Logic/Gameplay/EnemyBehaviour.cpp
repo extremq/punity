@@ -4,6 +4,7 @@
 
 #include "EnemyBehaviour.h"
 #include "punity/Components/PCollider.h"
+#include "GameplayPrefabCreator.h"
 #include "game/Assets/colliders.h"
 #include "ActorBehaviour.h"
 #include "GameplaySceneManager.h"
@@ -46,5 +47,14 @@ namespace Game {
     void EnemyBehaviour::on_enable() {
         player = Punity::Engine.find_entity("Player");
         room = Punity::Engine.find_entity("Room");
+    }
+
+    void EnemyBehaviour::on_destroy() {
+        if (!room->is_globally_active()) return;
+
+        // Create an energy pickup on death and set it at the same position
+        GameplayPrefabCreator::make_energy_pickup(room)->get_transform()->set_global(
+                get_entity()->get_transform()->global_position
+                );
     }
 } // Game

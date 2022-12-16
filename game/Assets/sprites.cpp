@@ -6,6 +6,10 @@ namespace Game::Sprites {
 	bool const chest_alpha [16 * 8] = { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 	uint16_t const chest_w = 16;
 	uint16_t const chest_h = 8;
+	uint16_t const dash [4 * 2] = { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff };
+	bool const dash_alpha [4 * 2] = { true, true, true, true, true, true, true, true };
+	uint16_t const dash_w = 4;
+	uint16_t const dash_h = 2;
 	uint16_t const eight [7 * 8] = { 0x0, 0x0, 0xffff, 0xffff, 0xffff, 0x0, 0x0, 0x0, 0xffff, 0xffff, 0x0, 0xffff, 0xffff, 0x0, 0x0, 0xffff, 0xffff, 0x0, 0xffff, 0xffff, 0x0, 0x0, 0x0, 0xffff, 0xffff, 0xffff, 0x0, 0x0, 0x0, 0xffff, 0xffff, 0x0, 0xffff, 0xffff, 0x0, 0x0, 0xffff, 0xffff, 0x0, 0xffff, 0xffff, 0x0, 0x0, 0xffff, 0xffff, 0x0, 0xffff, 0xffff, 0x0, 0x0, 0x0, 0xffff, 0xffff, 0xffff, 0x0, 0x0 };
 	bool const eight_alpha [7 * 8] = { false, false, true, true, true, false, false, false, true, true, false, true, true, false, false, true, true, false, true, true, false, false, false, true, true, true, false, false, false, true, true, false, true, true, false, false, true, true, false, true, true, false, false, true, true, false, true, true, false, false, false, true, true, true, false, false };
 	uint16_t const eight_w = 7;

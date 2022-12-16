@@ -21,9 +21,24 @@ namespace Game {
     void PlayerBehaviour::on_start_collision(Punity::Components::PCollider *other) {
         if (GameplaySceneManager::chest_loaded && other->get_entity()->get_name() == "Chest") {
             m_has_touched_chest = true;
+
+            return;
         }
-        else
-            compute_damage_dealt_by_projectile(other->information);
+
+        // Add energy
+        if(other->information == Colliders::COLLIDER_ENERGY_PICKUP) {
+            // Cap it to 99
+            remaining_energy = std::min(99, remaining_energy + 3);
+
+            // And destroy the energy pickup
+            other->get_entity()->destroy();
+
+            // Early exit to be safe
+            return;
+        }
+
+        // Subtract hitpoints
+        compute_damage_dealt_by_projectile(other->information);
     }
 
     void PlayerBehaviour::compute_damage_dealt_by_projectile(uint8_t projectile_type) {
@@ -49,8 +64,8 @@ namespace Game {
         equipped_weapon = Weapons::empty_weapon;
         m_has_picked_up_any_weapon = false;
 
-        // Restore bullets
-        remaining_energy = 100;
+        // Restore energy
+        remaining_energy = 99;
 
         // Reset touching status
         m_has_touched_chest = false;

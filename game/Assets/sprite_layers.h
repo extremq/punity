@@ -8,6 +8,7 @@
 #include <cstdint>
 
 namespace Game::Sprites::Layers {
+    constexpr uint8_t ENERGY_PICKUP = 0;
     constexpr uint8_t PLAYER = 1;
     constexpr uint8_t WALL = 2;
     constexpr uint8_t CHEST = 3;

@@ -25,7 +25,7 @@ namespace Game::Weapons {
     const WeaponConfig starting_weapon = {
         1,
         Colliders::COLLIDER_PLAYER_PROJECTILE_1,
-        0,
+        1,
         10.0f,
         0.0f,
         100.0f
