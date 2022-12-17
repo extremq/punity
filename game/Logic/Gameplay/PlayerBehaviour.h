@@ -11,9 +11,9 @@
 namespace Game {
     class PlayerBehaviour : public Punity::Components::PComponent {
     private:
-        bool m_has_touched_chest = false;
-        bool m_is_using_starting_weapon = true;
-        bool m_has_picked_up_any_weapon = false;
+        bool touched_chest = false;
+        bool is_using_starting_weapon = true;
+        bool has_picked_up_any_weapon = false;
 
         // Avoid some casts
         Punity::PEntity* enemies = nullptr;

@@ -16,7 +16,7 @@
 namespace Game {
 
     bool PlayerBehaviour::has_touched_chest() {
-        return m_has_touched_chest;
+        return touched_chest;
     }
 
     void PlayerBehaviour::on_collision(Punity::Components::PCollider *other) {
@@ -29,22 +29,22 @@ namespace Game {
             equipped_weapon = other->get_entity()->get_component<WeaponPickup>()->swap_weapon(equipped_weapon);
 
             // Also change to new weapon
-            m_is_using_starting_weapon = false;
+            is_using_starting_weapon = false;
             change_weapon(equipped_weapon);
 
-            if (!m_has_picked_up_any_weapon) {
+            if (!has_picked_up_any_weapon) {
                 // Since it's our first weapon, we should not be able to swap it
                 other->get_entity()->destroy();
             }
 
-            m_has_picked_up_any_weapon = true;
+            has_picked_up_any_weapon = true;
             return;
         }
     }
 
     void PlayerBehaviour::on_start_collision(Punity::Components::PCollider *other) {
         if (GameplaySceneManager::chest_loaded && other->get_entity()->get_name() == "Chest") {
-            m_has_touched_chest = true;
+            touched_chest = true;
             return;
         }
 
@@ -88,15 +88,15 @@ namespace Game {
     void PlayerBehaviour::fully_reset_player() {
         // Replace weapon
         change_weapon(Weapons::starting_weapon);
-        m_is_using_starting_weapon = true;
+        is_using_starting_weapon = true;
         equipped_weapon = Weapons::empty_weapon;
-        m_has_picked_up_any_weapon = false;
+        has_picked_up_any_weapon = false;
 
         // Restore energy
         remaining_energy = 99;
 
         // Reset touching status
-        m_has_touched_chest = false;
+        touched_chest = false;
     }
 
     void PlayerBehaviour::on_enable() {
@@ -111,7 +111,7 @@ namespace Game {
         weapon_component = get_entity()->get_component<Weapon>();
 
         // Reset chest touch
-        m_has_touched_chest = false;
+        touched_chest = false;
 
         // Place player back
         get_entity()->get_transform()->set_global({0, -40});
@@ -120,34 +120,36 @@ namespace Game {
     void PlayerBehaviour::on_update() {
         compute_movement();
 
+        Punity::Utils::PVector nearest_enemy;
         // Wait for enemies to be loaded!
-        if (!GameplaySceneManager::enemies_loaded) return;
-
         // Get nearest enemy
-        Punity::Utils::PVector nearest_enemy = compute_nearest_enemy();
+        if (GameplaySceneManager::enemies_loaded)
+            nearest_enemy = compute_nearest_enemy();
+        else
+            nearest_enemy = {0, 0};
 
         // Switching weapons
         // Also have a cooldown on clicks
-        if (m_has_picked_up_any_weapon &&
+        if (has_picked_up_any_weapon &&
         Punity::Time.time - last_joystick_click_time > 0.25f &&
-        Punity::Button.read_button(JOY_BTN)) {
+            Punity::Button.read_button(JOY_BTN)) {
             last_joystick_click_time = Punity::Time.time;
             // Switch between starting weapon and equipped weapon
-            if (m_is_using_starting_weapon) {
-                m_is_using_starting_weapon = false;
+            if (is_using_starting_weapon) {
+                is_using_starting_weapon = false;
                 change_weapon(equipped_weapon);
             }
             else {
-                m_is_using_starting_weapon = true;
+                is_using_starting_weapon = true;
                 change_weapon(Weapons::starting_weapon);
             }
         }
 
         // Shoot test!
         if (Punity::Button.read_button(ACTION_BTN)) {
-            // You need enough bullets to be able to shoot
-            // However starting weapon uses no ammo, just magic
-            if (!m_is_using_starting_weapon && remaining_energy - weapon_component->get_bullet_count() < 0) return;
+            // You need enough energy to be able to shoot
+            // However starting weapon uses no energy, just magic
+            if (!is_using_starting_weapon && remaining_energy - weapon_component->get_energy_cost() < 0) return;
 
             // If we actually shoot and aren't on cooldown
             if (weapon_component->shoot(
