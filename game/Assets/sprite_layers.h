@@ -8,10 +8,10 @@
 #include <cstdint>
 
 namespace Game::Sprites::Layers {
-    constexpr uint8_t PICKUP = 0;
-    constexpr uint8_t PLAYER = 1;
-    constexpr uint8_t WALL = 2;
-    constexpr uint8_t CHEST = 3;
+    constexpr uint8_t CHEST = 0;
+    constexpr uint8_t PICKUP = 1;
+    constexpr uint8_t PLAYER = 2;
+    constexpr uint8_t WALL = 3;
     constexpr uint8_t BULLET = 3;
     constexpr uint8_t SELECTOR = 4;
 

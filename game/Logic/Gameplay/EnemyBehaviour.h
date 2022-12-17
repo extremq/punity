@@ -21,8 +21,6 @@ namespace Game {
 
         // Death drops
         void determine_drop();
-        void drop_random_energy(uint8_t count);
-        void drop_random_heart();
     };
 
 } // Game

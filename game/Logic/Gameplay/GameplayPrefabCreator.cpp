@@ -18,6 +18,7 @@
 #include "EnemyBehaviour.h"
 #include "Weapon.h"
 #include "AttractablePickup.h"
+#include "ChestBehaviour.h"
 
 /*
  * Unity has things called "Prefabs". Basically, they are game objects (my Punity::PEntity)
@@ -77,6 +78,10 @@ namespace Game::GameplayPrefabCreator {
         );
 
         chest_entity->get_transform()->set_global({0, 32});
+
+        // Add its behavour
+        chest_entity->add_component<ChestBehaviour>();
+
 
         return chest_entity;
     }
@@ -449,4 +454,31 @@ namespace Game::GameplayPrefabCreator {
         return heart_pickup_entity;
     }
 
+    // Spawns amount of energy pickups at a random offset of position
+    void drop_energy_pickups(Punity::PEntity* parent, uint8_t amount, Punity::Utils::PVector position) {
+        while (amount-- > 0) {
+            // Create an energy pickup on death and set it at the same position + random offset
+            Punity::Utils::PVector random_spawn_position(Punity::Utils::random(-5.0f, 5.0f),
+                                                         Punity::Utils::random(-5.0f, 5.0f));
+            random_spawn_position += position;
+
+            GameplayPrefabCreator::make_energy_pickup(parent)->get_transform()->set_global(
+                    random_spawn_position
+            );
+        }
+    }
+
+    // Spawns amount of heart pickups at a random offset of position
+    void drop_heart_pickups(Punity::PEntity* parent, uint8_t amount, Punity::Utils::PVector position) {
+        while (amount-- > 0) {
+            // Create an energy pickup on death and set it at the same position + random offset
+            Punity::Utils::PVector random_spawn_position(Punity::Utils::random(-5.0f, 5.0f),
+                                                         Punity::Utils::random(-5.0f, 5.0f));
+            random_spawn_position += position;
+
+            GameplayPrefabCreator::make_heart_pickup(parent)->get_transform()->set_global(
+                    random_spawn_position
+            );
+        }
+    }
 } // GameplayPrefabCreator

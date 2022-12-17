@@ -78,7 +78,7 @@ add_executable(${PROJ_NAME}
         game/Logic/Gameplay/GameplaySceneManager.cpp
         game/Logic/Gameplay/GameplaySceneManager.h
         game/Assets/weapons.h
-        game/Assets/weapons.cpp game/Assets/colliders.h game/Logic/Gameplay/AttractablePickup.cpp game/Logic/Gameplay/AttractablePickup.h)
+        game/Assets/weapons.cpp game/Assets/colliders.h game/Logic/Gameplay/AttractablePickup.cpp game/Logic/Gameplay/AttractablePickup.h game/Logic/Gameplay/ChestBehaviour.cpp game/Logic/Gameplay/ChestBehaviour.h)
 
 pico_enable_stdio_usb(${PROJ_NAME} 1)
 pico_enable_stdio_uart(${PROJ_NAME} 0)

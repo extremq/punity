@@ -8,7 +8,7 @@
 // Simple rng based on ring oscillator
 namespace Punity::Utils {
     float random();
-    float random_minus_plus();
+    float random(float a, float b);
 }
 
 #endif //_PRANDOM_H

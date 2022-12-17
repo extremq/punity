@@ -6,6 +6,7 @@
 #define _GAMEPLAYPREFABCREATOR_H
 
 #include "punity/Punity.h"
+#include "punity/Utils/PVector.h"
 
 namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_player(Punity::PEntity* parent);
@@ -19,6 +20,9 @@ namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_gameplay_UI(Punity::PEntity* parent);
     Punity::PEntity* make_energy_pickup(Punity::PEntity* parent);
     Punity::PEntity* make_heart_pickup(Punity::PEntity* parent);
+
+    void drop_energy_pickups(Punity::PEntity* parent, uint8_t amount, Punity::Utils::PVector position);
+    void drop_heart_pickups(Punity::PEntity* parent, uint8_t amount, Punity::Utils::PVector position);
 } // GameplayPrefabCreator
 
 #endif //_GAMEPLAYPREFABCREATOR_H
