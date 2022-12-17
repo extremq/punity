@@ -10,7 +10,7 @@
 namespace Punity::Components {
     class PBoxCollider : public PCollider {
     public:
-        void set_size(float h, float w);
+        PBoxCollider* set_size(float h, float w);
         float width = 0.0f, height = 0.0f;
         PBoxCollider();
         bool solve_collision(PCollider* other) override;

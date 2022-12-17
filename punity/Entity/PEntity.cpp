@@ -273,6 +273,14 @@ void Punity::PEntity::report_start_collision_to_components(Components::PCollider
     }
 }
 
+void Punity::PEntity::report_collision_to_components(Punity::Components::PCollider* col) {
+    for (auto component : m_components) {
+        if (component->m_is_active) {
+            component->on_collision(col);
+        }
+    }
+
+}
 void Punity::PEntity::report_end_collision_to_components(Components::PCollider* col) {
     for (auto component : m_components) {
         if (component->m_is_active) {
@@ -363,3 +371,4 @@ Punity::PEntity *Punity::PEntity::get_child_by_name(std::string name) {
 
     return nullptr;
 }
+

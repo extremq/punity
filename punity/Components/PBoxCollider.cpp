@@ -16,8 +16,9 @@ namespace Punity::Components {
         return false;
     }
 
-    void PBoxCollider::set_size(float h, float w) {
+    PBoxCollider* PBoxCollider::set_size(float h, float w) {
         height = h;
         width = w;
+        return this;
     }
 } // Components

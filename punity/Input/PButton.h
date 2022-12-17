@@ -11,6 +11,7 @@
 namespace Punity::Input {
     class PButton {
     private:
+        bool m_configured[256] = {false};
         // Allow one single init, basically a fake read-only
         // This is why I need a class, as well
         bool m_initialized = false;
@@ -26,11 +27,10 @@ namespace Punity::Input {
             gpio_init(pin);
             gpio_set_dir(pin, GPIO_IN);
             gpio_pull_up(pin);
+            m_configured[pin] = true;
         }
 
-        bool read_button(uint8_t pin) {
-            return !gpio_get(pin);
-        }
+        bool read_button(uint8_t pin);
     };
 }
 

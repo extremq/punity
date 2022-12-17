@@ -37,6 +37,7 @@ namespace Punity::Components {
         virtual void on_disable();
 
         virtual void on_start_collision(PCollider*);
+        virtual void on_collision(PCollider*);
         virtual void on_end_collision(PCollider*);
 
         virtual void on_update();

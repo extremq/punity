@@ -204,6 +204,12 @@ namespace Punity {
                     // Solve the collision
                     bool has_collided = dynamic_collider->solve_collision(common_collider);
 
+                    // Notify them both for general collision, doesn't matter if it started or not.
+                    if (has_collided) {
+                        dynamic_collider->get_entity()->report_collision_to_components(common_collider);
+                        common_collider->get_entity()->report_collision_to_components(dynamic_collider);
+                    }
+
                     // Notify the dynamic collider first
                     Components::PCollider* collider_in_list = dynamic_collider->check_if_exists_as_collider(common_collider);
 

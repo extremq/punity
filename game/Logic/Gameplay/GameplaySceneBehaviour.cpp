@@ -8,6 +8,7 @@
 #include "PlayerBehaviour.h"
 #include "GameplaySceneManager.h"
 #include "game/Assets/sprite_layers.h"
+#include "game/Assets/groupings.h"
 
 namespace Game {
     void GameplaySceneBehaviour::on_update() {
@@ -258,181 +259,23 @@ namespace Game {
                 ->get_child_by_name("EnergyD2")
                 ->get_component<Punity::Components::PUISpriteRenderer>();
 
-        // Yes, hahah, you should've made an array of these sprites and just set them based on digit.
-        // I know. Don't need to hear it.
-
         // Set first digit
-        switch(player_energy / 10) {
-            case 0:
-                first_digit->set_sprite(
-                        Game::Sprites::zero,
-                        Game::Sprites::zero_alpha,
-                        Game::Sprites::zero_h,
-                        Game::Sprites::zero_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 1:
-                first_digit->set_sprite(
-                        Game::Sprites::one,
-                        Game::Sprites::one_alpha,
-                        Game::Sprites::one_h,
-                        Game::Sprites::one_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 2:
-                first_digit->set_sprite(
-                        Game::Sprites::two,
-                        Game::Sprites::two_alpha,
-                        Game::Sprites::two_h,
-                        Game::Sprites::two_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 3:
-                first_digit->set_sprite(
-                        Game::Sprites::three,
-                        Game::Sprites::three_alpha,
-                        Game::Sprites::three_h,
-                        Game::Sprites::three_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 4:
-                first_digit->set_sprite(
-                        Game::Sprites::four,
-                        Game::Sprites::four_alpha,
-                        Game::Sprites::four_h,
-                        Game::Sprites::four_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 5:
-                first_digit->set_sprite(
-                        Game::Sprites::five,
-                        Game::Sprites::five_alpha,
-                        Game::Sprites::five_h,
-                        Game::Sprites::five_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 6:
-                first_digit->set_sprite(
-                        Game::Sprites::six,
-                        Game::Sprites::six_alpha,
-                        Game::Sprites::six_h,
-                        Game::Sprites::six_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 7:
-                first_digit->set_sprite(
-                        Game::Sprites::seven,
-                        Game::Sprites::seven_alpha,
-                        Game::Sprites::seven_h,
-                        Game::Sprites::seven_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 8:
-                first_digit->set_sprite(
-                        Game::Sprites::eight,
-                        Game::Sprites::eight_alpha,
-                        Game::Sprites::eight_h,
-                        Game::Sprites::eight_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 9:
-                first_digit->set_sprite(
-                        Game::Sprites::nine,
-                        Game::Sprites::nine_alpha,
-                        Game::Sprites::nine_h,
-                        Game::Sprites::nine_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            default:
-                break;
-        }
+        first_digit->set_sprite(
+                Game::Groupings::numbers[player_energy / 10],
+                Game::Groupings::numbers_alpha[player_energy / 10],
+                Game::Groupings::numbers_h[player_energy / 10],
+                Game::Groupings::numbers_w[player_energy / 10],
+                Game::Sprites::Layers::HUD
+                );
 
         // Set second digit
-        switch(player_energy % 10) {
-            case 0:
-                second_digit->set_sprite(
-                        Game::Sprites::zero,
-                        Game::Sprites::zero_alpha,
-                        Game::Sprites::zero_h,
-                        Game::Sprites::zero_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 1:
-                second_digit->set_sprite(
-                        Game::Sprites::one,
-                        Game::Sprites::one_alpha,
-                        Game::Sprites::one_h,
-                        Game::Sprites::one_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 2:
-                second_digit->set_sprite(
-                        Game::Sprites::two,
-                        Game::Sprites::two_alpha,
-                        Game::Sprites::two_h,
-                        Game::Sprites::two_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 3:
-                second_digit->set_sprite(
-                        Game::Sprites::three,
-                        Game::Sprites::three_alpha,
-                        Game::Sprites::three_h,
-                        Game::Sprites::three_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 4:
-                second_digit->set_sprite(
-                        Game::Sprites::four,
-                        Game::Sprites::four_alpha,
-                        Game::Sprites::four_h,
-                        Game::Sprites::four_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 5:
-                second_digit->set_sprite(
-                        Game::Sprites::five,
-                        Game::Sprites::five_alpha,
-                        Game::Sprites::five_h,
-                        Game::Sprites::five_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 6:
-                second_digit->set_sprite(
-                        Game::Sprites::six,
-                        Game::Sprites::six_alpha,
-                        Game::Sprites::six_h,
-                        Game::Sprites::six_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 7:
-                second_digit->set_sprite(
-                        Game::Sprites::seven,
-                        Game::Sprites::seven_alpha,
-                        Game::Sprites::seven_h,
-                        Game::Sprites::seven_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 8:
-                second_digit->set_sprite(
-                        Game::Sprites::eight,
-                        Game::Sprites::eight_alpha,
-                        Game::Sprites::eight_h,
-                        Game::Sprites::eight_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 9:
-                second_digit->set_sprite(
-                        Game::Sprites::nine,
-                        Game::Sprites::nine_alpha,
-                        Game::Sprites::nine_h,
-                        Game::Sprites::nine_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            default:
-                break;
-        }
-
+        second_digit->set_sprite(
+                Game::Groupings::numbers[player_energy % 10],
+                Game::Groupings::numbers_alpha[player_energy % 10],
+                Game::Groupings::numbers_h[player_energy % 10],
+                Game::Groupings::numbers_w[player_energy % 10],
+                Game::Sprites::Layers::HUD
+        );
     }
 
     void GameplaySceneBehaviour::update_level_stage_counter() {
@@ -443,64 +286,21 @@ namespace Game {
                 ->get_component<Punity::Components::PUISpriteRenderer>();
 
         // Set the level
-        switch (SceneManager::level) {
-            case 1:
-                level_counter->set_sprite(
-                        Game::Sprites::one,
-                        Game::Sprites::one_alpha,
-                        Game::Sprites::one_h,
-                        Game::Sprites::one_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 2:
-                level_counter->set_sprite(
-                        Game::Sprites::two,
-                        Game::Sprites::two_alpha,
-                        Game::Sprites::two_h,
-                        Game::Sprites::two_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 3:
-                level_counter->set_sprite(
-                        Game::Sprites::three,
-                        Game::Sprites::three_alpha,
-                        Game::Sprites::three_h,
-                        Game::Sprites::three_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            default:
-                break;
-        }
+        level_counter->set_sprite(
+                Game::Groupings::numbers[SceneManager::level],
+                Game::Groupings::numbers_alpha[SceneManager::level],
+                Game::Groupings::numbers_h[SceneManager::level],
+                Game::Groupings::numbers_w[SceneManager::level],
+                Game::Sprites::Layers::HUD
+        );
 
-        // And set the stage
-        switch (SceneManager::stage) {
-            case 1:
-                stage_counter->set_sprite(
-                        Game::Sprites::one,
-                        Game::Sprites::one_alpha,
-                        Game::Sprites::one_h,
-                        Game::Sprites::one_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 2:
-                stage_counter->set_sprite(
-                        Game::Sprites::two,
-                        Game::Sprites::two_alpha,
-                        Game::Sprites::two_h,
-                        Game::Sprites::two_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            case 3:
-                stage_counter->set_sprite(
-                        Game::Sprites::three,
-                        Game::Sprites::three_alpha,
-                        Game::Sprites::three_h,
-                        Game::Sprites::three_w,
-                        Game::Sprites::Layers::HUD);
-                break;
-            default:
-                break;
-        }
+        // Set the level
+        stage_counter->set_sprite(
+                Game::Groupings::numbers[SceneManager::stage],
+                Game::Groupings::numbers_alpha[SceneManager::stage],
+                Game::Groupings::numbers_h[SceneManager::stage],
+                Game::Groupings::numbers_w[SceneManager::stage],
+                Game::Sprites::Layers::HUD
+        );
     }
-
 } // Game

@@ -18,13 +18,13 @@ namespace Game {
     void EnemyBehaviour::compute_damage_dealt_by_projectile(uint8_t projectile_type) {
         // Get projectile type and subtract hitpoints based on that
         switch(projectile_type) {
-            case Game::Colliders::COLLIDER_PLAYER_PROJECTILE_1:
+            case Game::Colliders::PLAYER_PROJECTILE_1:
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(1);
                 break;
-            case Game::Colliders::COLLIDER_PLAYER_PROJECTILE_2:
+            case Game::Colliders::PLAYER_PROJECTILE_2:
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(2);
                 break;
-            case Game::Colliders::COLLIDER_PLAYER_PROJECTILE_3:
+            case Game::Colliders::PLAYER_PROJECTILE_3:
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(3);
                 break;
             default:

@@ -11,6 +11,7 @@
 #include "game/Assets/colliders.h"
 #include "punity/Utils/PCollisionComputation.h" // for dist
 #include "Weapon.h"
+#include "WeaponPickup.h"
 
 namespace Game {
 
@@ -18,15 +19,39 @@ namespace Game {
         return m_has_touched_chest;
     }
 
+    void PlayerBehaviour::on_collision(Punity::Components::PCollider *other) {
+        // Have a cooldown on clicking
+        if (Punity::Time.time - last_joystick_click_time < 0.25f) return;
+
+        if (other->information == Colliders::WEAPON_PICKUP && Punity::Button.read_button(JOY_BTN)) {
+            last_joystick_click_time = Punity::Time.time;
+            // Touching a weapon pickup and clicked on pick-up!
+            equipped_weapon = other->get_entity()->get_component<WeaponPickup>()->swap_weapon(equipped_weapon);
+
+            // Also change to new weapon
+            m_is_using_starting_weapon = false;
+            change_weapon(equipped_weapon);
+
+            if (!m_has_picked_up_any_weapon) {
+                // Since it's our first weapon, we should not be able to swap it
+                other->get_entity()->destroy();
+            }
+
+            m_has_picked_up_any_weapon = true;
+            return;
+        }
+    }
+
     void PlayerBehaviour::on_start_collision(Punity::Components::PCollider *other) {
         if (GameplaySceneManager::chest_loaded && other->get_entity()->get_name() == "Chest") {
             m_has_touched_chest = true;
             return;
         }
-        // If its a heart or energy pickup, destroy them
-        if(other->information == Colliders::COLLIDER_ENERGY_PICKUP || other->information == Colliders::COLLIDER_HEART_PICKUP) {
 
-            if (other->information == Colliders::COLLIDER_ENERGY_PICKUP)
+        // If its a heart or energy pickup, destroy them
+        if(other->information == Colliders::ENERGY_PICKUP || other->information == Colliders::HEART_PICKUP) {
+
+            if (other->information == Colliders::ENERGY_PICKUP)
                 // Add energy and cap it to 99
                 remaining_energy = std::min(99, remaining_energy + 3);
             else
@@ -46,13 +71,13 @@ namespace Game {
 
     void PlayerBehaviour::compute_damage_dealt_by_projectile(uint8_t projectile_type) {
         switch (projectile_type) {
-            case Colliders::COLLIDER_ENEMY_PROJECTILE_1:
+            case Colliders::ENEMY_PROJECTILE_1:
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(1);
                 break;
-            case Colliders::COLLIDER_ENEMY_PROJECTILE_2:
+            case Colliders::ENEMY_PROJECTILE_2:
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(2);
                 break;
-            case Colliders::COLLIDER_ENEMY_PROJECTILE_3:
+            case Colliders::ENEMY_PROJECTILE_3:
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(3);
                 break;
             default:
@@ -101,9 +126,12 @@ namespace Game {
         // Get nearest enemy
         Punity::Utils::PVector nearest_enemy = compute_nearest_enemy();
 
-        // TODO Pick up weapon
         // Switching weapons
-        if (m_has_picked_up_any_weapon && Punity::Button.read_button(JOY_BTN)) {
+        // Also have a cooldown on clicks
+        if (m_has_picked_up_any_weapon &&
+        Punity::Time.time - last_joystick_click_time > 0.25f &&
+        Punity::Button.read_button(JOY_BTN)) {
+            last_joystick_click_time = Punity::Time.time;
             // Switch between starting weapon and equipped weapon
             if (m_is_using_starting_weapon) {
                 m_is_using_starting_weapon = false;
@@ -120,7 +148,6 @@ namespace Game {
             // You need enough bullets to be able to shoot
             // However starting weapon uses no ammo, just magic
             if (!m_is_using_starting_weapon && remaining_energy - weapon_component->get_bullet_count() < 0) return;
-
 
             // If we actually shoot and aren't on cooldown
             if (weapon_component->shoot(

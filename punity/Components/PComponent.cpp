@@ -63,4 +63,8 @@ namespace Punity::Components {
     void PComponent::on_start() {
 
     }
+
+    void PComponent::on_collision(PCollider *) {
+
+    }
 } // Punity

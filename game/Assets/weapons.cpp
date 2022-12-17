@@ -24,16 +24,16 @@ namespace Game::Weapons {
 
     const WeaponConfig starting_weapon = {
         1,
-        Colliders::COLLIDER_PLAYER_PROJECTILE_1,
-        1,
-        10.0f,
+        Colliders::PLAYER_PROJECTILE_3,
+        0,
+        1.0f,
         0.0f,
         100.0f
     };
 
     const WeaponConfig enemy_weapon = {
             2,
-            Colliders::COLLIDER_ENEMY_PROJECTILE_1,
+            Colliders::ENEMY_PROJECTILE_1,
             0,
             0.33f,
             15.0f,
@@ -42,7 +42,7 @@ namespace Game::Weapons {
 
     const WeaponConfig rifle = {
             1,
-            Colliders::COLLIDER_PLAYER_PROJECTILE_1,
+            Colliders::PLAYER_PROJECTILE_1,
             2,
             5.0f,
             0.0f,

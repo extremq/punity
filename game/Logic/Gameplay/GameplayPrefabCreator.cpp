@@ -19,6 +19,7 @@
 #include "Weapon.h"
 #include "AttractablePickup.h"
 #include "ChestBehaviour.h"
+#include "WeaponPickup.h"
 
 /*
  * Unity has things called "Prefabs". Basically, they are game objects (my Punity::PEntity)
@@ -43,7 +44,7 @@ namespace Game::GameplayPrefabCreator {
         player_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::player_h / 2.0f)
                 ->set_static(false)
-                ->set_information(Game::Colliders::COLLIDER_PLAYER);
+                ->set_information(Game::Colliders::PLAYER);
         player_entity->add_component<ActorBehaviour>();
         player_entity->add_component<Weapon>()->set_weapon(Weapons::starting_weapon);
 
@@ -128,7 +129,7 @@ namespace Game::GameplayPrefabCreator {
         // Set the collider
         enemy_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::first_enemy_type_h / 2)
-                ->set_information(Game::Colliders::COLLIDER_ENEMY);
+                ->set_information(Game::Colliders::ENEMY);
 
         // Set enemy behaviour
         enemy_entity->add_component<EnemyBehaviour>();
@@ -163,7 +164,7 @@ namespace Game::GameplayPrefabCreator {
 
         switch (projectile_type) {
             // For each projectile, set the sprite and set the according size for the circle collider
-            case Colliders::COLLIDER_PLAYER_PROJECTILE_1:
+            case Colliders::PLAYER_PROJECTILE_1:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                         Game::Sprites::player_bullet_1,
                         Game::Sprites::player_bullet_1_alpha,
@@ -173,7 +174,7 @@ namespace Game::GameplayPrefabCreator {
                 );
                 collider->set_radius(Game::Sprites::player_bullet_1_w / 2.0f);
                 break;
-            case Colliders::COLLIDER_PLAYER_PROJECTILE_2:
+            case Colliders::PLAYER_PROJECTILE_2:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                         Game::Sprites::player_bullet_2,
                         Game::Sprites::player_bullet_2_alpha,
@@ -183,7 +184,7 @@ namespace Game::GameplayPrefabCreator {
                 );
                 collider->set_radius(Game::Sprites::player_bullet_2_w / 2.0f);
                 break;
-            case Colliders::COLLIDER_PLAYER_PROJECTILE_3:
+            case Colliders::PLAYER_PROJECTILE_3:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                         Game::Sprites::player_bullet_3,
                         Game::Sprites::player_bullet_3_alpha,
@@ -204,7 +205,7 @@ namespace Game::GameplayPrefabCreator {
 
         // And add the projectile
         bullet_entity->add_component<Projectile>()
-                ->set_exception(Game::Colliders::COLLIDER_PLAYER);
+                ->set_exception(Game::Colliders::PLAYER);
 
         return bullet_entity;
     }
@@ -217,7 +218,7 @@ namespace Game::GameplayPrefabCreator {
 
         switch (projectile_type) {
             // For each projectile, set the sprite and set the according size for the circle collider
-            case Colliders::COLLIDER_ENEMY_PROJECTILE_1:
+            case Colliders::ENEMY_PROJECTILE_1:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                         Game::Sprites::enemy_bullet_1,
                         Game::Sprites::enemy_bullet_1_alpha,
@@ -227,7 +228,7 @@ namespace Game::GameplayPrefabCreator {
                 );
                 collider->set_radius(Game::Sprites::enemy_bullet_1_w / 2.0f);
                 break;
-            case Colliders::COLLIDER_ENEMY_PROJECTILE_2:
+            case Colliders::ENEMY_PROJECTILE_2:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                         Game::Sprites::enemy_bullet_2,
                         Game::Sprites::enemy_bullet_2_alpha,
@@ -237,7 +238,7 @@ namespace Game::GameplayPrefabCreator {
                 );
                 collider->set_radius(Game::Sprites::enemy_bullet_2_w / 2.0f);
                 break;
-            case Colliders::COLLIDER_ENEMY_PROJECTILE_3:
+            case Colliders::ENEMY_PROJECTILE_3:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                         Game::Sprites::enemy_bullet_3,
                         Game::Sprites::enemy_bullet_3_alpha,
@@ -258,7 +259,7 @@ namespace Game::GameplayPrefabCreator {
 
         // And add the projectile
         bullet_entity->add_component<Projectile>()
-                ->set_exception(Game::Colliders::COLLIDER_ENEMY);
+                ->set_exception(Game::Colliders::ENEMY);
 
         return bullet_entity;
     }
@@ -422,7 +423,7 @@ namespace Game::GameplayPrefabCreator {
         // A static trigger type.
         energy_pickup_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::energy_w / 2.0f)
-                ->set_information(Colliders::COLLIDER_ENERGY_PICKUP)
+                ->set_information(Colliders::ENERGY_PICKUP)
                 ->set_trigger(true)
                 ->set_static(true);
 
@@ -445,7 +446,7 @@ namespace Game::GameplayPrefabCreator {
         // A static trigger type.
         heart_pickup_entity->add_component<Punity::Components::PCircleCollider>()
                 ->set_radius(Game::Sprites::heart_w / 2.0f)
-                ->set_information(Colliders::COLLIDER_HEART_PICKUP)
+                ->set_information(Colliders::HEART_PICKUP)
                 ->set_trigger(true)
                 ->set_static(true);
 
@@ -453,6 +454,29 @@ namespace Game::GameplayPrefabCreator {
 
         return heart_pickup_entity;
     }
+
+    Punity::PEntity* make_weapon_pickup(Punity::PEntity* parent, Weapons::WeaponConfig config) {
+        auto weapon_entity = Punity::PEntity::make_entity("WeaponPickup", parent, true);
+
+        weapon_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                Game::Sprites::player,
+                Game::Sprites::player_alpha,
+                Game::Sprites::player_h,
+                Game::Sprites::player_w,
+                Game::Sprites::Layers::PICKUP
+                );
+
+        // Add and set the config of the weapon pickup
+        weapon_entity->add_component<WeaponPickup>()->set_weapon(config);
+
+        weapon_entity->add_component<Punity::Components::PBoxCollider>()
+                ->set_size(Game::Sprites::player_h, Game::Sprites::player_w)
+                ->set_trigger(true)
+                ->set_information(Colliders::WEAPON_PICKUP);
+
+        return weapon_entity;
+    }
+
 
     // Spawns amount of energy pickups at a random offset of position
     void drop_energy_pickups(Punity::PEntity* parent, uint8_t amount, Punity::Utils::PVector position) {

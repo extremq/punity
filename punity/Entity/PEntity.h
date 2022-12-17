@@ -57,6 +57,7 @@ namespace Punity {
         void report_destroy_to_components();
         void report_start_to_components();
         void report_start_collision_to_components(Components::PCollider*);
+        void report_collision_to_components(Components::PCollider*);
         void report_end_collision_to_components(Components::PCollider*);
 
         // Disable copy
