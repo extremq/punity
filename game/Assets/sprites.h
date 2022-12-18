@@ -5,6 +5,14 @@
 
 namespace Game::Sprites {
     
+	extern uint16_t const arrow_left [8 * 8];
+	extern bool const arrow_left_alpha [8 * 8];
+	extern uint16_t const arrow_left_w;
+	extern uint16_t const arrow_left_h;
+	extern uint16_t const arrow_right [8 * 8];
+	extern bool const arrow_right_alpha [8 * 8];
+	extern uint16_t const arrow_right_w;
+	extern uint16_t const arrow_right_h;
 	extern uint16_t const chest [16 * 8];
 	extern bool const chest_alpha [16 * 8];
 	extern uint16_t const chest_w;
@@ -105,6 +113,10 @@ namespace Game::Sprites {
 	extern bool const six_alpha [7 * 8];
 	extern uint16_t const six_w;
 	extern uint16_t const six_h;
+	extern uint16_t const sword [8 * 8];
+	extern bool const sword_alpha [8 * 8];
+	extern uint16_t const sword_w;
+	extern uint16_t const sword_h;
 	extern uint16_t const three [7 * 8];
 	extern bool const three_alpha [7 * 8];
 	extern uint16_t const three_w;

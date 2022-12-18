@@ -17,6 +17,7 @@ namespace Game::Weapons {
         0,
         0,
         0,
+        0,
         1.0f,
         0,
         100.0f
@@ -26,6 +27,7 @@ namespace Game::Weapons {
         1,
         Colliders::PLAYER_PROJECTILE_3,
         0,
+        3,
         1.0f,
         0.0f,
         100.0f
@@ -35,6 +37,7 @@ namespace Game::Weapons {
             2,
             Colliders::ENEMY_PROJECTILE_1,
             0,
+            1,
             0.33f,
             15.0f,
             30.0f
@@ -44,6 +47,7 @@ namespace Game::Weapons {
             1,
             Colliders::PLAYER_PROJECTILE_1,
             2,
+            1,
             5.0f,
             0.0f,
             100.0f

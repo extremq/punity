@@ -30,6 +30,9 @@ namespace Game {
         // Update the hearts to reflect current player health
         update_hearts(player_actor_behaviour);
 
+        // Update weapon status
+        update_weapon_status(player_behaviour);
+
         // Update energy
         update_energy(player_behaviour);
 
@@ -300,6 +303,60 @@ namespace Game {
                 Game::Groupings::numbers_alpha[SceneManager::stage],
                 Game::Groupings::numbers_h[SceneManager::stage],
                 Game::Groupings::numbers_w[SceneManager::stage],
+                Game::Sprites::Layers::HUD
+        );
+    }
+
+    void GameplaySceneBehaviour::update_weapon_status(PlayerBehaviour *player_behaviour) {
+        if (!GameplaySceneManager::player_loaded) return;
+
+        auto weapon_status = hud->get_child_by_name("WeaponStatusUI");
+        auto arrow = weapon_status->get_child_by_name("WeaponArrow");
+        auto equipped_weapon = weapon_status->get_child_by_name("EquippedWeapon");
+
+        // Set arrow direction
+        if (player_behaviour->is_using_starting_weapon()) {
+            arrow->get_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                    Game::Sprites::arrow_left,
+                    Game::Sprites::arrow_left_alpha,
+                    Game::Sprites::arrow_left_h,
+                    Game::Sprites::arrow_left_w,
+                    Game::Sprites::Layers::HUD
+                    );
+        }
+        else {
+            arrow->get_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                    Game::Sprites::arrow_right,
+                    Game::Sprites::arrow_right_alpha,
+                    Game::Sprites::arrow_right_h,
+                    Game::Sprites::arrow_right_w,
+                    Game::Sprites::Layers::HUD
+            );
+        }
+
+        // Only enable picked up weapons
+        equipped_weapon->set_active(player_behaviour->has_picked_up_any_weapon());
+
+        if (!player_behaviour->has_picked_up_any_weapon()) return;
+
+        // Update picked up weapon
+        auto eqp_weapon_energy_cnt = equipped_weapon->get_child_by_name("EqpWpnEnergyCnt");
+        auto eqp_weapon_attack_cnt = equipped_weapon->get_child_by_name("EqpWpnAttackCnt");
+        auto config = player_behaviour->get_equipped_weapon();
+
+        eqp_weapon_energy_cnt->get_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Groupings::numbers[config.energy_cost],
+                Game::Groupings::numbers_alpha[config.energy_cost],
+                Game::Groupings::numbers_h[config.energy_cost],
+                Game::Groupings::numbers_w[config.energy_cost],
+                Game::Sprites::Layers::HUD
+                );
+
+        eqp_weapon_attack_cnt->get_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                Game::Groupings::numbers[config.damage],
+                Game::Groupings::numbers_alpha[config.damage],
+                Game::Groupings::numbers_h[config.damage],
+                Game::Groupings::numbers_w[config.damage],
                 Game::Sprites::Layers::HUD
         );
     }

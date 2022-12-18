@@ -48,6 +48,7 @@ namespace Game {
         void update_hearts(ActorBehaviour* player_actor);
         void update_energy(PlayerBehaviour* player_behaviour);
         void update_level_stage_counter();
+        void update_weapon_status(PlayerBehaviour *player_behaviour);
     public:
     };
 

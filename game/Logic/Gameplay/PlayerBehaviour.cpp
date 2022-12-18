@@ -29,15 +29,15 @@ namespace Game {
             equipped_weapon = other->get_entity()->get_component<WeaponPickup>()->swap_weapon(equipped_weapon);
 
             // Also change to new weapon
-            is_using_starting_weapon = false;
+            using_starting_weapon = false;
             change_weapon(equipped_weapon);
 
-            if (!has_picked_up_any_weapon) {
+            if (!picked_up_any_weapon) {
                 // Since it's our first weapon, we should not be able to swap it
                 other->get_entity()->destroy();
             }
 
-            has_picked_up_any_weapon = true;
+            picked_up_any_weapon = true;
             return;
         }
     }
@@ -88,9 +88,9 @@ namespace Game {
     void PlayerBehaviour::fully_reset_player() {
         // Replace weapon
         change_weapon(Weapons::starting_weapon);
-        is_using_starting_weapon = true;
+        using_starting_weapon = true;
         equipped_weapon = Weapons::empty_weapon;
-        has_picked_up_any_weapon = false;
+        picked_up_any_weapon = false;
 
         // Restore energy
         remaining_energy = 99;
@@ -130,17 +130,17 @@ namespace Game {
 
         // Switching weapons
         // Also have a cooldown on clicks
-        if (has_picked_up_any_weapon &&
+        if (picked_up_any_weapon &&
         Punity::Time.time - last_joystick_click_time > 0.25f &&
             Punity::Button.read_button(JOY_BTN)) {
             last_joystick_click_time = Punity::Time.time;
             // Switch between starting weapon and equipped weapon
-            if (is_using_starting_weapon) {
-                is_using_starting_weapon = false;
+            if (using_starting_weapon) {
+                using_starting_weapon = false;
                 change_weapon(equipped_weapon);
             }
             else {
-                is_using_starting_weapon = true;
+                using_starting_weapon = true;
                 change_weapon(Weapons::starting_weapon);
             }
         }
@@ -149,7 +149,7 @@ namespace Game {
         if (Punity::Button.read_button(ACTION_BTN)) {
             // You need enough energy to be able to shoot
             // However starting weapon uses no energy, just magic
-            if (!is_using_starting_weapon && remaining_energy - weapon_component->get_energy_cost() < 0) return;
+            if (!using_starting_weapon && remaining_energy - weapon_component->get_energy_cost() < 0) return;
 
             // If we actually shoot and aren't on cooldown
             if (weapon_component->shoot(
@@ -212,6 +212,18 @@ namespace Game {
 
     int16_t PlayerBehaviour::get_remaining_energy() {
         return remaining_energy;
+    }
+
+    bool PlayerBehaviour::is_using_starting_weapon() {
+        return using_starting_weapon;
+    }
+
+    bool PlayerBehaviour::has_picked_up_any_weapon() {
+        return picked_up_any_weapon;
+    }
+
+    Weapons::WeaponConfig PlayerBehaviour::get_equipped_weapon() {
+        return equipped_weapon;
     }
 
 } // Game

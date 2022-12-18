@@ -12,8 +12,8 @@ namespace Game {
     class PlayerBehaviour : public Punity::Components::PComponent {
     private:
         bool touched_chest = false;
-        bool is_using_starting_weapon = true;
-        bool has_picked_up_any_weapon = false;
+        bool using_starting_weapon = true;
+        bool picked_up_any_weapon = false;
 
         // Avoid some casts
         Punity::PEntity* enemies = nullptr;
@@ -41,9 +41,12 @@ namespace Game {
 
         Punity::Utils::PVector compute_nearest_enemy();
     public:
+        bool is_using_starting_weapon();
         int16_t get_remaining_energy();
         void fully_reset_player();
         bool has_touched_chest();
+        bool has_picked_up_any_weapon();
+        Weapons::WeaponConfig get_equipped_weapon();
     };
 } // Game
 

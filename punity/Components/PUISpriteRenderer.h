@@ -13,6 +13,10 @@ namespace Punity::Components {
         // will exist
     public:
         Utils::PVector ui_position = {0, 0};
+        PUISpriteRenderer* set_ui_pos(Utils::PVector pos) {
+            ui_position = pos;
+            return this;
+        }
     };
 
 } // Components

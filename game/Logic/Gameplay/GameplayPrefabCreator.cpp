@@ -406,6 +406,143 @@ namespace Game::GameplayPrefabCreator {
         };
 
 
+        // Selected weapon hud
+        auto weapon_status_entity = Punity::PEntity::make_entity("WeaponStatusUI", gameplay_UI_entity, true);
+        auto arrow_entity = Punity::PEntity::make_entity("WeaponArrow", weapon_status_entity, true);
+        arrow_entity->add_component<Punity::Components::PUISpriteRenderer>()
+                ->set_ui_pos({
+                 0,
+                 63.0f - Game::Sprites::arrow_left_h / 2.0f
+                })
+                ->set_sprite(
+                Game::Sprites::arrow_left,
+                Game::Sprites::arrow_left_alpha,
+                Game::Sprites::arrow_left_h,
+                Game::Sprites::arrow_left_w,
+                Game::Sprites::Layers::HUD
+                );
+
+        // Make Default weapon energy, energy counter, damage, damage counter
+        auto default_weapon_entity = Punity::PEntity::make_entity("DefaultWeapon", weapon_status_entity, true);
+        auto default_weapon_energy = Punity::PEntity::make_entity("DefWpnEnergy", default_weapon_entity, true);
+        auto default_weapon_energy_counter = Punity::PEntity::make_entity("DefWpnEnergyCnt", default_weapon_entity, true);
+        auto default_weapon_attack = Punity::PEntity::make_entity("DefWpnAttack", default_weapon_entity, true);
+        auto default_weapon_attack_counter = Punity::PEntity::make_entity("DefWpnAttackCnt", default_weapon_entity, true);
+
+        default_weapon_energy_counter->add_component<Punity::Components::PUISpriteRenderer>()
+                ->set_ui_pos({
+                     -65.0f + 16.0f + Game::Sprites::zero_w / 2.0f,
+                     63.0f - Game::Sprites::zero_h / 2.0f
+                })
+                ->set_sprite(
+                        Game::Sprites::zero,
+                        Game::Sprites::zero_alpha,
+                        Game::Sprites::zero_h,
+                        Game::Sprites::zero_w,
+                        Game::Sprites::Layers::HUD
+                );
+
+        default_weapon_energy->add_component<Punity::Components::PUISpriteRenderer>()
+                ->set_ui_pos({
+                         -64.0f + 24.0f + Game::Sprites::energy_w / 2.0f,
+                         62.0f - Game::Sprites::energy_h / 2.0f
+                })
+                ->set_sprite(
+                        Game::Sprites::energy,
+                        Game::Sprites::energy_alpha,
+                        Game::Sprites::energy_h,
+                        Game::Sprites::energy_w,
+                        Game::Sprites::Layers::HUD
+                );
+
+
+        default_weapon_attack_counter->add_component<Punity::Components::PUISpriteRenderer>()
+                ->set_ui_pos({
+                         -65.0f + 36.0f + Game::Sprites::one_w / 2.0f,
+                         63.0f - Game::Sprites::one_h / 2.0f
+                })
+                ->set_sprite(
+                        Game::Sprites::one,
+                        Game::Sprites::one_alpha,
+                        Game::Sprites::one_h,
+                        Game::Sprites::one_w,
+                        Game::Sprites::Layers::HUD
+                );
+
+        default_weapon_attack->add_component<Punity::Components::PUISpriteRenderer>()
+                ->set_ui_pos({
+                         -64.0f + 44.0f + Game::Sprites::sword_w / 2.0f,
+                         63.0f - Game::Sprites::sword_h / 2.0f
+                })
+                ->set_sprite(
+                        Game::Sprites::sword,
+                        Game::Sprites::sword_alpha,
+                        Game::Sprites::sword_h,
+                        Game::Sprites::sword_w,
+                        Game::Sprites::Layers::HUD
+                );
+
+
+        // Make Equipped weapon energy, energy counter, damage, damage counter but have it inactive
+        auto equipped_weapon_entity = Punity::PEntity::make_entity("EquippedWeapon", weapon_status_entity, false);
+        auto equipped_weapon_energy = Punity::PEntity::make_entity("EqpWpnEnergy", equipped_weapon_entity, true);
+        auto equipped_weapon_energy_counter = Punity::PEntity::make_entity("EqpWpnEnergyCnt", equipped_weapon_entity, true);
+        auto equipped_weapon_attack = Punity::PEntity::make_entity("EqpWpnAttack", equipped_weapon_entity, true);
+        auto equipped_weapon_attack_counter = Punity::PEntity::make_entity("EqpWpnAttackCnt", equipped_weapon_entity, true);
+
+        equipped_weapon_energy_counter->add_component<Punity::Components::PUISpriteRenderer>()
+                ->set_ui_pos({
+                         12.0f + Game::Sprites::zero_w / 2.0f,
+                         63.0f - Game::Sprites::zero_h / 2.0f
+                })
+                ->set_sprite(
+                        Game::Sprites::zero,
+                        Game::Sprites::zero_alpha,
+                        Game::Sprites::zero_h,
+                        Game::Sprites::zero_w,
+                        Game::Sprites::Layers::HUD
+                );
+
+        equipped_weapon_energy->add_component<Punity::Components::PUISpriteRenderer>()
+                ->set_ui_pos({
+                         20.0f + Game::Sprites::energy_w / 2.0f,
+                         62.0f - Game::Sprites::energy_h / 2.0f
+                })
+                ->set_sprite(
+                        Game::Sprites::energy,
+                        Game::Sprites::energy_alpha,
+                        Game::Sprites::energy_h,
+                        Game::Sprites::energy_w,
+                        Game::Sprites::Layers::HUD
+                );
+
+
+        equipped_weapon_attack_counter->add_component<Punity::Components::PUISpriteRenderer>()
+                ->set_ui_pos({
+                         30.0f + Game::Sprites::one_w / 2.0f,
+                         63.0f - Game::Sprites::one_h / 2.0f
+                })
+                ->set_sprite(
+                        Game::Sprites::one,
+                        Game::Sprites::one_alpha,
+                        Game::Sprites::one_h,
+                        Game::Sprites::one_w,
+                        Game::Sprites::Layers::HUD
+                );
+
+        equipped_weapon_attack->add_component<Punity::Components::PUISpriteRenderer>()
+                ->set_ui_pos({
+                         38.0f + Game::Sprites::sword_h / 2.0f,
+                         63.0f - Game::Sprites::sword_w / 2.0f
+                })
+                ->set_sprite(
+                        Game::Sprites::sword,
+                        Game::Sprites::sword_alpha,
+                        Game::Sprites::sword_h,
+                        Game::Sprites::sword_w,
+                        Game::Sprites::Layers::HUD
+                );
+
         return gameplay_UI_entity;
     }
 
@@ -459,10 +596,10 @@ namespace Game::GameplayPrefabCreator {
         auto weapon_entity = Punity::PEntity::make_entity("WeaponPickup", parent, true);
 
         weapon_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::player,
-                Game::Sprites::player_alpha,
-                Game::Sprites::player_h,
-                Game::Sprites::player_w,
+                Game::Sprites::sword,
+                Game::Sprites::sword_alpha,
+                Game::Sprites::sword_h,
+                Game::Sprites::sword_w,
                 Game::Sprites::Layers::PICKUP
                 );
 
@@ -470,7 +607,7 @@ namespace Game::GameplayPrefabCreator {
         weapon_entity->add_component<WeaponPickup>()->set_weapon(config);
 
         weapon_entity->add_component<Punity::Components::PBoxCollider>()
-                ->set_size(Game::Sprites::player_h, Game::Sprites::player_w)
+                ->set_size(Game::Sprites::sword_h, Game::Sprites::sword_w)
                 ->set_trigger(true)
                 ->set_information(Colliders::WEAPON_PICKUP);
 
