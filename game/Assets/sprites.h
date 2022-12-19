@@ -3,6 +3,14 @@
 
 #include <cstdint>
 
+#define _MAKE_ALPHA(name) name##_alpha
+#define MAKE_ALPHA(name) _MAKE_ALPHA(name)
+#define _MAKE_W(name) name##_w
+#define MAKE_W(name) _MAKE_W(name)
+#define _MAKE_H(name) name##_h
+#define MAKE_H(name) _MAKE_H(name)
+#define SPRITE(name, layer) name, MAKE_ALPHA(name), MAKE_H(name), MAKE_W(name), layer
+
 namespace Game::Sprites {
     
 	extern uint16_t const arrow_left [8 * 8];
@@ -105,6 +113,10 @@ namespace Game::Sprites {
 	extern bool const player_bullet_3_alpha [5 * 5];
 	extern uint16_t const player_bullet_3_w;
 	extern uint16_t const player_bullet_3_h;
+	extern uint16_t const rare_sword [8 * 8];
+	extern bool const rare_sword_alpha [8 * 8];
+	extern uint16_t const rare_sword_w;
+	extern uint16_t const rare_sword_h;
 	extern uint16_t const seven [7 * 8];
 	extern bool const seven_alpha [7 * 8];
 	extern uint16_t const seven_w;

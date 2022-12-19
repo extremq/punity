@@ -8,6 +8,7 @@
 #include "game/Logic/Gameplay/LoadSceneBehaviour.h"
 #include "game/Logic/Gameplay/StartSceneBehaviour.h"
 #include "game/Logic/Gameplay/GameplaySceneBehaviour.h"
+#include "game/Assets/sprite_layers.h"
 
 namespace Game::SceneCreator {
     Punity::PEntity* create_start_scene(Punity::PEntity* parent) {
@@ -19,11 +20,7 @@ namespace Game::SceneCreator {
         auto pain_entity = Punity::PEntity::make_entity("PainText", start_scene_entity, true);
 
         pain_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::game_title,
-                Game::Sprites::game_title_alpha,
-                Game::Sprites::game_title_h,
-                Game::Sprites::game_title_w,
-                0
+                SPRITE(Game::Sprites::game_title, Game::Sprites::Layers::HUD)
         );
 
         // Make the start text
@@ -35,11 +32,7 @@ namespace Game::SceneCreator {
         floater->base_y = 20;
 
         start_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::game_title_start,
-                Game::Sprites::game_title_start_alpha,
-                Game::Sprites::game_title_start_h,
-                Game::Sprites::game_title_start_w,
-                0
+                SPRITE(Game::Sprites::game_title_start, Game::Sprites::Layers::HUD)
         );
 
         return start_scene_entity;
@@ -63,25 +56,13 @@ namespace Game::SceneCreator {
         // Set up sprites
         // They will be in the center by default.
         digit_1_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::level1,
-                Game::Sprites::level1_alpha,
-                Game::Sprites::level1_h,
-                Game::Sprites::level1_w,
-                0
+                SPRITE(Game::Sprites::level1, Game::Sprites::Layers::HUD)
         );
         digit_2_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::level2,
-                Game::Sprites::level2_alpha,
-                Game::Sprites::level2_h,
-                Game::Sprites::level2_w,
-                0
+                SPRITE(Game::Sprites::level2, Game::Sprites::Layers::HUD)
         );
         digit_3_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::level3,
-                Game::Sprites::level3_alpha,
-                Game::Sprites::level3_h,
-                Game::Sprites::level3_w,
-                0
+                SPRITE(Game::Sprites::level3, Game::Sprites::Layers::HUD)
         );
         return load_scene_entity;
     }

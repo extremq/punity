@@ -8,6 +8,14 @@ output_header = """#ifndef _SPRITES_
 
 #include <cstdint>
 
+#define _MAKE_ALPHA(name) name##_alpha
+#define MAKE_ALPHA(name) _MAKE_ALPHA(name)
+#define _MAKE_W(name) name##_w
+#define MAKE_W(name) _MAKE_W(name)
+#define _MAKE_H(name) name##_h
+#define MAKE_H(name) _MAKE_H(name)
+#define SPRITE(name, layer) name, MAKE_ALPHA(name), MAKE_H(name), MAKE_W(name), layer
+
 namespace Game::Sprites {
     
 """

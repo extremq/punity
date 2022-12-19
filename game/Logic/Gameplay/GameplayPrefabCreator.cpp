@@ -32,11 +32,7 @@ namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_player(Punity::PEntity* parent) {
         auto player_entity = Punity::PEntity::make_entity("Player", parent, false);
         player_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::player,
-                Game::Sprites::player_alpha,
-                Game::Sprites::player_h,
-                Game::Sprites::player_w,
-                Game::Sprites::Layers::PLAYER
+                SPRITE(Game::Sprites::player, Game::Sprites::Layers::PLAYER)
         );
 
         // Add components
@@ -65,11 +61,7 @@ namespace Game::GameplayPrefabCreator {
 
         // Choose sprite
         chest_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::chest,
-                Game::Sprites::chest_alpha,
-                Game::Sprites::chest_h,
-                Game::Sprites::chest_w,
-                Game::Sprites::Layers::CHEST
+                SPRITE(Game::Sprites::chest, Game::Sprites::Layers::CHEST)
         );
 
         // Use a box collider
@@ -92,11 +84,7 @@ namespace Game::GameplayPrefabCreator {
 
         // Choose sprite
         wall_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::wall,
-                Game::Sprites::wall_alpha,
-                Game::Sprites::wall_h,
-                Game::Sprites::wall_w,
-                Game::Sprites::Layers::WALL
+                SPRITE(Game::Sprites::wall, Game::Sprites::Layers::WALL)
         );
 
         // Use a box collider
@@ -119,12 +107,8 @@ namespace Game::GameplayPrefabCreator {
 
         // Choose sprite
         enemy_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::first_enemy_type,
-                Game::Sprites::first_enemy_type_alpha,
-                Game::Sprites::first_enemy_type_h,
-                Game::Sprites::first_enemy_type_w,
-                Game::Sprites::Layers::PLAYER
-                );
+                SPRITE(Game::Sprites::first_enemy_type, Game::Sprites::Layers::PLAYER)
+        );
 
         // Set the collider
         enemy_entity->add_component<Punity::Components::PCircleCollider>()
@@ -145,11 +129,7 @@ namespace Game::GameplayPrefabCreator {
 
         selector_entity->get_transform()->set_local({0, -8});
         selector_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::enemy_selected_arrow,
-                Game::Sprites::enemy_selected_arrow_alpha,
-                Game::Sprites::enemy_selected_arrow_h,
-                Game::Sprites::enemy_selected_arrow_w,
-                Game::Sprites::Layers::SELECTOR
+                SPRITE(Game::Sprites::enemy_selected_arrow, Game::Sprites::Layers::SELECTOR)
         );
 
         return enemy_entity;
@@ -166,31 +146,19 @@ namespace Game::GameplayPrefabCreator {
             // For each projectile, set the sprite and set the according size for the circle collider
             case Colliders::PLAYER_PROJECTILE_1:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                        Game::Sprites::player_bullet_1,
-                        Game::Sprites::player_bullet_1_alpha,
-                        Game::Sprites::player_bullet_1_h,
-                        Game::Sprites::player_bullet_1_w,
-                        Game::Sprites::Layers::BULLET
+                        SPRITE(Game::Sprites::player_bullet_1, Game::Sprites::Layers::BULLET)
                 );
                 collider->set_radius(Game::Sprites::player_bullet_1_w / 2.0f);
                 break;
             case Colliders::PLAYER_PROJECTILE_2:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                        Game::Sprites::player_bullet_2,
-                        Game::Sprites::player_bullet_2_alpha,
-                        Game::Sprites::player_bullet_2_h,
-                        Game::Sprites::player_bullet_2_w,
-                        Game::Sprites::Layers::BULLET
+                        SPRITE(Game::Sprites::player_bullet_2, Game::Sprites::Layers::BULLET)
                 );
                 collider->set_radius(Game::Sprites::player_bullet_2_w / 2.0f);
                 break;
             case Colliders::PLAYER_PROJECTILE_3:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                        Game::Sprites::player_bullet_3,
-                        Game::Sprites::player_bullet_3_alpha,
-                        Game::Sprites::player_bullet_3_h,
-                        Game::Sprites::player_bullet_3_w,
-                        Game::Sprites::Layers::BULLET
+                        SPRITE(Game::Sprites::player_bullet_3, Game::Sprites::Layers::BULLET)
                 );
                 collider->set_radius(Game::Sprites::player_bullet_3_w / 2.0f);
                 break;
@@ -220,31 +188,19 @@ namespace Game::GameplayPrefabCreator {
             // For each projectile, set the sprite and set the according size for the circle collider
             case Colliders::ENEMY_PROJECTILE_1:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                        Game::Sprites::enemy_bullet_1,
-                        Game::Sprites::enemy_bullet_1_alpha,
-                        Game::Sprites::enemy_bullet_1_h,
-                        Game::Sprites::enemy_bullet_1_w,
-                        Game::Sprites::Layers::BULLET
+                        SPRITE(Game::Sprites::enemy_bullet_1, Game::Sprites::Layers::BULLET)
                 );
                 collider->set_radius(Game::Sprites::enemy_bullet_1_w / 2.0f);
                 break;
             case Colliders::ENEMY_PROJECTILE_2:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                        Game::Sprites::enemy_bullet_2,
-                        Game::Sprites::enemy_bullet_2_alpha,
-                        Game::Sprites::enemy_bullet_2_h,
-                        Game::Sprites::enemy_bullet_2_w,
-                        Game::Sprites::Layers::BULLET
+                        SPRITE(Game::Sprites::enemy_bullet_2, Game::Sprites::Layers::BULLET)
                 );
                 collider->set_radius(Game::Sprites::enemy_bullet_2_w / 2.0f);
                 break;
             case Colliders::ENEMY_PROJECTILE_3:
                 bullet_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                        Game::Sprites::enemy_bullet_3,
-                        Game::Sprites::enemy_bullet_3_alpha,
-                        Game::Sprites::enemy_bullet_3_h,
-                        Game::Sprites::enemy_bullet_3_w,
-                        Game::Sprites::Layers::BULLET
+                        SPRITE(Game::Sprites::enemy_bullet_3, Game::Sprites::Layers::BULLET)
                 );
                 collider->set_radius(Game::Sprites::enemy_bullet_3_w / 2.0f);
                 break;
@@ -275,12 +231,8 @@ namespace Game::GameplayPrefabCreator {
 
         // Place and set hearts
         heart1->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::heart,
-                Game::Sprites::heart_alpha,
-                Game::Sprites::heart_h,
-                Game::Sprites::heart_w,
-                Game::Sprites::Layers::HUD
-                );
+                SPRITE(Game::Sprites::heart, Game::Sprites::Layers::HUD)
+        );
 
         // Beware esoteric computations
         heart1->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
@@ -289,11 +241,7 @@ namespace Game::GameplayPrefabCreator {
         };
 
         heart2->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::heart,
-                Game::Sprites::heart_alpha,
-                Game::Sprites::heart_h,
-                Game::Sprites::heart_w,
-                Game::Sprites::Layers::HUD
+                SPRITE(Game::Sprites::heart, Game::Sprites::Layers::HUD)
         );
 
         heart2->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
@@ -302,11 +250,7 @@ namespace Game::GameplayPrefabCreator {
         };
 
         heart3->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::heart,
-                Game::Sprites::heart_alpha,
-                Game::Sprites::heart_h,
-                Game::Sprites::heart_w,
-                Game::Sprites::Layers::HUD
+                SPRITE(Game::Sprites::heart, Game::Sprites::Layers::HUD)
         );
 
         heart3->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
@@ -319,11 +263,7 @@ namespace Game::GameplayPrefabCreator {
         auto energy_image = Punity::PEntity::make_entity("EnergyImg", energy_hud_entity, true);
 
         energy_image->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::energy,
-                Game::Sprites::energy_alpha,
-                Game::Sprites::energy_h,
-                Game::Sprites::energy_w,
-                Game::Sprites::Layers::HUD
+                SPRITE(Game::Sprites::energy, Game::Sprites::Layers::HUD)
         );
 
         energy_image->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
@@ -335,11 +275,7 @@ namespace Game::GameplayPrefabCreator {
         auto energy_digit_2 = Punity::PEntity::make_entity("EnergyD2", energy_hud_entity, true);
 
         energy_digit_1->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::nine,
-                Game::Sprites::nine_alpha,
-                Game::Sprites::nine_h,
-                Game::Sprites::nine_w,
-                Game::Sprites::Layers::HUD
+                SPRITE(Game::Sprites::nine, Game::Sprites::Layers::HUD)
         );
 
         energy_digit_1->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
@@ -348,11 +284,7 @@ namespace Game::GameplayPrefabCreator {
         };
 
         energy_digit_2->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::nine,
-                Game::Sprites::nine_alpha,
-                Game::Sprites::nine_h,
-                Game::Sprites::nine_w,
-                Game::Sprites::Layers::HUD
+                SPRITE(Game::Sprites::nine, Game::Sprites::Layers::HUD)
         );
 
         energy_digit_2->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
@@ -367,11 +299,7 @@ namespace Game::GameplayPrefabCreator {
         auto stage_counter_entity = Punity::PEntity::make_entity("StageCounter", counter_entity, true);
 
         level_counter_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::one,
-                Game::Sprites::one_alpha,
-                Game::Sprites::one_h,
-                Game::Sprites::one_w,
-                Game::Sprites::Layers::HUD
+                SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
         );
 
         level_counter_entity->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
@@ -380,11 +308,7 @@ namespace Game::GameplayPrefabCreator {
         };
 
         dash_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::dash,
-                Game::Sprites::dash_alpha,
-                Game::Sprites::dash_h,
-                Game::Sprites::dash_w,
-                Game::Sprites::Layers::HUD
+                SPRITE(Game::Sprites::dash, Game::Sprites::Layers::HUD)
         );
 
         dash_entity->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
@@ -393,11 +317,7 @@ namespace Game::GameplayPrefabCreator {
         };
 
         stage_counter_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                Game::Sprites::one,
-                Game::Sprites::one_alpha,
-                Game::Sprites::one_h,
-                Game::Sprites::one_w,
-                Game::Sprites::Layers::HUD
+                SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
         );
 
         stage_counter_entity->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
@@ -415,11 +335,7 @@ namespace Game::GameplayPrefabCreator {
                  63.0f - Game::Sprites::arrow_left_h / 2.0f
                 })
                 ->set_sprite(
-                Game::Sprites::arrow_left,
-                Game::Sprites::arrow_left_alpha,
-                Game::Sprites::arrow_left_h,
-                Game::Sprites::arrow_left_w,
-                Game::Sprites::Layers::HUD
+                        SPRITE(Game::Sprites::arrow_left, Game::Sprites::Layers::HUD)
                 );
 
         // Make Default weapon energy, energy counter, damage, damage counter
@@ -435,11 +351,7 @@ namespace Game::GameplayPrefabCreator {
                      63.0f - Game::Sprites::zero_h / 2.0f
                 })
                 ->set_sprite(
-                        Game::Sprites::zero,
-                        Game::Sprites::zero_alpha,
-                        Game::Sprites::zero_h,
-                        Game::Sprites::zero_w,
-                        Game::Sprites::Layers::HUD
+                        SPRITE(Game::Sprites::zero, Game::Sprites::Layers::HUD)
                 );
 
         default_weapon_energy->add_component<Punity::Components::PUISpriteRenderer>()
@@ -448,11 +360,7 @@ namespace Game::GameplayPrefabCreator {
                          62.0f - Game::Sprites::energy_h / 2.0f
                 })
                 ->set_sprite(
-                        Game::Sprites::energy,
-                        Game::Sprites::energy_alpha,
-                        Game::Sprites::energy_h,
-                        Game::Sprites::energy_w,
-                        Game::Sprites::Layers::HUD
+                        SPRITE(Game::Sprites::energy, Game::Sprites::Layers::HUD)
                 );
 
 
@@ -462,11 +370,7 @@ namespace Game::GameplayPrefabCreator {
                          63.0f - Game::Sprites::one_h / 2.0f
                 })
                 ->set_sprite(
-                        Game::Sprites::one,
-                        Game::Sprites::one_alpha,
-                        Game::Sprites::one_h,
-                        Game::Sprites::one_w,
-                        Game::Sprites::Layers::HUD
+                        SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
                 );
 
         default_weapon_attack->add_component<Punity::Components::PUISpriteRenderer>()
@@ -475,11 +379,7 @@ namespace Game::GameplayPrefabCreator {
                          63.0f - Game::Sprites::sword_h / 2.0f
                 })
                 ->set_sprite(
-                        Game::Sprites::sword,
-                        Game::Sprites::sword_alpha,
-                        Game::Sprites::sword_h,
-                        Game::Sprites::sword_w,
-                        Game::Sprites::Layers::HUD
+                        SPRITE(Game::Sprites::sword, Game::Sprites::Layers::HUD)
                 );
 
 
@@ -496,11 +396,7 @@ namespace Game::GameplayPrefabCreator {
                          63.0f - Game::Sprites::zero_h / 2.0f
                 })
                 ->set_sprite(
-                        Game::Sprites::zero,
-                        Game::Sprites::zero_alpha,
-                        Game::Sprites::zero_h,
-                        Game::Sprites::zero_w,
-                        Game::Sprites::Layers::HUD
+                        SPRITE(Game::Sprites::zero, Game::Sprites::Layers::HUD)
                 );
 
         equipped_weapon_energy->add_component<Punity::Components::PUISpriteRenderer>()
@@ -509,11 +405,7 @@ namespace Game::GameplayPrefabCreator {
                          62.0f - Game::Sprites::energy_h / 2.0f
                 })
                 ->set_sprite(
-                        Game::Sprites::energy,
-                        Game::Sprites::energy_alpha,
-                        Game::Sprites::energy_h,
-                        Game::Sprites::energy_w,
-                        Game::Sprites::Layers::HUD
+                        SPRITE(Game::Sprites::energy, Game::Sprites::Layers::HUD)
                 );
 
 
@@ -523,11 +415,7 @@ namespace Game::GameplayPrefabCreator {
                          63.0f - Game::Sprites::one_h / 2.0f
                 })
                 ->set_sprite(
-                        Game::Sprites::one,
-                        Game::Sprites::one_alpha,
-                        Game::Sprites::one_h,
-                        Game::Sprites::one_w,
-                        Game::Sprites::Layers::HUD
+                        SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
                 );
 
         equipped_weapon_attack->add_component<Punity::Components::PUISpriteRenderer>()
@@ -536,11 +424,7 @@ namespace Game::GameplayPrefabCreator {
                          63.0f - Game::Sprites::sword_w / 2.0f
                 })
                 ->set_sprite(
-                        Game::Sprites::sword,
-                        Game::Sprites::sword_alpha,
-                        Game::Sprites::sword_h,
-                        Game::Sprites::sword_w,
-                        Game::Sprites::Layers::HUD
+                        SPRITE(Game::Sprites::sword, Game::Sprites::Layers::HUD)
                 );
 
         return gameplay_UI_entity;
@@ -550,11 +434,7 @@ namespace Game::GameplayPrefabCreator {
         auto energy_pickup_entity = Punity::PEntity::make_entity("EnergyPickup", parent, true);
 
         energy_pickup_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::energy,
-                Game::Sprites::energy_alpha,
-                Game::Sprites::energy_h,
-                Game::Sprites::energy_w,
-                Game::Sprites::Layers::PICKUP
+                SPRITE(Game::Sprites::energy, Game::Sprites::Layers::PICKUP)
                 );
 
         // A static trigger type.
@@ -573,11 +453,7 @@ namespace Game::GameplayPrefabCreator {
         auto heart_pickup_entity = Punity::PEntity::make_entity("HeartPickup", parent, true);
 
         heart_pickup_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::heart,
-                Game::Sprites::heart_alpha,
-                Game::Sprites::heart_h,
-                Game::Sprites::heart_w,
-                Game::Sprites::Layers::PICKUP
+                SPRITE(Game::Sprites::heart, Game::Sprites::Layers::PICKUP)
         );
 
         // A static trigger type.
@@ -596,11 +472,7 @@ namespace Game::GameplayPrefabCreator {
         auto weapon_entity = Punity::PEntity::make_entity("WeaponPickup", parent, true);
 
         weapon_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                Game::Sprites::sword,
-                Game::Sprites::sword_alpha,
-                Game::Sprites::sword_h,
-                Game::Sprites::sword_w,
-                Game::Sprites::Layers::PICKUP
+                SPRITE(Game::Sprites::sword, Game::Sprites::Layers::PICKUP)
                 );
 
         // Add and set the config of the weapon pickup
