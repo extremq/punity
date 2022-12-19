@@ -7,6 +7,7 @@
 #include "game/Assets/sprites.h"
 #include "game/Assets/sprite_layers.h"
 #include "game/Assets/colliders.h"
+#include "game/Assets/strings.h"
 
 #include "punity/Components/PCircleCollider.h"
 #include "punity/Components/PBoxCollider.h"
@@ -30,7 +31,7 @@
  */
 namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_player(Punity::PEntity* parent) {
-        auto player_entity = Punity::PEntity::make_entity("Player", parent, false);
+        auto player_entity = Punity::PEntity::make_entity(Game::Names::PLAYER, parent, false);
         player_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                 SPRITE(Game::Sprites::player, Game::Sprites::Layers::PLAYER)
         );
@@ -48,7 +49,7 @@ namespace Game::GameplayPrefabCreator {
     }
 
     Punity::PEntity* make_room(Punity::PEntity* parent) {
-        auto room_entity = Punity::PEntity::make_entity("Room", parent, false);
+        auto room_entity = Punity::PEntity::make_entity(Game::Names::ROOM, parent, false);
 
         // Add the room_behaviour
         room_entity->add_component<RoomBehaviour>();
@@ -57,7 +58,7 @@ namespace Game::GameplayPrefabCreator {
     }
 
     Punity::PEntity* make_chest(Punity::PEntity* parent) {
-        auto chest_entity = Punity::PEntity::make_entity("Chest", parent, true);
+        auto chest_entity = Punity::PEntity::make_entity(Game::Names::CHEST, parent, true);
 
         // Choose sprite
         chest_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
@@ -80,7 +81,7 @@ namespace Game::GameplayPrefabCreator {
     }
 
     Punity::PEntity* make_wall(Punity::PEntity* parent) {
-        auto wall_entity = Punity::PEntity::make_entity("Wall", parent, true);
+        auto wall_entity = Punity::PEntity::make_entity(Game::Names::WALL, parent, true);
 
         // Choose sprite
         wall_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
@@ -97,12 +98,12 @@ namespace Game::GameplayPrefabCreator {
     }
 
     Punity::PEntity* make_enemies_entity(Punity::PEntity* parent) {
-        auto enemies_entity = Punity::PEntity::make_entity("Enemies", parent, true);
+        auto enemies_entity = Punity::PEntity::make_entity(Game::Names::ENEMIES, parent, true);
         return enemies_entity;
     }
 
     Punity::PEntity* make_enemy(Punity::PEntity* parent) {
-        auto enemy_entity = Punity::PEntity::make_entity("Enemy", parent, true);
+        auto enemy_entity = Punity::PEntity::make_entity(Game::Names::ENEMY, parent, true);
 
 
         // Choose sprite
@@ -125,7 +126,7 @@ namespace Game::GameplayPrefabCreator {
         enemy_entity->add_component<Weapon>()->set_weapon(Weapons::enemy_weapon);
 
         // Entity for selector that appears above enemy when player aims at
-        auto selector_entity = Punity::PEntity::make_entity("Selector", enemy_entity, false);
+        auto selector_entity = Punity::PEntity::make_entity(Game::Names::SELECTOR, enemy_entity, false);
 
         selector_entity->get_transform()->set_local({0, -8});
         selector_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
@@ -137,7 +138,7 @@ namespace Game::GameplayPrefabCreator {
 
 
     Punity::PEntity* make_player_bullet(Punity::PEntity* parent, uint8_t projectile_type) {
-        auto bullet_entity = Punity::PEntity::make_entity("PBullet", parent, true);
+        auto bullet_entity = Punity::PEntity::make_entity(Game::Names::PLAYER_BULLET, parent, true);
 
         // Set sprite according to projectile type
         auto collider = bullet_entity->add_component<Punity::Components::PCircleCollider>();
@@ -179,7 +180,7 @@ namespace Game::GameplayPrefabCreator {
     }
 
     Punity::PEntity* make_enemy_bullet(Punity::PEntity* parent, uint8_t projectile_type) {
-        auto bullet_entity = Punity::PEntity::make_entity("EBullet", parent, true);
+        auto bullet_entity = Punity::PEntity::make_entity(Game::Names::ENEMY_BULLET, parent, true);
 
         // Set sprite according to projectile type
         auto collider = bullet_entity->add_component<Punity::Components::PCircleCollider>();
@@ -221,217 +222,199 @@ namespace Game::GameplayPrefabCreator {
     }
 
     Punity::PEntity* make_gameplay_UI(Punity::PEntity* parent) {
-        auto gameplay_UI_entity = Punity::PEntity::make_entity("GameplayUI", parent, true);
+        auto gameplay_UI_entity = Punity::PEntity::make_entity(Game::Names::GAMEPLAY_UI, parent, true);
 
         // Hearts system
-        auto hearts_entity = Punity::PEntity::make_entity("Hearts", gameplay_UI_entity, true);
-        auto heart1 = Punity::PEntity::make_entity("Heart1", hearts_entity, true);
-        auto heart2 = Punity::PEntity::make_entity("Heart2", hearts_entity, true);
-        auto heart3 = Punity::PEntity::make_entity("Heart3", hearts_entity, true);
+        auto hearts_entity = Punity::PEntity::make_entity(Game::Names::HEARTS, gameplay_UI_entity, true);
+        auto heart1 = Punity::PEntity::make_entity(Game::Names::HEART1, hearts_entity, true);
+        auto heart2 = Punity::PEntity::make_entity(Game::Names::HEART2, hearts_entity, true);
+        auto heart3 = Punity::PEntity::make_entity(Game::Names::HEART3, hearts_entity, true);
 
         // Place and set hearts
-        heart1->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                SPRITE(Game::Sprites::heart, Game::Sprites::Layers::HUD)
-        );
-
         // Beware esoteric computations
-        heart1->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+        heart1->add_component<Punity::Components::PUISpriteRenderer>()->set_ui_pos({
                 - 56.0f + Game::Sprites::heart_w * 0.5f,
                 - 64.0f + Game::Sprites::heart_h * 0.5f
-        };
-
-        heart2->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+        })->set_sprite(
                 SPRITE(Game::Sprites::heart, Game::Sprites::Layers::HUD)
         );
 
-        heart2->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+        heart2->add_component<Punity::Components::PUISpriteRenderer>()->set_ui_pos({
                 - 48.0f + Game::Sprites::heart_w * 0.5f,
                 - 64.0f + Game::Sprites::heart_h * 0.5f
-        };
-
-        heart3->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+        })->set_sprite(
                 SPRITE(Game::Sprites::heart, Game::Sprites::Layers::HUD)
         );
 
-        heart3->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+        heart3->add_component<Punity::Components::PUISpriteRenderer>()->set_ui_pos({
                 - 40.0f + Game::Sprites::heart_w * 0.5f,
                 - 64.0f + Game::Sprites::heart_h * 0.5f
-        };
+        })->set_sprite(
+                SPRITE(Game::Sprites::heart, Game::Sprites::Layers::HUD)
+        );
 
         // Energy counting system
-        auto energy_hud_entity = Punity::PEntity::make_entity("EnergyHUD", gameplay_UI_entity, true);
-        auto energy_image = Punity::PEntity::make_entity("EnergyImg", energy_hud_entity, true);
+        auto energy_hud_entity = Punity::PEntity::make_entity(Game::Names::ENERGY_HUD, gameplay_UI_entity, true);
+        auto energy_image = Punity::PEntity::make_entity(Game::Names::ENERGY_IMG, energy_hud_entity, true);
 
-        energy_image->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+        energy_image->add_component<Punity::Components::PUISpriteRenderer>()->set_ui_pos({
+                54.0f - Game::Sprites::energy_w * 0.5f,
+                - 64.0f + Game::Sprites::energy_h * 0.5f
+        })->set_sprite(
                 SPRITE(Game::Sprites::energy, Game::Sprites::Layers::HUD)
         );
 
-        energy_image->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
-                54.0f - Game::Sprites::energy_w * 0.5f,
-                - 64.0f + Game::Sprites::energy_h * 0.5f
-        };
+        auto energy_digit_1 = Punity::PEntity::make_entity(Game::Names::ENERGY_DIGIT_1, energy_hud_entity, true);
+        auto energy_digit_2 = Punity::PEntity::make_entity(Game::Names::ENERGY_DIGIT_2, energy_hud_entity, true);
 
-        auto energy_digit_1 = Punity::PEntity::make_entity("EnergyD1", energy_hud_entity, true);
-        auto energy_digit_2 = Punity::PEntity::make_entity("EnergyD2", energy_hud_entity, true);
-
-        energy_digit_1->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                SPRITE(Game::Sprites::nine, Game::Sprites::Layers::HUD)
-        );
-
-        energy_digit_1->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+        energy_digit_1->add_component<Punity::Components::PUISpriteRenderer>()->set_ui_pos({
                 40.0f - Game::Sprites::nine_w * 0.5f,
                 - 65.0f + Game::Sprites::nine_h * 0.5f
-        };
-
-        energy_digit_2->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+        })->set_sprite(
                 SPRITE(Game::Sprites::nine, Game::Sprites::Layers::HUD)
         );
 
-        energy_digit_2->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
+        energy_digit_2->add_component<Punity::Components::PUISpriteRenderer>()->set_ui_pos({
                 48.0f - Game::Sprites::nine_w * 0.5f,
                 - 65.0f + Game::Sprites::nine_h * 0.5f
-        };
+        })->set_sprite(
+                SPRITE(Game::Sprites::nine, Game::Sprites::Layers::HUD)
+        );
 
         // Level - stage hud
-        auto counter_entity = Punity::PEntity::make_entity("Counter", gameplay_UI_entity, true);
-        auto level_counter_entity = Punity::PEntity::make_entity("LevelCounter", counter_entity, true);
-        auto dash_entity = Punity::PEntity::make_entity("DashChar", counter_entity, true);
-        auto stage_counter_entity = Punity::PEntity::make_entity("StageCounter", counter_entity, true);
+        auto counter_entity = Punity::PEntity::make_entity(Game::Names::COUNTER, gameplay_UI_entity, true);
+        auto level_counter_entity = Punity::PEntity::make_entity(Game::Names::LEVEL_COUNTER, counter_entity, true);
+        auto dash_entity = Punity::PEntity::make_entity(Game::Names::DASH_CHARACTER, counter_entity, true);
+        auto stage_counter_entity = Punity::PEntity::make_entity(Game::Names::STAGE_COUNTER, counter_entity, true);
 
-        level_counter_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+        level_counter_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_ui_pos({
+                - 11.0f + Game::Sprites::one_w * 0.5f,
+                - 65.0f + Game::Sprites::one_h * 0.5f
+        })->set_sprite(
                 SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
         );
 
-        level_counter_entity->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
-                - 11.0f + Game::Sprites::one_w * 0.5f,
-                - 65.0f + Game::Sprites::one_h * 0.5f
-        };
-
-        dash_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+        dash_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_ui_pos({
+                0,
+                - 63.0f + Game::Sprites::dash_h * 0.5f
+        })->set_sprite(
                 SPRITE(Game::Sprites::dash, Game::Sprites::Layers::HUD)
         );
 
-        dash_entity->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
-                0,
-                - 63.0f + Game::Sprites::dash_h * 0.5f
-        };
-
-        stage_counter_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+        stage_counter_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_ui_pos({
+                12.0f - Game::Sprites::one_w * 0.5f,
+                - 65.0f + Game::Sprites::one_h * 0.5f
+        })->set_sprite(
                 SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
         );
 
-        stage_counter_entity->get_component<Punity::Components::PUISpriteRenderer>()->ui_position = {
-                12.0f - Game::Sprites::one_w * 0.5f,
-                - 65.0f + Game::Sprites::one_h * 0.5f
-        };
-
 
         // Selected weapon hud
-        auto weapon_status_entity = Punity::PEntity::make_entity("WeaponStatusUI", gameplay_UI_entity, true);
-        auto arrow_entity = Punity::PEntity::make_entity("WeaponArrow", weapon_status_entity, true);
+        auto weapon_status_entity = Punity::PEntity::make_entity(Game::Names::WEAPON_STATUS_UI, gameplay_UI_entity, true);
+        auto arrow_entity = Punity::PEntity::make_entity(Game::Names::WEAPON_STATUS_ARROW, weapon_status_entity, true);
         arrow_entity->add_component<Punity::Components::PUISpriteRenderer>()
-                ->set_ui_pos({
-                 0,
-                 63.0f - Game::Sprites::arrow_left_h / 2.0f
-                })
-                ->set_sprite(
-                        SPRITE(Game::Sprites::arrow_left, Game::Sprites::Layers::HUD)
-                );
+        ->set_ui_pos({
+         0,
+         63.0f - Game::Sprites::arrow_left_h / 2.0f
+        })
+        ->set_sprite(
+                SPRITE(Game::Sprites::arrow_left, Game::Sprites::Layers::HUD)
+        );
 
         // Make Default weapon energy, energy counter, damage, damage counter
-        auto default_weapon_entity = Punity::PEntity::make_entity("DefaultWeapon", weapon_status_entity, true);
-        auto default_weapon_energy = Punity::PEntity::make_entity("DefWpnEnergy", default_weapon_entity, true);
-        auto default_weapon_energy_counter = Punity::PEntity::make_entity("DefWpnEnergyCnt", default_weapon_entity, true);
-        auto default_weapon_attack = Punity::PEntity::make_entity("DefWpnAttack", default_weapon_entity, true);
-        auto default_weapon_attack_counter = Punity::PEntity::make_entity("DefWpnAttackCnt", default_weapon_entity, true);
+        auto default_weapon_entity = Punity::PEntity::make_entity(Game::Names::DEFAULT_WEAPON, weapon_status_entity, true);
+        auto default_weapon_energy = Punity::PEntity::make_entity(Game::Names::DEFAULT_WEAPON_ENERGY_IMG, default_weapon_entity, true);
+        auto default_weapon_energy_counter = Punity::PEntity::make_entity(Game::Names::DEFAULT_WEAPON_ENERGY_CNT, default_weapon_entity, true);
+        auto default_weapon_attack = Punity::PEntity::make_entity(Game::Names::DEFAULT_WEAPON_ATTACK_IMG, default_weapon_entity, true);
+        auto default_weapon_attack_counter = Punity::PEntity::make_entity(Game::Names::DEFAULT_WEAPON_ATTACK_CNT, default_weapon_entity, true);
 
         default_weapon_energy_counter->add_component<Punity::Components::PUISpriteRenderer>()
-                ->set_ui_pos({
-                     -65.0f + 16.0f + Game::Sprites::zero_w / 2.0f,
-                     63.0f - Game::Sprites::zero_h / 2.0f
-                })
-                ->set_sprite(
-                        SPRITE(Game::Sprites::zero, Game::Sprites::Layers::HUD)
-                );
+        ->set_ui_pos({
+             -65.0f + 16.0f + Game::Sprites::zero_w / 2.0f,
+             63.0f - Game::Sprites::zero_h / 2.0f
+        })
+        ->set_sprite(
+                SPRITE(Game::Sprites::zero, Game::Sprites::Layers::HUD)
+        );
 
         default_weapon_energy->add_component<Punity::Components::PUISpriteRenderer>()
-                ->set_ui_pos({
-                         -64.0f + 24.0f + Game::Sprites::energy_w / 2.0f,
-                         62.0f - Game::Sprites::energy_h / 2.0f
-                })
-                ->set_sprite(
-                        SPRITE(Game::Sprites::energy, Game::Sprites::Layers::HUD)
-                );
+        ->set_ui_pos({
+                 -64.0f + 24.0f + Game::Sprites::energy_w / 2.0f,
+                 62.0f - Game::Sprites::energy_h / 2.0f
+        })
+        ->set_sprite(
+                SPRITE(Game::Sprites::energy, Game::Sprites::Layers::HUD)
+        );
 
 
         default_weapon_attack_counter->add_component<Punity::Components::PUISpriteRenderer>()
-                ->set_ui_pos({
-                         -65.0f + 36.0f + Game::Sprites::one_w / 2.0f,
-                         63.0f - Game::Sprites::one_h / 2.0f
-                })
-                ->set_sprite(
-                        SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
-                );
+        ->set_ui_pos({
+                 -65.0f + 36.0f + Game::Sprites::one_w / 2.0f,
+                 63.0f - Game::Sprites::one_h / 2.0f
+        })
+        ->set_sprite(
+                SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
+        );
 
         default_weapon_attack->add_component<Punity::Components::PUISpriteRenderer>()
-                ->set_ui_pos({
-                         -64.0f + 44.0f + Game::Sprites::sword_w / 2.0f,
-                         63.0f - Game::Sprites::sword_h / 2.0f
-                })
-                ->set_sprite(
-                        SPRITE(Game::Sprites::sword, Game::Sprites::Layers::HUD)
-                );
+        ->set_ui_pos({
+                 -64.0f + 44.0f + Game::Sprites::sword_w / 2.0f,
+                 63.0f - Game::Sprites::sword_h / 2.0f
+        })
+        ->set_sprite(
+                SPRITE(Game::Sprites::sword, Game::Sprites::Layers::HUD)
+        );
 
 
         // Make Equipped weapon energy, energy counter, damage, damage counter but have it inactive
-        auto equipped_weapon_entity = Punity::PEntity::make_entity("EquippedWeapon", weapon_status_entity, false);
-        auto equipped_weapon_energy = Punity::PEntity::make_entity("EqpWpnEnergy", equipped_weapon_entity, true);
-        auto equipped_weapon_energy_counter = Punity::PEntity::make_entity("EqpWpnEnergyCnt", equipped_weapon_entity, true);
-        auto equipped_weapon_attack = Punity::PEntity::make_entity("EqpWpnAttack", equipped_weapon_entity, true);
-        auto equipped_weapon_attack_counter = Punity::PEntity::make_entity("EqpWpnAttackCnt", equipped_weapon_entity, true);
+        auto equipped_weapon_entity = Punity::PEntity::make_entity(Game::Names::EQUIPPED_WEAPON, weapon_status_entity, false);
+        auto equipped_weapon_energy = Punity::PEntity::make_entity(Game::Names::EQUIPPED_WEAPON_ENERGY_IMG, equipped_weapon_entity, true);
+        auto equipped_weapon_energy_counter = Punity::PEntity::make_entity(Game::Names::EQUIPPED_WEAPON_ENERGY_CNT, equipped_weapon_entity, true);
+        auto equipped_weapon_attack = Punity::PEntity::make_entity(Game::Names::EQUIPPED_WEAPON_ATTACK_IMG, equipped_weapon_entity, true);
+        auto equipped_weapon_attack_counter = Punity::PEntity::make_entity(Game::Names::EQUIPPED_WEAPON_ATTACK_CNT, equipped_weapon_entity, true);
 
         equipped_weapon_energy_counter->add_component<Punity::Components::PUISpriteRenderer>()
-                ->set_ui_pos({
-                         12.0f + Game::Sprites::zero_w / 2.0f,
-                         63.0f - Game::Sprites::zero_h / 2.0f
-                })
-                ->set_sprite(
-                        SPRITE(Game::Sprites::zero, Game::Sprites::Layers::HUD)
-                );
+        ->set_ui_pos({
+                 12.0f + Game::Sprites::zero_w / 2.0f,
+                 63.0f - Game::Sprites::zero_h / 2.0f
+        })
+        ->set_sprite(
+                SPRITE(Game::Sprites::zero, Game::Sprites::Layers::HUD)
+        );
 
         equipped_weapon_energy->add_component<Punity::Components::PUISpriteRenderer>()
-                ->set_ui_pos({
-                         20.0f + Game::Sprites::energy_w / 2.0f,
-                         62.0f - Game::Sprites::energy_h / 2.0f
-                })
-                ->set_sprite(
-                        SPRITE(Game::Sprites::energy, Game::Sprites::Layers::HUD)
-                );
+        ->set_ui_pos({
+                 20.0f + Game::Sprites::energy_w / 2.0f,
+                 62.0f - Game::Sprites::energy_h / 2.0f
+        })
+        ->set_sprite(
+                SPRITE(Game::Sprites::energy, Game::Sprites::Layers::HUD)
+        );
 
 
         equipped_weapon_attack_counter->add_component<Punity::Components::PUISpriteRenderer>()
-                ->set_ui_pos({
-                         30.0f + Game::Sprites::one_w / 2.0f,
-                         63.0f - Game::Sprites::one_h / 2.0f
-                })
-                ->set_sprite(
-                        SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
-                );
+        ->set_ui_pos({
+                 30.0f + Game::Sprites::one_w / 2.0f,
+                 63.0f - Game::Sprites::one_h / 2.0f
+        })
+        ->set_sprite(
+                SPRITE(Game::Sprites::one, Game::Sprites::Layers::HUD)
+        );
 
         equipped_weapon_attack->add_component<Punity::Components::PUISpriteRenderer>()
-                ->set_ui_pos({
-                         38.0f + Game::Sprites::sword_h / 2.0f,
-                         63.0f - Game::Sprites::sword_w / 2.0f
-                })
-                ->set_sprite(
-                        SPRITE(Game::Sprites::sword, Game::Sprites::Layers::HUD)
-                );
+        ->set_ui_pos({
+                 38.0f + Game::Sprites::sword_h / 2.0f,
+                 63.0f - Game::Sprites::sword_w / 2.0f
+        })
+        ->set_sprite(
+                SPRITE(Game::Sprites::sword, Game::Sprites::Layers::HUD)
+        );
 
         return gameplay_UI_entity;
     }
 
     Punity::PEntity* make_energy_pickup(Punity::PEntity* parent) {
-        auto energy_pickup_entity = Punity::PEntity::make_entity("EnergyPickup", parent, true);
+        auto energy_pickup_entity = Punity::PEntity::make_entity(Game::Names::ENERGY_PICKUP, parent, true);
 
         energy_pickup_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                 SPRITE(Game::Sprites::energy, Game::Sprites::Layers::PICKUP)
@@ -450,7 +433,7 @@ namespace Game::GameplayPrefabCreator {
     }
 
     Punity::PEntity* make_heart_pickup(Punity::PEntity* parent) {
-        auto heart_pickup_entity = Punity::PEntity::make_entity("HeartPickup", parent, true);
+        auto heart_pickup_entity = Punity::PEntity::make_entity(Game::Names::HEART_PICKUP, parent, true);
 
         heart_pickup_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                 SPRITE(Game::Sprites::heart, Game::Sprites::Layers::PICKUP)
@@ -469,7 +452,7 @@ namespace Game::GameplayPrefabCreator {
     }
 
     Punity::PEntity* make_weapon_pickup(Punity::PEntity* parent, Weapons::WeaponConfig config) {
-        auto weapon_entity = Punity::PEntity::make_entity("WeaponPickup", parent, true);
+        auto weapon_entity = Punity::PEntity::make_entity(Game::Names::WEAPON_PICKUP, parent, true);
 
         weapon_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                 SPRITE(Game::Sprites::sword, Game::Sprites::Layers::PICKUP)

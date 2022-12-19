@@ -5,6 +5,7 @@
 #include "AttractablePickup.h"
 #include "GameplaySceneManager.h"
 #include "punity/Utils/PCollisionComputation.h"
+#include "game/Assets/strings.h"
 
 namespace Game {
 
@@ -23,7 +24,7 @@ namespace Game {
         if (!GameplaySceneManager::player_loaded) return;
 
         if (player == nullptr) {
-            player = Punity::Engine.find_entity("Player");
+            player = Punity::Engine.find_entity(Game::Names::PLAYER);
         }
 
         if (is_approaching_player) {

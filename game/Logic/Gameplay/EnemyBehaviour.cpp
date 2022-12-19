@@ -9,6 +9,7 @@
 #include "ActorBehaviour.h"
 #include "GameplaySceneManager.h"
 #include "Weapon.h"
+#include "game/Assets/strings.h"
 
 namespace Game {
     void EnemyBehaviour::on_start_collision(Punity::Components::PCollider *other) {
@@ -45,8 +46,8 @@ namespace Game {
     }
 
     void EnemyBehaviour::on_enable() {
-        player = Punity::Engine.find_entity("Player");
-        room = Punity::Engine.find_entity("Room");
+        player = Punity::Engine.find_entity(Game::Names::PLAYER);
+        room = Punity::Engine.find_entity(Game::Names::ROOM);
     }
 
     void EnemyBehaviour::on_destroy() {

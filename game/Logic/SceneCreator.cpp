@@ -9,22 +9,23 @@
 #include "game/Logic/Gameplay/StartSceneBehaviour.h"
 #include "game/Logic/Gameplay/GameplaySceneBehaviour.h"
 #include "game/Assets/sprite_layers.h"
+#include "game/Assets/strings.h"
 
 namespace Game::SceneCreator {
     Punity::PEntity* create_start_scene(Punity::PEntity* parent) {
         // Create the start screen
-        auto start_scene_entity = Punity::PEntity::make_entity("StartScene", parent, false);
+        auto start_scene_entity = Punity::PEntity::make_entity(Game::Names::START_SCENE, parent, false);
         start_scene_entity->add_component<StartSceneBehaviour>();
 
         // Make the pain logo
-        auto pain_entity = Punity::PEntity::make_entity("PainText", start_scene_entity, true);
+        auto pain_entity = Punity::PEntity::make_entity(Game::Names::PAIN_TEXT, start_scene_entity, true);
 
         pain_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
                 SPRITE(Game::Sprites::game_title, Game::Sprites::Layers::HUD)
         );
 
         // Make the start text
-        auto start_entity = Punity::PEntity::make_entity("StartText", start_scene_entity, true);
+        auto start_entity = Punity::PEntity::make_entity(Game::Names::START_TEXT, start_scene_entity, true);
 
         // Make it floating!
         auto floater = start_entity->add_component<FloatingUI>();
@@ -40,13 +41,13 @@ namespace Game::SceneCreator {
 
     Punity::PEntity* create_loading_scene(Punity::PEntity* parent) {
         // Create the start screen
-        auto load_scene_entity = Punity::PEntity::make_entity("LoadScene", parent, false);
+        auto load_scene_entity = Punity::PEntity::make_entity(Game::Names::LOAD_SCENE, parent, false);
         load_scene_entity->add_component<LoadSceneBehaviour>();
 
         // Create the digits
-        auto digit_1_entity = Punity::PEntity::make_entity("1", true);
-        auto digit_2_entity = Punity::PEntity::make_entity("2", true);
-        auto digit_3_entity = Punity::PEntity::make_entity("3", true);
+        auto digit_1_entity = Punity::PEntity::make_entity(Game::Names::LEVEL_1_IMG, true);
+        auto digit_2_entity = Punity::PEntity::make_entity(Game::Names::LEVEL_2_IMG, true);
+        auto digit_3_entity = Punity::PEntity::make_entity(Game::Names::LEVEL_3_IMG, true);
 
         // Set parent to load screen
         digit_1_entity->set_parent(load_scene_entity);
@@ -69,7 +70,7 @@ namespace Game::SceneCreator {
 
     Punity::PEntity* create_gameplay_scene(Punity::PEntity* parent) {
         // Create the gameplay scene
-        auto gameplay_scene_entity = Punity::PEntity::make_entity("GameplayScene", parent, false);
+        auto gameplay_scene_entity = Punity::PEntity::make_entity(Game::Names::GAMEPLAY_SCENE, parent, false);
         gameplay_scene_entity->add_component<GameplaySceneBehaviour>();
         return gameplay_scene_entity;
     }

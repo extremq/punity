@@ -6,6 +6,7 @@
 #include "SceneCreator.h"
 #include "punity/Utils/PInvokable.h"
 #include "game/Logic/Gameplay/GameplaySceneBehaviour.h"
+#include "game/Assets/strings.h"
 
 namespace Game::SceneManager {
     uint8_t level = 1;
@@ -45,10 +46,10 @@ namespace Game::SceneManager {
         // Gameplay scenes are children of WORLD
 
         // Set up UI
-        UI = Punity::PEntity::make_entity("UI", true);
+        UI = Punity::PEntity::make_entity(Game::Names::UI, true);
 
         // Set up world entity
-        world = Punity::PEntity::make_entity("World", true);
+        world = Punity::PEntity::make_entity(Game::Names::WORLD, true);
 
         // Set up room
         gameplay_scene = Game::SceneCreator::create_gameplay_scene(SceneManager::world);

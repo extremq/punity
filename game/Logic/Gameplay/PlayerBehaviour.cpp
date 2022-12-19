@@ -12,6 +12,7 @@
 #include "punity/Utils/PCollisionComputation.h" // for dist
 #include "Weapon.h"
 #include "WeaponPickup.h"
+#include "game/Assets/strings.h"
 
 namespace Game {
 
@@ -43,7 +44,7 @@ namespace Game {
     }
 
     void PlayerBehaviour::on_start_collision(Punity::Components::PCollider *other) {
-        if (GameplaySceneManager::chest_loaded && other->get_entity()->get_name() == "Chest") {
+        if (GameplaySceneManager::chest_loaded && other->get_entity()->get_name() == Game::Names::CHEST) {
             touched_chest = true;
             return;
         }
@@ -104,8 +105,8 @@ namespace Game {
     }
 
     void PlayerBehaviour::reset_status_for_new_stage() {
-        room = Punity::Engine.find_entity("Room");
-        enemies = Punity::Engine.find_entity("Enemies");
+        room = Punity::Engine.find_entity(Game::Names::ROOM);
+        enemies = Punity::Engine.find_entity(Game::Names::ENEMIES);
 
         // Store weapon component
         weapon_component = get_entity()->get_component<Weapon>();
@@ -196,10 +197,10 @@ namespace Game {
         // Show selector above
         for (auto enemy : enemies->get_children()) {
             if (enemy->get_id() != chosen_id) {
-                enemy->get_child_by_name("Selector")->set_active(false);
+                enemy->get_child_by_name(Game::Names::SELECTOR)->set_active(false);
             }
             else {
-                enemy->get_child_by_name("Selector")->set_active(true);
+                enemy->get_child_by_name(Game::Names::SELECTOR)->set_active(true);
             }
         }
 

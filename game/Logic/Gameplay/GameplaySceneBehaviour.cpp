@@ -9,6 +9,7 @@
 #include "GameplaySceneManager.h"
 #include "game/Assets/sprite_layers.h"
 #include "game/Assets/groupings.h"
+#include "game/Assets/strings.h"
 
 namespace Game {
     void GameplaySceneBehaviour::on_update() {
@@ -208,19 +209,22 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::setup_scene() {
+        std::cout << "GAMEPLAY SETUP SCENE st\n";
         if (hud == nullptr) {
             hud = GameplayPrefabCreator::make_gameplay_UI(get_entity());
         }
 
+        std::cout << "GAMEPLAY SETUP SCENE a\n";
         if (player == nullptr) {
             player = GameplayPrefabCreator::make_player(get_entity());
         }
+        std::cout << "GAMEPLAY SETUP SCENE b\n";
 
         // Make room and actors entities to group the tiles and the enemies
         if (room == nullptr) {
             room = GameplayPrefabCreator::make_room(get_entity());
         }
-
+        std::cout << "GAMEPLAY SETUP SCENE\n";
     }
 
     void GameplaySceneBehaviour::update_hearts(ActorBehaviour* player_actor) {
@@ -228,10 +232,10 @@ namespace Game {
 
         // Get heart entities
         uint8_t player_hitpoints = player_actor->get_hitpoints();
-        auto hearts = hud->get_child_by_name("Hearts");
-        auto heart1 = hearts->get_child_by_name("Heart1");
-        auto heart2 = hearts->get_child_by_name("Heart2");
-        auto heart3 = hearts->get_child_by_name("Heart3");
+        auto hearts = hud->get_child_by_name(Game::Names::HEARTS);
+        auto heart1 = hearts->get_child_by_name(Game::Names::HEART1);
+        auto heart2 = hearts->get_child_by_name(Game::Names::HEART2);
+        auto heart3 = hearts->get_child_by_name(Game::Names::HEART3);
 
         heart1->set_active(false);
         heart2->set_active(false);
@@ -255,11 +259,11 @@ namespace Game {
 
         // Change digits
         uint8_t player_energy = player_behaviour->get_remaining_energy();
-        auto first_digit = hud->get_child_by_name("EnergyHUD")
-                ->get_child_by_name("EnergyD1")
+        auto first_digit = hud->get_child_by_name(Game::Names::ENERGY_HUD)
+                ->get_child_by_name(Game::Names::ENERGY_DIGIT_1)
                 ->get_component<Punity::Components::PUISpriteRenderer>();
-        auto second_digit = hud->get_child_by_name("EnergyHUD")
-                ->get_child_by_name("EnergyD2")
+        auto second_digit = hud->get_child_by_name(Game::Names::ENERGY_HUD)
+                ->get_child_by_name(Game::Names::ENERGY_DIGIT_2)
                 ->get_component<Punity::Components::PUISpriteRenderer>();
 
         // Set first digit
@@ -282,10 +286,10 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::update_level_stage_counter() {
-        auto counter = hud->get_child_by_name("Counter");
-        auto level_counter = counter->get_child_by_name("LevelCounter")
+        auto counter = hud->get_child_by_name(Game::Names::COUNTER);
+        auto level_counter = counter->get_child_by_name(Game::Names::LEVEL_COUNTER)
                 ->get_component<Punity::Components::PUISpriteRenderer>();
-        auto stage_counter = counter->get_child_by_name("StageCounter")
+        auto stage_counter = counter->get_child_by_name(Game::Names::STAGE_COUNTER)
                 ->get_component<Punity::Components::PUISpriteRenderer>();
 
         // Set the level
@@ -310,27 +314,19 @@ namespace Game {
     void GameplaySceneBehaviour::update_weapon_status(PlayerBehaviour *player_behaviour) {
         if (!GameplaySceneManager::player_loaded) return;
 
-        auto weapon_status = hud->get_child_by_name("WeaponStatusUI");
-        auto arrow = weapon_status->get_child_by_name("WeaponArrow");
-        auto equipped_weapon = weapon_status->get_child_by_name("EquippedWeapon");
+        auto weapon_status = hud->get_child_by_name(Game::Names::WEAPON_STATUS_UI);
+        auto arrow = weapon_status->get_child_by_name(Game::Names::WEAPON_STATUS_ARROW);
+        auto equipped_weapon = weapon_status->get_child_by_name(Game::Names::EQUIPPED_WEAPON);
 
         // Set arrow direction
         if (player_behaviour->is_using_starting_weapon()) {
             arrow->get_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                    Game::Sprites::arrow_left,
-                    Game::Sprites::arrow_left_alpha,
-                    Game::Sprites::arrow_left_h,
-                    Game::Sprites::arrow_left_w,
-                    Game::Sprites::Layers::HUD
+                    SPRITE(Game::Sprites::arrow_left, Game::Sprites::Layers::HUD)
                     );
         }
         else {
             arrow->get_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
-                    Game::Sprites::arrow_right,
-                    Game::Sprites::arrow_right_alpha,
-                    Game::Sprites::arrow_right_h,
-                    Game::Sprites::arrow_right_w,
-                    Game::Sprites::Layers::HUD
+                    SPRITE(Game::Sprites::arrow_right, Game::Sprites::Layers::HUD)
             );
         }
 
@@ -340,8 +336,8 @@ namespace Game {
         if (!player_behaviour->has_picked_up_any_weapon()) return;
 
         // Update picked up weapon
-        auto eqp_weapon_energy_cnt = equipped_weapon->get_child_by_name("EqpWpnEnergyCnt");
-        auto eqp_weapon_attack_cnt = equipped_weapon->get_child_by_name("EqpWpnAttackCnt");
+        auto eqp_weapon_energy_cnt = equipped_weapon->get_child_by_name(Game::Names::EQUIPPED_WEAPON_ENERGY_CNT);
+        auto eqp_weapon_attack_cnt = equipped_weapon->get_child_by_name(Game::Names::EQUIPPED_WEAPON_ATTACK_CNT);
         auto config = player_behaviour->get_equipped_weapon();
 
         eqp_weapon_energy_cnt->get_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
