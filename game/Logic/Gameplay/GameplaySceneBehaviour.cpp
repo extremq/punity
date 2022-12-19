@@ -185,10 +185,16 @@ namespace Game {
 
     void GameplaySceneBehaviour::make_enemies() {
         // Create enemies and store them
-        // TODO play with difficulty
-        enemy[0] = GameplayPrefabCreator::make_enemy(enemies);
-        enemy[1] = GameplayPrefabCreator::make_enemy(enemies);
-        enemy[2] = GameplayPrefabCreator::make_enemy(enemies);
+        if (Punity::Utils::random() < 0.5f) {
+            enemy[0] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave & 1);
+            enemy[1] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave % 2);
+            enemy[2] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave & 1);
+        }
+        else {
+            enemy[0] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave % 2);
+            enemy[1] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave & 1);
+            enemy[2] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave & 1);
+        }
 
         // Set behaviours so we don't use dynamic_cast on each frame
         enemy_actor_behaviour[0] = enemy[0]->get_component<ActorBehaviour>();
@@ -209,22 +215,18 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::setup_scene() {
-        std::cout << "GAMEPLAY SETUP SCENE st\n";
         if (hud == nullptr) {
             hud = GameplayPrefabCreator::make_gameplay_UI(get_entity());
         }
 
-        std::cout << "GAMEPLAY SETUP SCENE a\n";
         if (player == nullptr) {
             player = GameplayPrefabCreator::make_player(get_entity());
         }
-        std::cout << "GAMEPLAY SETUP SCENE b\n";
 
         // Make room and actors entities to group the tiles and the enemies
         if (room == nullptr) {
             room = GameplayPrefabCreator::make_room(get_entity());
         }
-        std::cout << "GAMEPLAY SETUP SCENE\n";
     }
 
     void GameplaySceneBehaviour::update_hearts(ActorBehaviour* player_actor) {

@@ -21,8 +21,21 @@ namespace Game::Weapons {
 
     extern const WeaponConfig empty_weapon;
     extern const WeaponConfig starting_weapon;
-    extern const WeaponConfig enemy_weapon;
-    extern const WeaponConfig rifle;
+    extern const WeaponConfig enemy_weapon_1_shotgun;
+    extern const WeaponConfig enemy_weapon_1_rifle;
+    extern const WeaponConfig enemy_weapon_2_shotgun;
+    extern const WeaponConfig enemy_weapon_2_rifle;
+    extern const WeaponConfig enemy_weapon_3_shotgun;
+    extern const WeaponConfig enemy_weapon_3_rifle;
+    extern const WeaponConfig common_rifle;
+    extern const WeaponConfig rare_rifle;
+    extern const WeaponConfig common_shotgun;
+    extern const WeaponConfig rare_shotgun;
+    extern const WeaponConfig common_sniper;
+    extern const WeaponConfig rare_sniper;
+    extern const WeaponConfig enemy_weapons[6];
+    extern const WeaponConfig rare_weapons[3];
+    extern const WeaponConfig common_weapons[3];
 }
 
 

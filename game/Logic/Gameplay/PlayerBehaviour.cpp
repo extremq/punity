@@ -21,26 +21,11 @@ namespace Game {
     }
 
     void PlayerBehaviour::on_collision(Punity::Components::PCollider *other) {
-        // Have a cooldown on clicking
-        if (Punity::Time.time - last_joystick_click_time < 0.25f) return;
-
-        if (other->information == Colliders::WEAPON_PICKUP && Punity::Button.read_button(JOY_BTN)) {
-            last_joystick_click_time = Punity::Time.time;
-            // Touching a weapon pickup and clicked on pick-up!
-            equipped_weapon = other->get_entity()->get_component<WeaponPickup>()->swap_weapon(equipped_weapon);
-
-            // Also change to new weapon
-            using_starting_weapon = false;
-            change_weapon(equipped_weapon);
-
-            if (!picked_up_any_weapon) {
-                // Since it's our first weapon, we should not be able to swap it
-                other->get_entity()->destroy();
-            }
-
-            picked_up_any_weapon = true;
-            return;
+        if (other->information == Colliders::WEAPON_PICKUP) {
+            weapon_collided_with = other;
         }
+        else
+            weapon_collided_with = nullptr;
     }
 
     void PlayerBehaviour::on_start_collision(Punity::Components::PCollider *other) {
@@ -129,20 +114,41 @@ namespace Game {
         else
             nearest_enemy = {0, 0};
 
-        // Switching weapons
-        // Also have a cooldown on clicks
-        if (picked_up_any_weapon &&
-        Punity::Time.time - last_joystick_click_time > 0.25f &&
+        if (Punity::Time.time - last_joystick_click_time > 0.25f &&
             Punity::Button.read_button(JOY_BTN)) {
-            last_joystick_click_time = Punity::Time.time;
-            // Switch between starting weapon and equipped weapon
-            if (using_starting_weapon) {
+
+            // If picked up a weapon
+            if (weapon_collided_with != nullptr) {
+
+                last_joystick_click_time = Punity::Time.time;
+                // Touching a weapon pickup and clicked on pick-up!
+                equipped_weapon = weapon_collided_with->get_entity()->get_component<WeaponPickup>()->swap_weapon(equipped_weapon);
+
+                // Also change to new weapon
                 using_starting_weapon = false;
                 change_weapon(equipped_weapon);
+
+                if (!picked_up_any_weapon) {
+                    // Since it's our first weapon, we should not be able to swap it
+                    weapon_collided_with->get_entity()->destroy();
+                }
+
+                picked_up_any_weapon = true;
             }
-            else {
-                using_starting_weapon = true;
-                change_weapon(Weapons::starting_weapon);
+
+            // Switching weapons
+            // Also have a cooldown on clicks
+            else if (picked_up_any_weapon) {
+                last_joystick_click_time = Punity::Time.time;
+                // Switch between starting weapon and equipped weapon
+                if (using_starting_weapon) {
+                    using_starting_weapon = false;
+                    change_weapon(equipped_weapon);
+                }
+                else {
+                    using_starting_weapon = true;
+                    change_weapon(Weapons::starting_weapon);
+                }
             }
         }
 

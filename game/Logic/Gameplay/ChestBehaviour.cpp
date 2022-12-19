@@ -26,8 +26,21 @@ namespace Game {
         }
         else {
             // 20% for weapon!!! OMG
-            GameplayPrefabCreator::make_weapon_pickup(Punity::Engine.find_entity(Game::Names::ROOM),
-                                                      Weapons::rifle);
+
+            float weapon_choice = Punity::Utils::random();
+
+            uint8_t weapon_number = std::floor(Punity::Utils::random(0, 2.99f));
+
+            // 1/4 chance for rare weapon and level
+            if (weapon_choice < 0.25f + (SceneManager::level - 1) * 0.25f) {
+                GameplayPrefabCreator::make_weapon_pickup(Punity::Engine.find_entity(Game::Names::ROOM),
+                                                          Weapons::rare_weapons[weapon_number], true);
+            }
+            else {
+                GameplayPrefabCreator::make_weapon_pickup(Punity::Engine.find_entity(Game::Names::ROOM),
+                                                          Weapons::common_weapons[weapon_number], false);
+            }
+
         }
     }
 } // Game

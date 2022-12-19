@@ -27,6 +27,7 @@ namespace Game {
         int16_t remaining_energy = 99;
 
         float last_joystick_click_time = 0.0f;
+        Punity::Components::PCollider* weapon_collided_with = nullptr;
 
         void on_start_collision(Punity::Components::PCollider* other) override;
         void on_collision(Punity::Components::PCollider* other) override;

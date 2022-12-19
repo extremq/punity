@@ -102,9 +102,8 @@ namespace Game::GameplayPrefabCreator {
         return enemies_entity;
     }
 
-    Punity::PEntity* make_enemy(Punity::PEntity* parent) {
+    Punity::PEntity* make_enemy(Punity::PEntity* parent, uint8_t type) {
         auto enemy_entity = Punity::PEntity::make_entity(Game::Names::ENEMY, parent, true);
-
 
         // Choose sprite
         enemy_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
@@ -120,10 +119,9 @@ namespace Game::GameplayPrefabCreator {
         enemy_entity->add_component<EnemyBehaviour>();
 
         // Set actor behaviour
-        enemy_entity->add_component<ActorBehaviour>();
+        enemy_entity->add_component<ActorBehaviour>()->set_max_hitpoints((type / 2 + 1) * 3);
 
-        // TODO use level and scene to change these
-        enemy_entity->add_component<Weapon>()->set_weapon(Weapons::enemy_weapon);
+        enemy_entity->add_component<Weapon>()->set_weapon(Weapons::enemy_weapons[type]);
 
         // Entity for selector that appears above enemy when player aims at
         auto selector_entity = Punity::PEntity::make_entity(Game::Names::SELECTOR, enemy_entity, false);
@@ -451,12 +449,17 @@ namespace Game::GameplayPrefabCreator {
         return heart_pickup_entity;
     }
 
-    Punity::PEntity* make_weapon_pickup(Punity::PEntity* parent, Weapons::WeaponConfig config) {
+    Punity::PEntity* make_weapon_pickup(Punity::PEntity* parent, Weapons::WeaponConfig config, bool is_rare) {
         auto weapon_entity = Punity::PEntity::make_entity(Game::Names::WEAPON_PICKUP, parent, true);
 
-        weapon_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+        if (is_rare)
+            weapon_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                SPRITE(Game::Sprites::rare_sword, Game::Sprites::Layers::PICKUP)
+            );
+        else
+            weapon_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                 SPRITE(Game::Sprites::sword, Game::Sprites::Layers::PICKUP)
-                );
+            );
 
         // Add and set the config of the weapon pickup
         weapon_entity->add_component<WeaponPickup>()->set_weapon(config);
