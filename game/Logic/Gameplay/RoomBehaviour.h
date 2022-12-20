@@ -18,11 +18,13 @@ namespace Game {
     private:
         // Tiles used for dictating how the world should be generated
         Tile tiles[16][16] = {EMPTY};
+        uint8_t enemy_count = 3;
 
         void on_enable() override;
         void on_disable() override;
     public:
         // Room generation
+        uint8_t get_enemy_count();
         void generate_stage();
         void disintegrate_stage();
         void solve_tile(uint8_t row, uint8_t column, float delay, Tile tile);

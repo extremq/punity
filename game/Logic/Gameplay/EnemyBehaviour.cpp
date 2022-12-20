@@ -10,6 +10,7 @@
 #include "GameplaySceneManager.h"
 #include "Weapon.h"
 #include "game/Assets/strings.h"
+#include "punity/Utils/PInvokable.h"
 
 namespace Game {
     void EnemyBehaviour::on_start_collision(Punity::Components::PCollider *other) {
@@ -36,18 +37,39 @@ namespace Game {
     void EnemyBehaviour::on_update() {
         if (!GameplaySceneManager::player_loaded) return;
 
-        // Attempt shooting each time you can
-        get_entity()->get_component<Weapon>()->shoot(
-                get_entity()->get_transform()->global_position,
-                player->get_transform()->global_position,
-                room,
-                false
-        );
+        if (Punity::Time.time < shooting_start) {
+            is_paused = true;
+            return;
+        }
+        else {
+            if (is_paused) {
+                is_paused = false;
+                shooting_end = Punity::Time.time + shoot_time;
+            }
+        }
+
+        if (Punity::Time.time < shooting_end) {
+            // Attempt shooting
+            get_entity()->get_component<Weapon>()->shoot(
+                    get_entity()->get_transform()->global_position,
+                    player->get_transform()->global_position,
+                    room,
+                    false
+            );
+        }
+        else {
+            shooting_start = Punity::Time.time + pause_time;
+        }
     }
 
     void EnemyBehaviour::on_enable() {
         player = Punity::Engine.find_entity(Game::Names::PLAYER);
         room = Punity::Engine.find_entity(Game::Names::ROOM);
+
+        // Set a random offset.
+        pause_time = Punity::Utils::random(1.0f, 1.5f);
+        shooting_start = Punity::Time.time + Punity::Utils::random() + pause_time;
+        shoot_time = Punity::Utils::random(3, 4);
     }
 
     void EnemyBehaviour::on_destroy() {

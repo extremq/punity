@@ -8,6 +8,7 @@
 #include "game/Logic/SceneManager.h"
 #include "ActorBehaviour.h"
 #include "PlayerBehaviour.h"
+#include <vector>
 
 constexpr float PLAYER_CREATION_DELAY_SECONDS = 1.0f;
 constexpr float STAGE_SWITCH_DELAY_SECONDS = 1.0f;
@@ -23,8 +24,8 @@ namespace Game {
         // Grouping entities
         Punity::PEntity* room = nullptr;
         Punity::PEntity* enemies = nullptr;
-        Punity::PEntity* enemy[3] = {nullptr, nullptr, nullptr};
-        Game::ActorBehaviour* enemy_actor_behaviour[3] = {nullptr, nullptr, nullptr};
+        std::vector<Punity::PEntity*> enemy;
+        std::vector<Game::ActorBehaviour*> enemy_actor_behaviour;
 
         // Gameplay UI
         Punity::PEntity* hud = nullptr;
@@ -45,6 +46,8 @@ namespace Game {
         void make_enemies();
         void place_enemies();
         void setup_scene();
+        void clear_enemy_vectors();
+        void setup_enemies(uint8_t count);
         void update_hearts(ActorBehaviour* player_actor);
         void update_energy(PlayerBehaviour* player_behaviour);
         void update_level_stage_counter();

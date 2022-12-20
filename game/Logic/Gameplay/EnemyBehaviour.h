@@ -13,6 +13,12 @@ namespace Game {
         Punity::PEntity* player = nullptr;
         Punity::PEntity* room = nullptr;
 
+        float shooting_start = 0.0f;
+        float shooting_end = 0.0f;
+        float shoot_time = 0.0f;
+        float pause_time = 0.0f;
+        bool is_paused = true;
+
         void compute_damage_dealt_by_projectile(uint8_t projectile_type);
         void on_start_collision(Punity::Components::PCollider* other) override;
         void on_update() override;

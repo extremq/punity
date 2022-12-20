@@ -69,4 +69,8 @@ namespace Game {
     void RoomBehaviour::on_disable() {
         disintegrate_stage();
     }
+
+    uint8_t RoomBehaviour::get_enemy_count() {
+        return enemy_count;
+    }
 } // Game

@@ -10,6 +10,7 @@
 #include "game/Assets/sprite_layers.h"
 #include "game/Assets/groupings.h"
 #include "game/Assets/strings.h"
+#include "RoomBehaviour.h"
 
 namespace Game {
     void GameplaySceneBehaviour::on_update() {
@@ -18,15 +19,16 @@ namespace Game {
         auto player_behaviour = player->get_component<PlayerBehaviour>();
         auto player_actor_behaviour = player->get_component<ActorBehaviour>();
 
-        for (size_t i = 0; i < 3; ++i) {
-            // Check and destroy dead enemies
-            // Also set nullptr
-            if (enemy_actor_behaviour[i] != nullptr && enemy_actor_behaviour[i]->is_dead()) {
-                enemy[i]->destroy();
-                enemy[i] = nullptr;
-                enemy_actor_behaviour[i] = nullptr;
+        if (GameplaySceneManager::enemies_loaded)
+            for (size_t i = 0; i < room->get_component<RoomBehaviour>()->get_enemy_count(); ++i) {
+                // Check and destroy dead enemies
+                // Also set nullptr
+                if (enemy_actor_behaviour[i] != nullptr && enemy_actor_behaviour[i]->is_dead()) {
+                    enemy[i]->destroy();
+                    enemy[i] = nullptr;
+                    enemy_actor_behaviour[i] = nullptr;
+                }
             }
-        }
 
         // Update the hearts to reflect current player health
         update_hearts(player_actor_behaviour);
@@ -98,7 +100,7 @@ namespace Game {
                 player->set_active(false);
                 hud->set_active(false);
 
-                for (size_t i = 0; i < 3; ++i) {
+                for (size_t i = 0; i < room->get_component<RoomBehaviour>()->get_enemy_count(); ++i) {
                     enemy_actor_behaviour[i] = nullptr;
                     enemy[i] = nullptr;
                 }
@@ -118,12 +120,6 @@ namespace Game {
     // Only enabled/disabled when entering start
     void GameplaySceneBehaviour::on_enable() {
         wave = 1;
-
-        // Reset all pointers
-        for (size_t i = 0; i < 3; ++i) {
-            enemy_actor_behaviour[i] = nullptr;
-            enemy[i] = nullptr;
-        }
 
         if (SceneManager::level == 1 && player != nullptr) {
             // Reset player health
@@ -184,22 +180,9 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::make_enemies() {
-        // Create enemies and store them
-        if (Punity::Utils::random() < 0.5f) {
-            enemy[0] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave & 1);
-            enemy[1] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave % 2);
-            enemy[2] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave & 1);
-        }
-        else {
-            enemy[0] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave % 2);
-            enemy[1] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave & 1);
-            enemy[2] = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + wave & 1);
-        }
-
-        // Set behaviours so we don't use dynamic_cast on each frame
-        enemy_actor_behaviour[0] = enemy[0]->get_component<ActorBehaviour>();
-        enemy_actor_behaviour[1] = enemy[1]->get_component<ActorBehaviour>();
-        enemy_actor_behaviour[2] = enemy[2]->get_component<ActorBehaviour>();
+        // Create the enemies needed.
+        auto enemy_count = room->get_component<RoomBehaviour>()->get_enemy_count();
+        setup_enemies(enemy_count);
 
         place_enemies();
 
@@ -357,5 +340,28 @@ namespace Game {
                 Game::Groupings::numbers_w[config.damage],
                 Game::Sprites::Layers::HUD
         );
+    }
+
+    void GameplaySceneBehaviour::setup_enemies(uint8_t count) {
+        clear_enemy_vectors();
+
+        // Make two nullptr vectors
+        while (count--) {
+            Punity::PEntity* temp_enemy;
+
+            // Create a random enemy
+            if (Punity::Utils::random() < 0.5f)
+                temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3);
+            else
+                temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + 1);
+
+            enemy.push_back(temp_enemy);
+            enemy_actor_behaviour.push_back(temp_enemy->get_component<ActorBehaviour>());
+        }
+    }
+
+    void GameplaySceneBehaviour::clear_enemy_vectors() {
+        enemy.clear();
+        enemy_actor_behaviour.clear();
     }
 } // Game
