@@ -6,6 +6,7 @@
 #include "punity/Utils/PInvokable.h"
 #include "punity/Components/PBoxCollider.h"
 #include "GameplayPrefabCreator.h"
+#include "game/Assets/groupings.h"
 
 namespace Game {
     void RoomBehaviour::generate_stage() {
@@ -16,6 +17,16 @@ namespace Game {
                     tiles[row][column] = WALL;
                 else
                     tiles[row][column] = EMPTY;
+            }
+        }
+
+        // Choose a random integer
+        uint8_t chosen_map = 0; //std::floor(Punity::Utils::random(0, 1.99f));
+
+        for (uint8_t row = 0; row < 12; ++row) {
+            for (uint8_t column = 0; column < 12; ++column) {
+                // Copy the chosen map
+                tiles[row + 2][column + 2] = Game::Groupings::maps[chosen_map][column + row * 12];
             }
         }
 
@@ -37,11 +48,18 @@ namespace Game {
                 // Invoke the make_wall function with the specified delay
                 new Punity::Utils::PInvokableWithInt<RoomBehaviour>(
                         &RoomBehaviour::make_wall,
-                        row + column * 16,
+                        row * 16 + column,
                         this,
                         delay,
                         get_entity()->get_id()
                 );
+                break;
+            case ENEMY:
+                break;
+            case PLAYER:
+                player_starting_position = {-64.0f + row * 8.0f + 4.0f, -64.0f + column * 8.0f + 4.0f};
+                break;
+            default:
                 break;
         }
     }
@@ -72,5 +90,9 @@ namespace Game {
 
     uint8_t RoomBehaviour::get_enemy_count() {
         return enemy_count;
+    }
+
+    Punity::Utils::PVector RoomBehaviour::get_player_starting_position() {
+        return player_starting_position;
     }
 } // Game

@@ -7,6 +7,7 @@
 
 #include "sprites.h"
 #include "sprite_layers.h"
+#include "maps.h"
 
 // Useful library for grouped things such as sprites
 namespace Game::Groupings {
@@ -14,6 +15,7 @@ namespace Game::Groupings {
     extern bool* const numbers_alpha[10];
     extern uint16_t const numbers_h[10];
     extern uint16_t const numbers_w[10];
+    extern Tile* const maps[1];
 }
 
 #endif //ENGINE_GROUPINGS_H

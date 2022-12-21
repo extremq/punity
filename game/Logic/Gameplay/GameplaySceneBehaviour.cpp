@@ -171,6 +171,9 @@ namespace Game {
         player->set_active(true);
         hud->set_active(true);
 
+        // Place player
+        player->get_transform()->set_global(room->get_component<RoomBehaviour>()->get_player_starting_position());
+
         GameplaySceneManager::player_loaded = true;
     }
 
@@ -180,6 +183,7 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::make_enemies() {
+        // TODO go through room->get_component<RoomBehaviour>()->tiles and make enemies based on it
         // Create the enemies needed.
         auto enemy_count = room->get_component<RoomBehaviour>()->get_enemy_count();
         setup_enemies(enemy_count);
@@ -191,7 +195,6 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::place_enemies() {
-        // TODO maybe play with their placement?
         enemy[0]->get_transform()->set_global({0, 40});
         enemy[1]->get_transform()->set_global({40, 0});
         enemy[2]->get_transform()->set_global({-40, 0});

@@ -54,26 +54,28 @@ for file_name in sorted(os.listdir(sprite_directory)):
 
     # Create extern in sprites.h
     print("\t\t- Making extern...")
-    output_header += declare_extern(sprite_name, (width, height))
+    output_header += declare_sprite_extern(sprite_name, (width, height))
     print("\t\t- Extern complete!")
 
     # Write array in sprites.cpp
     print("\t\t- Making array...")
-    output_code += write_sprite(sprite_name, pixels, (width, height))
+    output_code += write_sprite_array(sprite_name, pixels, (width, height))
     print("\t\t- Array complete!")
 
     print("\t- Finished processing '" + file_name + "'")
 
 # Generate header
 output_header += "\n}\n\n#endif"
-output_header_file = open(split_file + "sprites.h", "w")
-output_header_file.write(output_header)
+
+with open(split_file + "sprites.h", "w") as file:
+    file.write(output_header)
 
 print("Wrote header to '" + split_file + "sprites.h" + "'")
 
 # Generate cpp
 output_code += "\n}"
-output_code_file = open(split_file + "sprites.cpp", "w")
-output_code_file.write(output_code)
+
+with open(split_file + "sprites.cpp", "w") as file:
+    file.write(output_code)
 
 print("Wrote cpp to '" + split_file + "sprites.cpp" + "'")
