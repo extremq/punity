@@ -73,6 +73,8 @@ def write_map_array(name: str, pixels: list) -> str:
                 buffer_code += " PLAYER,"
             case "#B97A57":
                 buffer_code += " BOX,"
+            case "#1EE656":
+                buffer_code += " PRIZE,"
             case _:
                 print("\t\t- Warning! Invalid pixel, defaulting to EMPTY tile.")
                 buffer_code += " EMPTY,"

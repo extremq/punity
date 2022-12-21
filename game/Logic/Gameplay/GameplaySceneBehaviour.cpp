@@ -20,7 +20,7 @@ namespace Game {
         auto player_actor_behaviour = player->get_component<ActorBehaviour>();
 
         if (GameplaySceneManager::enemies_loaded)
-            for (size_t i = 0; i < room->get_component<RoomBehaviour>()->get_enemy_count(); ++i) {
+            for (size_t i = 0; i < enemy.size(); ++i) {
                 // Check and destroy dead enemies
                 // Also set nullptr
                 if (enemy_actor_behaviour[i] != nullptr && enemy_actor_behaviour[i]->is_dead()) {
@@ -100,7 +100,7 @@ namespace Game {
                 player->set_active(false);
                 hud->set_active(false);
 
-                for (size_t i = 0; i < room->get_component<RoomBehaviour>()->get_enemy_count(); ++i) {
+                for (size_t i = 0; i < enemy.size(); ++i) {
                     enemy_actor_behaviour[i] = nullptr;
                     enemy[i] = nullptr;
                 }
@@ -183,21 +183,11 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::make_enemies() {
-        // TODO go through room->get_component<RoomBehaviour>()->tiles and make enemies based on it
         // Create the enemies needed.
-        auto enemy_count = room->get_component<RoomBehaviour>()->get_enemy_count();
-        setup_enemies(enemy_count);
-
-        place_enemies();
+        setup_enemies();
 
         // Enemies are placed and ready to go
         GameplaySceneManager::enemies_loaded = true;
-    }
-
-    void GameplaySceneBehaviour::place_enemies() {
-        enemy[0]->get_transform()->set_global({0, 40});
-        enemy[1]->get_transform()->set_global({40, 0});
-        enemy[2]->get_transform()->set_global({-40, 0});
     }
 
     void GameplaySceneBehaviour::setup_scene() {
@@ -345,21 +335,29 @@ namespace Game {
         );
     }
 
-    void GameplaySceneBehaviour::setup_enemies(uint8_t count) {
+    void GameplaySceneBehaviour::setup_enemies() {
         clear_enemy_vectors();
 
-        // Make two nullptr vectors
-        while (count--) {
-            Punity::PEntity* temp_enemy;
+        auto room_behaviour = room->get_component<RoomBehaviour>();
 
-            // Create a random enemy
-            if (Punity::Utils::random() < 0.5f)
-                temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3);
-            else
-                temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + 1);
+        for (uint8_t row = 2; row < 14; ++row) {
+            for (uint8_t column = 2; column < 14; ++column) {
+                if (room_behaviour->tiles[row][column] != ENEMY) continue;
 
-            enemy.push_back(temp_enemy);
-            enemy_actor_behaviour.push_back(temp_enemy->get_component<ActorBehaviour>());
+                Punity::PEntity* temp_enemy;
+
+                // Create a random enemy
+                if (Punity::Utils::random() < 0.5f)
+                    temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3);
+                else
+                    temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + 1);
+
+                // Computations!!!
+                temp_enemy->get_transform()->set_global({-64.0f + column * 8.0f + 4.0f, -64.0f + row * 8.0f + 4.0f});
+
+                enemy.push_back(temp_enemy);
+                enemy_actor_behaviour.push_back(temp_enemy->get_component<ActorBehaviour>());
+            }
         }
     }
 

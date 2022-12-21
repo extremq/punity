@@ -21,7 +21,7 @@ namespace Game {
         }
 
         // Choose a random integer
-        uint8_t chosen_map = 0; //std::floor(Punity::Utils::random(0, 1.99f));
+        uint8_t chosen_map = std::floor(Punity::Utils::random(0, 1.99f));
 
         for (uint8_t row = 0; row < 12; ++row) {
             for (uint8_t column = 0; column < 12; ++column) {
@@ -57,7 +57,7 @@ namespace Game {
             case ENEMY:
                 break;
             case PLAYER:
-                player_starting_position = {-64.0f + row * 8.0f + 4.0f, -64.0f + column * 8.0f + 4.0f};
+                player_starting_position = {-64.0f + column * 8.0f + 4.0f, -64.0f + row * 8.0f + 4.0f};
                 break;
             default:
                 break;

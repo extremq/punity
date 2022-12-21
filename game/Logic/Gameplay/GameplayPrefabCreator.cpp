@@ -71,8 +71,6 @@ namespace Game::GameplayPrefabCreator {
                 Game::Sprites::chest_w
         );
 
-        chest_entity->get_transform()->set_global({0, 32});
-
         // Add its behavour
         chest_entity->add_component<ChestBehaviour>();
 

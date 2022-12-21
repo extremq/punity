@@ -8,6 +8,7 @@ int main() {
     // 2 seconds for our OS to catch the buffer
     stdio_init_all();
     sleep_ms(2000);
+    std::cout << "Started Pico.\n";
 
     Game::SceneManager::start_manager();
 }

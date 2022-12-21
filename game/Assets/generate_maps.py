@@ -14,7 +14,8 @@ enum Tile {
     ENEMY,
     PORTAL,
     PLAYER,
-    BOX
+    BOX,
+    PRIZE
 };
 
 namespace Game::Maps {

@@ -44,10 +44,9 @@ namespace Game {
         void show_player();
         void make_chest_and_show_it();
         void make_enemies();
-        void place_enemies();
         void setup_scene();
         void clear_enemy_vectors();
-        void setup_enemies(uint8_t count);
+        void setup_enemies();
         void update_hearts(ActorBehaviour* player_actor);
         void update_energy(PlayerBehaviour* player_behaviour);
         void update_level_stage_counter();

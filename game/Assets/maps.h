@@ -9,12 +9,14 @@ enum Tile {
     ENEMY,
     PORTAL,
     PLAYER,
-    BOX
+    BOX,
+    PRIZE
 };
 
 namespace Game::Maps {
     
 	extern Tile const map1[12 * 12];
+	extern Tile const map2[12 * 12];
 
 }
 
