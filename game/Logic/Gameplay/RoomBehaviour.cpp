@@ -21,7 +21,7 @@ namespace Game {
         }
 
         // Choose a random integer
-        uint8_t chosen_map = std::floor(Punity::Utils::random(0, 1.99f));
+        uint8_t chosen_map = std::floor(Punity::Utils::random(0, 2.99f));
 
         for (uint8_t row = 0; row < 12; ++row) {
             for (uint8_t column = 0; column < 12; ++column) {
@@ -42,8 +42,6 @@ namespace Game {
     // the most advanced on earth.
     void RoomBehaviour::solve_tile(uint8_t row, uint8_t column, float delay, Tile tile) {
         switch(tile) {
-            case EMPTY:
-                break;
             case WALL:
                 // Invoke the make_wall function with the specified delay
                 new Punity::Utils::PInvokableWithInt<RoomBehaviour>(
@@ -54,10 +52,18 @@ namespace Game {
                         get_entity()->get_id()
                 );
                 break;
-            case ENEMY:
-                break;
             case PLAYER:
                 player_starting_position = {-64.0f + column * 8.0f + 4.0f, -64.0f + row * 8.0f + 4.0f};
+                break;
+            case BOX:
+                // Invoke the make_crate function with the specified delay
+                new Punity::Utils::PInvokableWithInt<RoomBehaviour>(
+                        &RoomBehaviour::make_crate,
+                        row * 16 + column,
+                        this,
+                        delay,
+                        get_entity()->get_id()
+                );
                 break;
             default:
                 break;
@@ -94,5 +100,16 @@ namespace Game {
 
     Punity::Utils::PVector RoomBehaviour::get_player_starting_position() {
         return player_starting_position;
+    }
+
+    void RoomBehaviour::make_crate(int index) {
+        auto tile = GameplayPrefabCreator::make_crate(get_entity());
+
+        // Compute the position based on tile index
+        Punity::Utils::PVector pos(index % 16 * 8 - 60,
+                                   index / 16 * 8 - 60);
+
+        // Set the position
+        tile->get_transform()->set_global(pos);
     }
 } // Game

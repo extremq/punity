@@ -53,8 +53,9 @@ namespace Game::Groupings {
             (uint16_t) Game::Sprites::eight_w,
             (uint16_t) Game::Sprites::nine_w
     };
-    Tile* const maps[2] = {
+    Tile* const maps[3] = {
             (Tile*) Game::Maps::map1,
-            (Tile*) Game::Maps::map2
+            (Tile*) Game::Maps::map2,
+            (Tile*) Game::Maps::map3
     };
 }

@@ -25,6 +25,10 @@ namespace Game::Sprites {
 	extern bool const chest_alpha [8 * 8];
 	extern uint16_t const chest_w;
 	extern uint16_t const chest_h;
+	extern uint16_t const crate [8 * 8];
+	extern bool const crate_alpha [8 * 8];
+	extern uint16_t const crate_w;
+	extern uint16_t const crate_h;
 	extern uint16_t const dash [4 * 2];
 	extern bool const dash_alpha [4 * 2];
 	extern uint16_t const dash_w;

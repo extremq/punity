@@ -18,6 +18,7 @@ namespace Game {
         void on_disable() override;
         void solve_tile(uint8_t row, uint8_t column, float delay, Tile tile);
         void make_wall(int index);
+        void make_crate(int index);
         Punity::Utils::PVector player_starting_position;
     public:
         // Tiles used for dictating how the world should be generated

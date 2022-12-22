@@ -14,6 +14,10 @@ namespace Game::Sprites {
 	bool const chest_alpha [8 * 8] = { false, false, true, true, true, true, false, false, false, true, true, true, true, true, true, false, true, true, true, true, false, false, true, true, true, true, false, true, true, false, true, true, true, true, true, true, true, true, true, false, true, true, true, false, true, true, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true, true, false, false };
 	uint16_t const chest_w = 8;
 	uint16_t const chest_h = 8;
+	uint16_t const crate [8 * 8] = { 0xc42c, 0xc42c, 0xc42c, 0xc42c, 0xbbca, 0xbbca, 0xbbca, 0xbbca, 0xc42c, 0xf54f, 0xf54f, 0xf54f, 0xf54f, 0xf54f, 0xf54f, 0xb369, 0xc42c, 0xbbca, 0xc618, 0xbbca, 0xbbca, 0xc618, 0xbbca, 0xb369, 0xc42c, 0xf54f, 0xf54f, 0xf54f, 0xf4ed, 0xf4ed, 0xf4ed, 0xb369, 0xc42c, 0xf4ed, 0xf4ed, 0xf4ed, 0xf4ed, 0xfd2d, 0xfd2d, 0xab07, 0xbbca, 0xbbca, 0xc618, 0xbbca, 0xbbca, 0xa514, 0xbbca, 0xab07, 0xbbca, 0xf4ed, 0xf4ed, 0xfd2d, 0xfd2d, 0xfd2d, 0xfd2d, 0xab07, 0xb369, 0xb369, 0xb369, 0xab07, 0xab07, 0xab07, 0xab07, 0xab07 };
+	bool const crate_alpha [8 * 8] = { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
+	uint16_t const crate_w = 8;
+	uint16_t const crate_h = 8;
 	uint16_t const dash [4 * 2] = { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff };
 	bool const dash_alpha [4 * 2] = { true, true, true, true, true, true, true, true };
 	uint16_t const dash_w = 4;

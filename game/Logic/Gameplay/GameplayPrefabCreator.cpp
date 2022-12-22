@@ -21,6 +21,7 @@
 #include "AttractablePickup.h"
 #include "ChestBehaviour.h"
 #include "WeaponPickup.h"
+#include "CrateBehaviour.h"
 
 /*
  * Unity has things called "Prefabs". Basically, they are game objects (my Punity::PEntity)
@@ -73,6 +74,28 @@ namespace Game::GameplayPrefabCreator {
 
         // Add its behavour
         chest_entity->add_component<ChestBehaviour>();
+
+
+        return chest_entity;
+    }
+
+    Punity::PEntity* make_crate(Punity::PEntity* parent) {
+
+        auto chest_entity = Punity::PEntity::make_entity(Game::Names::CHEST, parent, true);
+
+        // Choose sprite
+        chest_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                SPRITE(Game::Sprites::crate, Game::Sprites::Layers::WALL)
+        );
+
+        // Use a box collider
+        chest_entity->add_component<Punity::Components::PBoxCollider>()->set_size(
+                Game::Sprites::crate_h,
+                Game::Sprites::crate_w
+        );
+
+        // Add its behavour
+        chest_entity->add_component<CrateBehaviour>();
 
 
         return chest_entity;
