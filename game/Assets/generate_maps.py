@@ -29,11 +29,11 @@ namespace Game::Maps {
 
 """
 
-split_file = __file__.split('/')
-split_file = '/'.join(split_file[:-1]) + '/'
+split_file = __file__.split('\\')
+split_file = '\\'.join(split_file[:-1]) + '\\'
 
 # Go through all files inside sprites directory
-map_directory = split_file + "Maps/"
+map_directory = split_file + "Maps\\"
 
 print("Directory: " + map_directory)
 print("Got files: " + str(sorted(os.listdir(map_directory))))

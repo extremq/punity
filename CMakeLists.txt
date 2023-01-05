@@ -90,9 +90,3 @@ target_link_libraries(${PROJ_NAME}
         hardware_adc
         pico_stdlib
         )
-
-# Remove this when you compile
-add_custom_command(TARGET
-        ${PROJ_NAME} POST_BUILD
-        COMMAND
-        sudo -S /bin/sh ${PROJECT_SOURCE_DIR}/deploy.sh ${PROJECT_SOURCE_DIR}/build/${PROJ_NAME}.uf2)
