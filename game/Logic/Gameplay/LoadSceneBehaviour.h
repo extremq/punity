@@ -13,6 +13,8 @@ constexpr float DELAY_TO_GAMEPLAY = 3.0f;
 namespace Game {
     class LoadSceneBehaviour : public Punity::Components::PComponent {
         void on_enable() override {
+            Punity::Screen.background_color(0);
+
             // Disable the unworthy children
             for (auto digit : get_entity()->get_children()) {
                 if (digit->get_name() != std::to_string(SceneManager::level)) {

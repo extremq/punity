@@ -34,8 +34,11 @@ namespace Punity {
 
         m_frame_buffer = new uint16_t[w * h];
         m_last_frame_buffer = new uint16_t[w * h];
+        m_background_tile = new uint16_t[8 * 8];
 
-        // TODO optimize and use all 8 bits.
+        for (uint16_t i = 0; i < 8 * 8; ++i)
+            m_background_tile[i] = 0;
+
         m_diff = new uint8_t[w * h];
 
         // Set buffer to white, while also setting
@@ -128,7 +131,7 @@ namespace Punity {
             for (int32_t x = col, j = j_start; x < col + w; ++x, ++j) {
                 // Check with alpha
                 if (alpha == nullptr || alpha[j + i * sprite_w])
-                    m_frame_buffer[x - cam_near_w + (y - cam_near_h) * m_height] = sprite[j + i * sprite_w];
+                    m_frame_buffer[x - cam_near_w + (y - cam_near_h) * m_width] = sprite[j + i * sprite_w];
             }
         }
     }
@@ -178,19 +181,35 @@ namespace Punity {
             for (int32_t x = col, j = j_start; x < col + w; ++x, ++j) {
                 // Check with alpha
                 if (alpha == nullptr || alpha[j + i * sprite_w])
-                    m_frame_buffer[x - cam_near_w + (y - cam_near_h) * m_height] = sprite[j + i * sprite_w];
+                    m_frame_buffer[x - cam_near_w + (y - cam_near_h) * m_width] = sprite[j + i * sprite_w];
             }
         }
     }
 
     void PScreen::load_background() {
-        for (uint16_t i = 0; i < m_height * m_width; ++i) {
-            m_frame_buffer[i] = m_bg_color;
+        // Traverse the frame in 8x8 tiles
+        for (uint16_t frame_row = 0; frame_row < 16; ++frame_row) {
+            for (uint16_t frame_column = 0; frame_column < 16; ++frame_column) {
+                uint16_t start_row = frame_row * 8 * m_width;
+                uint16_t start_column = frame_column * 8;
+                // And get each pixel of frame
+                for (uint16_t tile_row = 0; tile_row < 8; ++tile_row) {
+                    for (uint16_t tile_column = 0; tile_column < 8; ++tile_column) {
+                        m_frame_buffer[start_row + tile_row * m_width + start_column + tile_column] = m_background_tile[tile_row * 8 + tile_column];
+                    }
+                }
+            }
         }
     }
 
     void PScreen::background_color(uint16_t color) {
-        m_bg_color = color;
+        for (uint16_t i = 0; i < 64; ++i)
+            m_background_tile[i] = color;
+    }
+
+    void PScreen::background_tile_8x8(const uint16_t *sprite) {
+        for (uint16_t i = 0; i < 64; ++i)
+            m_background_tile[i] = sprite[i];
     }
 
     void PScreen::set_cs_voltage(bool value) const {

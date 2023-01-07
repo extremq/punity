@@ -60,7 +60,6 @@ def write_map_array(name: str, pixels: list) -> str:
         # Check the hex code of the pixel and add the corresponding map element to the buffer code
         # If the hex code does not match any of the predefined cases, print a warning and default to an EMPTY tile
         match hex_code:
-            # TODO add prize tile
             case "#FFFFFF":
                 buffer_code += " EMPTY,"
             case "#000000":

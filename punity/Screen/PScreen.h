@@ -14,8 +14,6 @@ namespace Punity {
     private:
         PScreen() = default;
 
-        uint16_t m_bg_color = 0x0;
-
         // Allow one single init, basically a fake read-only
         bool m_initialized = false;
 
@@ -33,6 +31,7 @@ namespace Punity {
         uint16_t* m_frame_buffer = nullptr;
         uint16_t* m_last_frame_buffer = nullptr;
         uint8_t* m_diff = nullptr;
+        uint16_t* m_background_tile = nullptr;
 
         void set_cs_voltage(bool value) const; /* Setters */
         void set_dc_voltage(bool value) const;
@@ -81,6 +80,7 @@ namespace Punity {
         void draw_sprite(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t* sprite, const bool* alpha);
         void draw_ui(int32_t col, int32_t row, int32_t h, int32_t w, const uint16_t* sprite, const bool* alpha);
         void background_color(uint16_t color);
+        void background_tile_8x8(const uint16_t* sprite);
         void compute_diff();
     };
 }

@@ -17,7 +17,6 @@ namespace Game {
         bool m_is_dead = false;
         int16_t m_max_hitpoints = 3;
     public:
-        // TODO make max_health and replenish_health
         void set_hitpoints(int16_t hitpoints);
         void set_max_hitpoints(int16_t hitpoints);
         void replenish_hitpoints();

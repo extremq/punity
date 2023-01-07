@@ -9,6 +9,9 @@
 
 namespace Game {
     class StartSceneBehaviour : public Punity::Components::PComponent {
+        void on_enable() override {
+            Punity::Screen.background_color(0);
+        }
         void on_update() override {
             // If the joystick button is pressed
             if (Punity::Button.read_button(JOY_BTN)) {

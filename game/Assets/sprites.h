@@ -77,6 +77,10 @@ namespace Game::Sprites {
 	extern bool const game_title_start_alpha [35 * 8];
 	extern uint16_t const game_title_start_w;
 	extern uint16_t const game_title_start_h;
+	extern uint16_t const grass [8 * 8];
+	extern bool const grass_alpha [8 * 8];
+	extern uint16_t const grass_w;
+	extern uint16_t const grass_h;
 	extern uint16_t const heart [7 * 6];
 	extern bool const heart_alpha [7 * 6];
 	extern uint16_t const heart_w;

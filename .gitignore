@@ -4,3 +4,4 @@ deploy.sh
 .idea/
 game/__pycache__/
 .vscode/
+venv/

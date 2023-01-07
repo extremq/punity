@@ -121,6 +121,8 @@ namespace Game {
     void GameplaySceneBehaviour::on_enable() {
         wave = 1;
 
+        Punity::Screen.background_tile_8x8(Game::Sprites::grass);
+
         if (SceneManager::level == 1 && player != nullptr) {
             // Reset player health
             player->get_component<ActorBehaviour>()->replenish_hitpoints();
