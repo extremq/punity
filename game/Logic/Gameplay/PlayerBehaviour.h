@@ -29,6 +29,8 @@ namespace Game {
         float last_joystick_click_time = 0.0f;
         Punity::Components::PCollider* weapon_collided_with = nullptr;
 
+        Punity::Utils::PVector last_joystick_direction;
+
         void on_start_collision(Punity::Components::PCollider* other) override;
         void on_collision(Punity::Components::PCollider* other) override;
         void on_update() override;

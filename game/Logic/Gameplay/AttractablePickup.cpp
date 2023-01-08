@@ -4,22 +4,10 @@
 
 #include "AttractablePickup.h"
 #include "GameplaySceneManager.h"
-#include "punity/Utils/PCollisionComputation.h"
+#include "punity/Utils/PMath.h"
 #include "game/Assets/strings.h"
 
 namespace Game {
-
-
-    Punity::Utils::PVector lerp(Punity::Utils::PVector a, Punity::Utils::PVector b, float t)
-    {
-        Punity::Utils::PVector interpolated;
-        // Simple LERP function
-        interpolated.x = a.x * (1.0f - t) + (b.x * t);
-        interpolated.y = a.y * (1.0f - t) + (b.y * t);
-
-        return interpolated;
-    }
-
     void AttractablePickup::on_update() {
         if (!GameplaySceneManager::player_loaded) return;
 
@@ -30,7 +18,7 @@ namespace Game {
         if (is_approaching_player) {
             // Set position of pickup to lerped value
             get_entity()->get_transform()->set_global(
-                lerp(
+                Punity::Utils::lerp(
                 get_entity()->get_transform()->global_position,
                 player->get_transform()->global_position,
                 (Punity::Time.time - time_of_approaching_start) / INTERPOLATION_TIME
@@ -40,7 +28,7 @@ namespace Game {
             return;
         }
 
-        float distance_between_player_and_entity = Punity::Collision::distance(
+        float distance_between_player_and_entity = Punity::Utils::distance(
                 player->get_transform()->global_position,
                 get_entity()->get_transform()->global_position
                 );

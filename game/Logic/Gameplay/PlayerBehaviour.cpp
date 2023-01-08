@@ -8,7 +8,7 @@
 #include "GameplayPrefabCreator.h"
 #include "game/Assets/colliders.h"
 #include "GameplaySceneManager.h"
-#include "punity/Utils/PCollisionComputation.h" // for dist
+#include "punity/Utils/PMath.h"
 #include "Weapon.h"
 #include "WeaponPickup.h"
 #include "game/Assets/strings.h"
@@ -105,13 +105,7 @@ namespace Game {
     void PlayerBehaviour::on_update() {
         compute_movement();
 
-        Punity::Utils::PVector nearest_enemy;
-        // Wait for enemies to be loaded!
-        // Get nearest enemy
-        if (GameplaySceneManager::enemies_loaded)
-            nearest_enemy = compute_nearest_enemy();
-        else
-            nearest_enemy = {0, 0};
+        Punity::Utils::PVector nearest_enemy = compute_nearest_enemy();
 
         if (Punity::Time.time - last_joystick_click_time > 0.25f &&
             Punity::Button.read_button(JOY_BTN)) {
@@ -179,6 +173,9 @@ namespace Game {
         // Normalize the vector
         joystick_direction = joystick_direction.norm();
 
+        // Save the last direction
+        last_joystick_direction = joystick_direction;
+
         // Translate the player
         get_entity()->get_transform()->translate(joystick_direction * Punity::Time.delta_time * 30);
     }
@@ -186,11 +183,14 @@ namespace Game {
     Punity::Utils::PVector PlayerBehaviour::compute_nearest_enemy() {
         Punity::Utils::PVector player_pos = get_entity()->get_transform()->global_position, nearest_enemy;
 
+        // In case there are no enemies, default to shooting in the last direction
+        nearest_enemy = player_pos + last_joystick_direction;
+
         // Loop through children of Enemies and get their position. Choose the nearest.
         float min_distance = 999.0f, distance;
         uint64_t chosen_id = 0;
         for (auto enemy : enemies->get_children()) {
-            distance = Punity::Collision::distance(player_pos, enemy->get_transform()->global_position);
+            distance = Punity::Utils::distance(player_pos, enemy->get_transform()->global_position);
 
             if (min_distance > distance) {
                 nearest_enemy = enemy->get_transform()->global_position;

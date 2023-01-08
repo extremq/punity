@@ -22,6 +22,7 @@
 #include "ChestBehaviour.h"
 #include "WeaponPickup.h"
 #include "CrateBehaviour.h"
+#include "MovingBehaviour.h"
 
 /*
  * Unity has things called "Prefabs". Basically, they are game objects (my Punity::PEntity)
@@ -143,6 +144,8 @@ namespace Game::GameplayPrefabCreator {
         enemy_entity->add_component<ActorBehaviour>()->set_max_hitpoints((type / 2 + 1) * 3);
 
         enemy_entity->add_component<Weapon>()->set_weapon(Weapons::enemy_weapons[type]);
+
+        enemy_entity->add_component<MovingBehaviour>();
 
         // Entity for selector that appears above enemy when player aims at
         auto selector_entity = Punity::PEntity::make_entity(Game::Names::SELECTOR, enemy_entity, false);

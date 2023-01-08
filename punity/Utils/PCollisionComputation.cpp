@@ -5,12 +5,9 @@
 #include "punity/Entity/PEntity.h"
 #include "punity/Components/PCircleCollider.h"
 #include "punity/Components/PBoxCollider.h"
+#include "PMath.h"
 
 namespace Punity::Collision {
-    float distance(Punity::Utils::PVector const& a, Punity::Utils::PVector const& b) {
-        return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-    }
-
     bool solve_circle_rect(Components::PCircleCollider* circle, Components::PBoxCollider* rect) {
         Utils::PVector nearest_point;
         Utils::PVector rect_pos = rect->get_entity()->get_transform()->global_position;

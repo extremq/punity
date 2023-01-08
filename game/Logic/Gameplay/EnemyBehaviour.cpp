@@ -11,6 +11,7 @@
 #include "Weapon.h"
 #include "game/Assets/strings.h"
 #include "punity/Utils/PInvokable.h"
+#include "RoomBehaviour.h"
 
 namespace Game {
     void EnemyBehaviour::on_start_collision(Punity::Components::PCollider *other) {
@@ -34,16 +35,54 @@ namespace Game {
         }
     }
 
-    void EnemyBehaviour::on_update() {
-        if (!GameplaySceneManager::player_loaded) return;
+    void EnemyBehaviour::move() {
+        if (Punity::Time.time > next_move) {
+            // Choose a random moving time
+            move_time = Punity::Utils::random(0.75f, 1);
+            float stand_time = Punity::Utils::random(0, 0.33f);
+            next_move = Punity::Time.time + move_time + stand_time;
 
+            // Start moving
+            new Punity::Utils::PInvokable<EnemyBehaviour>(
+                    &EnemyBehaviour::translate_to_random_valid_place,
+                    this,
+                    stand_time,
+                    get_entity()->get_id()
+                    );
+        }
+    }
+
+    void EnemyBehaviour::translate_to_random_valid_place() {
+        Punity::Utils::PVector directions[4] = {
+                {0, 8},
+                {8, 0},
+                {0, -8},
+                {-8, 0}
+        };
+
+        int pick = std::floor(Punity::Utils::random(0, 3.99f));
+        Punity::Utils::PVector target = get_entity()->get_transform()->global_position + directions[pick];
+
+        while(room->get_component<RoomBehaviour>()->tiles[static_cast<int>((64.0f + target.y) / 8.0f)][static_cast<int>((64.0f + target.x) / 8.0f)] != EMPTY) {
+            // Reroll until empty tile
+            pick = std::floor(Punity::Utils::random(0, 3.99f));
+            target = get_entity()->get_transform()->global_position + directions[pick];
+        }
+
+        get_entity()->get_component<MovingBehaviour>()->translate_to(
+                target,
+                move_time
+                );
+    }
+
+    void EnemyBehaviour::shoot() {
         if (Punity::Time.time < shooting_start) {
-            is_paused = true;
+            shooting_is_paused = true;
             return;
         }
         else {
-            if (is_paused) {
-                is_paused = false;
+            if (shooting_is_paused) {
+                shooting_is_paused = false;
                 shooting_end = Punity::Time.time + shoot_time;
             }
         }
@@ -62,6 +101,13 @@ namespace Game {
         }
     }
 
+    void EnemyBehaviour::on_update() {
+        if (!GameplaySceneManager::player_loaded) return;
+
+        move();
+        shoot();
+    }
+
     void EnemyBehaviour::on_enable() {
         player = Punity::Engine.find_entity(Game::Names::PLAYER);
         room = Punity::Engine.find_entity(Game::Names::ROOM);
@@ -70,6 +116,7 @@ namespace Game {
         pause_time = Punity::Utils::random(1.0f, 1.5f);
         shooting_start = Punity::Time.time + Punity::Utils::random() + pause_time;
         shoot_time = Punity::Utils::random(3, 4);
+        next_move = Punity::Time.time + Punity::Utils::random(1, 2);
     }
 
     void EnemyBehaviour::on_destroy() {

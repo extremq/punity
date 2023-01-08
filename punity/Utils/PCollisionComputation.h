@@ -12,8 +12,6 @@
 namespace Punity::Collision {
     bool solve_circle_rect(Components::PCircleCollider* circle, Components::PBoxCollider* rect);
     bool solve_circle_circle(Components::PCircleCollider* circle1, Components::PCircleCollider* circle2);
-
-    float distance(Punity::Utils::PVector const& a, Punity::Utils::PVector const& b);
 }
 
 #endif //_PCOLLISIONCOMPUTATION_H
