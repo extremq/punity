@@ -5,7 +5,6 @@
 #include "SceneManager.h"
 #include "SceneCreator.h"
 #include "punity/Utils/PInvokable.h"
-#include "game/Logic/Gameplay/GameplaySceneBehaviour.h"
 #include "game/Assets/strings.h"
 
 namespace Game::SceneManager {

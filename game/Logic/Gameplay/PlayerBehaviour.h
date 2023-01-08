@@ -50,6 +50,8 @@ namespace Game {
         bool has_touched_chest();
         bool has_picked_up_any_weapon();
         Weapons::WeaponConfig get_equipped_weapon();
+
+        bool check_if_player_can_hit_enemy(Punity::Utils::PVector enemy_pos);
     };
 } // Game
 

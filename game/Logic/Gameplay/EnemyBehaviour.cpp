@@ -116,7 +116,7 @@ namespace Game {
         pause_time = Punity::Utils::random(1.0f, 1.5f);
         shooting_start = Punity::Time.time + Punity::Utils::random() + pause_time;
         shoot_time = Punity::Utils::random(3, 4);
-        next_move = Punity::Time.time + Punity::Utils::random(1, 2);
+        next_move = Punity::Time.time + Punity::Utils::random(0.33f, 0.66f);
     }
 
     void EnemyBehaviour::on_destroy() {
