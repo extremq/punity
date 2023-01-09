@@ -57,6 +57,7 @@ namespace Game::Names {
     constexpr char PAIN_TEXT[] = "PainText";
     constexpr char UI[] = "UI";
     constexpr char WORLD[] = "World";
+    constexpr char STAR[] = "Star";
 }
 
 #endif //_STRINGS_H

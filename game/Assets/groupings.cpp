@@ -17,6 +17,14 @@ namespace Game::Groupings {
             (uint16_t *) Game::Sprites::eight,
             (uint16_t *) Game::Sprites::nine
     };
+    uint16_t* const enemies[6] = {
+            (uint16_t *) Game::Sprites::enemy_1,
+            (uint16_t *) Game::Sprites::enemy_2,
+            (uint16_t *) Game::Sprites::enemy_3,
+            (uint16_t *) Game::Sprites::enemy_4,
+            (uint16_t *) Game::Sprites::enemy_5,
+            (uint16_t *) Game::Sprites::enemy_6,
+    };
     bool* const numbers_alpha[10] = {
             (bool *) Game::Sprites::zero_alpha,
             (bool *) Game::Sprites::one_alpha,
@@ -53,9 +61,13 @@ namespace Game::Groupings {
             (uint16_t) Game::Sprites::eight_w,
             (uint16_t) Game::Sprites::nine_w
     };
-    Tile* const maps[3] = {
+    Tile* const maps[7] = {
             (Tile*) Game::Maps::map1,
             (Tile*) Game::Maps::map2,
-            (Tile*) Game::Maps::map3
+            (Tile*) Game::Maps::map3,
+            (Tile*) Game::Maps::map4,
+            (Tile*) Game::Maps::map5,
+            (Tile*) Game::Maps::map6,
+            (Tile*) Game::Maps::map7
     };
 }

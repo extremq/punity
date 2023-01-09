@@ -89,9 +89,23 @@ namespace Game {
 
             if (SceneManager::stage == MAX_STAGE) {
                 // NOW we switch level
-                SceneManager::level = std::max(1, (SceneManager::level + 1) % (MAX_LEVEL + 1));
-                SceneManager::stage = 1;
-                SceneManager::switch_scene(LEVEL_LOAD_SCENE);
+                if (SceneManager::level == MAX_LEVEL) {
+                    // Won the game! Don't switch
+                    star->set_active(true);
+
+                    // Switch to start after a delay
+                    new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
+                            &GameplaySceneBehaviour::return_to_main_menu_after_win,
+                            this,
+                            END_GAME_DELAY_SECONDS,
+                            get_entity()->get_id()
+                    );
+                }
+                else {
+                    SceneManager::level = std::max(1, (SceneManager::level + 1));
+                    SceneManager::stage = 1;
+                    SceneManager::switch_scene(LEVEL_LOAD_SCENE);
+                }
             } else {
                 SceneManager::stage++;
 
@@ -184,6 +198,15 @@ namespace Game {
         GameplaySceneManager::chest_loaded = true;
     }
 
+    void GameplaySceneBehaviour::return_to_main_menu_after_win() {
+        star->set_active(false);
+
+        player->get_component<PlayerBehaviour>()->fully_reset_player();
+        // GO back to start
+        SceneManager::reset_progress();
+        SceneManager::switch_scene(START_SCENE);
+    }
+
     void GameplaySceneBehaviour::make_enemies() {
         // Create the enemies needed.
         setup_enemies();
@@ -204,6 +227,10 @@ namespace Game {
         // Make room and actors entities to group the tiles and the enemies
         if (room == nullptr) {
             room = GameplayPrefabCreator::make_room(get_entity());
+        }
+
+        if (star == nullptr) {
+            star = GameplayPrefabCreator::make_star(get_entity());
         }
     }
 
@@ -350,6 +377,7 @@ namespace Game {
 
                 // Create a random enemy
                 if (Punity::Utils::random() < 0.5f)
+                    // Level from 1 to 3 == 0 -> 6
                     temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3);
                 else
                     temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + 1);

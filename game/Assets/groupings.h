@@ -12,10 +12,11 @@
 // Useful library for grouped things such as sprites
 namespace Game::Groupings {
     extern uint16_t* const numbers[10];
+    extern uint16_t* const enemies[6];
     extern bool* const numbers_alpha[10];
     extern uint16_t const numbers_h[10];
     extern uint16_t const numbers_w[10];
-    extern Tile* const maps[3];
+    extern Tile* const maps[7];
 }
 
 #endif //ENGINE_GROUPINGS_H

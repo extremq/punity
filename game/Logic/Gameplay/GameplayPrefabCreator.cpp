@@ -8,6 +8,7 @@
 #include "game/Assets/sprite_layers.h"
 #include "game/Assets/colliders.h"
 #include "game/Assets/strings.h"
+#include "game/Assets/groupings.h"
 
 #include "punity/Components/PCircleCollider.h"
 #include "punity/Components/PBoxCollider.h"
@@ -98,7 +99,6 @@ namespace Game::GameplayPrefabCreator {
         // Add its behavour
         chest_entity->add_component<CrateBehaviour>();
 
-
         return chest_entity;
     }
 
@@ -124,17 +124,31 @@ namespace Game::GameplayPrefabCreator {
         return enemies_entity;
     }
 
+    Punity::PEntity* make_star(Punity::PEntity* parent) {
+        auto star_entity = Punity::PEntity::make_entity(Game::Names::STAR, parent, false);
+        star_entity->add_component<Punity::Components::PUISpriteRenderer>()->set_sprite(
+                SPRITE(Game::Sprites::star, Game::Sprites::Layers::HUD)
+        );
+
+        return star_entity;
+    }
+
     Punity::PEntity* make_enemy(Punity::PEntity* parent, uint8_t type) {
+        // Type goes from 0 -> 6
         auto enemy_entity = Punity::PEntity::make_entity(Game::Names::ENEMY, parent, true);
 
         // Choose sprite
         enemy_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                SPRITE(Game::Sprites::first_enemy_type, Game::Sprites::Layers::PLAYER)
+                Game::Groupings::enemies[type],
+                Game::Sprites::enemy_1_alpha,
+                Game::Sprites::enemy_1_h,
+                Game::Sprites::enemy_1_w,
+                Game::Sprites::Layers::PLAYER
         );
 
         // Set the collider
         enemy_entity->add_component<Punity::Components::PCircleCollider>()
-                ->set_radius(Game::Sprites::first_enemy_type_h / 2)
+                ->set_radius(Game::Sprites::enemy_1_h / 2)
                 ->set_information(Game::Colliders::ENEMY);
 
         // Set enemy behaviour

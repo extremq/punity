@@ -14,6 +14,7 @@ constexpr float PLAYER_CREATION_DELAY_SECONDS = 1.0f;
 constexpr float STAGE_SWITCH_DELAY_SECONDS = 1.0f;
 constexpr float ENEMY_CREATION_DELAY_SECONDS = 2.0f;
 constexpr float MIDGAME_ENEMY_CREATION_DELAY_SECONDS = 1.0f;
+constexpr float END_GAME_DELAY_SECONDS = 10.0f;
 
 namespace Game {
 
@@ -24,6 +25,7 @@ namespace Game {
         // Grouping entities
         Punity::PEntity* room = nullptr;
         Punity::PEntity* enemies = nullptr;
+        Punity::PEntity* star = nullptr;
         std::vector<Punity::PEntity*> enemy;
         std::vector<Game::ActorBehaviour*> enemy_actor_behaviour;
 
@@ -52,6 +54,7 @@ namespace Game {
         void update_level_stage_counter();
         void update_weapon_status(PlayerBehaviour *player_behaviour);
     public:
+        void return_to_main_menu_after_win();
     };
 
 } // Game

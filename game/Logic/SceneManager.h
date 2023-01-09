@@ -21,7 +21,7 @@ constexpr uint8_t ACTION_BTN = 1;
 
 constexpr uint8_t MAX_LEVEL = 3;
 constexpr uint8_t MAX_STAGE = 3;
-constexpr uint8_t MAX_WAVE = 3;
+constexpr uint8_t MAX_WAVE = 2;
 
 constexpr uint8_t WIDTH = 128;
 constexpr uint8_t HEIGHT = 128;

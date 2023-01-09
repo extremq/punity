@@ -75,7 +75,7 @@ def write_map_array(name: str, pixels: list) -> str:
             case "#1EE656":
                 buffer_code += " PRIZE,"
             case _:
-                print("\t\t- Warning! Invalid pixel, defaulting to EMPTY tile.")
+                print(f"\t\t- Warning! {hex_code} is invalid pixel, defaulting to EMPTY tile.")
                 buffer_code += " EMPTY,"
 
     # Remove the last comma from the buffer code and add the closing brace and newline character
