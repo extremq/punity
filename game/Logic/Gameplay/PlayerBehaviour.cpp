@@ -109,7 +109,7 @@ namespace Game {
         Punity::Utils::PVector nearest_enemy = compute_nearest_enemy();
 
         if (Punity::Time.time - last_joystick_click_time > 0.25f &&
-            Punity::Button.read_button(JOY_BTN)) {
+                Punity::Button.read_button(JOY_BTN)) {
 
             // If picked up a weapon
             if (weapon_collided_with != nullptr) {
