@@ -21,7 +21,7 @@ namespace Game {
         }
 
         // Choose a random integer
-        uint8_t chosen_map = std::floor(Punity::Utils::random(0, 6.99f));
+        uint8_t chosen_map = std::floor(Punity::Utils::random(0, MAP_COUNT - 0.01f));
 
         for (uint8_t row = 0; row < 12; ++row) {
             for (uint8_t column = 0; column < 12; ++column) {

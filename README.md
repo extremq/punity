@@ -10,7 +10,10 @@ a 2D game engine targeted to the Raspberry Pi Pico microcontroller, designed wit
 In this implementation, the Screen is using a ST7735 controller. You will also find logic for interfacing analog joysticks and buttons.
 
 ### Extra info
-This project has been made for an university task.
+**I had no access to a debugger, the ram of the Pico is limited to
+264KB, and it has a 100MHz CPU.**
+
+This project has been made for a university task.
 
 Check out [my previous attempt](https://github.com/extremq/pico_game/) at creating such a game engine. I've learnt from that and moved on to creating Punity just a few days later.
 
@@ -29,7 +32,7 @@ This way of handlind entities makes it so when disabling or destroying an entity
 
 You can easily disable and enable the player without needing to disable their sword, their arms, hats, etc. since eveything is a child of the player.
 
-Each entity also has a component. Components simply extend an entity's behaviour. You could make a Sprite component which attaches a sprite to the entity so it can be rendered on the screen, or you could add a BoxCollider component so you make it have a rectangular hitbox.
+Each entity also has a component. Components simply extend an entity's behaviour. You could make a Sprite component which attaches a sprite to the entity, so it can be rendered on the screen, or you could add a BoxCollider component, so you make it have a rectangular hitbox.
 
 Each entity will have a Transform component, which describes the position of the entity in the world.
 
@@ -149,7 +152,7 @@ Here is a snippet from the collision computation util which uses `PVector`.
 nearest_point.x = std::max(rect_pos.x - rect->width / 2, std::min(circle_pos.x, rect_pos.x + rect->width / 2));
 nearest_point.y = std::max(rect_pos.y - rect->height / 2, std::min(circle_pos.y, rect_pos.y + rect->height / 2));
 
-// Ray to nearest point
+// Ray to the nearest point
 Utils::PVector ray_to_nearest_point = nearest_point - circle_pos;
 
 const float mag = ray_to_nearest_point.mag();
@@ -230,7 +233,7 @@ Punity::PEntity* make_enemy(Punity::PEntity* parent, uint8_t type) {
     // Entity for selector that appears above enemy when player aims at
     auto selector_entity = Punity::PEntity::make_entity(Game::Names::SELECTOR, enemy_entity, false);
 
-    selector_entity->get_transform()->set_local({0, -8}); // place the selector in offset regarding to enemy
+    selector_entity->get_transform()->set_local({0, -8}); // place the selector in offset regarding enemy
     selector_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
             SPRITE(Game::Sprites::enemy_selected_arrow, Game::Sprites::Layers::SELECTOR)
     );

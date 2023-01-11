@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+#define MAP_COUNT 7
+
 enum Tile {
     EMPTY,
     WALL,

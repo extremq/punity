@@ -8,6 +8,8 @@ output_header = """#ifndef _MAPS_
 
 #include <cstdint>
 
+#define MAP_COUNT __mapcount
+
 enum Tile {
     EMPTY,
     WALL,
@@ -37,6 +39,10 @@ map_directory = split_file + "Maps\\"
 
 print("Directory: " + map_directory)
 print("Got files: " + str(sorted(os.listdir(map_directory))))
+
+map_count = len(os.listdir(map_directory))
+output_header = output_header.replace("__mapcount", str(map_count))
+
 print("Starting to generate C++ headers...")
 
 for file_name in sorted(os.listdir(map_directory)):
