@@ -70,4 +70,16 @@ namespace Game::Groupings {
             (Tile*) Game::Maps::map6,
             (Tile*) Game::Maps::map7
     };
+
+    uint16_t* const wall_types[3] {
+            (uint16_t*) Game::Sprites::wall_1,
+            (uint16_t*) Game::Sprites::wall_2,
+            (uint16_t*) Game::Sprites::wall_3
+    };
+
+    uint16_t* const background_types[3] {
+            (uint16_t*) Game::Sprites::bg_1,
+            (uint16_t*) Game::Sprites::bg_2,
+            (uint16_t*) Game::Sprites::bg_3
+    };
 }

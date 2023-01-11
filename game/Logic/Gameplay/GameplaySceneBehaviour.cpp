@@ -135,8 +135,6 @@ namespace Game {
     void GameplaySceneBehaviour::on_enable() {
         wave = 1;
 
-        Punity::Screen.background_tile_8x8(Game::Sprites::grass);
-
         if (SceneManager::level == 1 && player != nullptr) {
             // Reset player health
             player->get_component<ActorBehaviour>()->replenish_hitpoints();
@@ -378,9 +376,9 @@ namespace Game {
                 // Create a random enemy
                 if (Punity::Utils::random() < 0.5f)
                     // Level from 1 to 3 == 0 -> 6
-                    temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3);
+                    temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 2);
                 else
-                    temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 3 + 1);
+                    temp_enemy = GameplayPrefabCreator::make_enemy(enemies, (SceneManager::level - 1) * 2 + 1);
 
                 // Computations!!!
                 temp_enemy->get_transform()->set_global({-64.0f + column * 8.0f + 4.0f, -64.0f + row * 8.0f + 4.0f});

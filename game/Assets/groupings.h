@@ -17,6 +17,8 @@ namespace Game::Groupings {
     extern uint16_t const numbers_h[10];
     extern uint16_t const numbers_w[10];
     extern Tile* const maps[MAP_COUNT];
+    extern uint16_t* const wall_types[3];
+    extern uint16_t* const background_types[3];
 }
 
 #endif //ENGINE_GROUPINGS_H

@@ -102,18 +102,22 @@ namespace Game::GameplayPrefabCreator {
         return chest_entity;
     }
 
-    Punity::PEntity* make_wall(Punity::PEntity* parent) {
+    Punity::PEntity* make_wall(Punity::PEntity* parent, uint16_t type) {
         auto wall_entity = Punity::PEntity::make_entity(Game::Names::WALL, parent, true);
 
         // Choose sprite
         wall_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                SPRITE(Game::Sprites::wall, Game::Sprites::Layers::WALL)
+                Game::Groupings::wall_types[type],
+                Game::Sprites::wall_1_alpha,
+                Game::Sprites::wall_1_h,
+                Game::Sprites::wall_1_w,
+                Game::Sprites::Layers::WALL
         );
 
         // Use a box collider
         wall_entity->add_component<Punity::Components::PBoxCollider>()->set_size(
-                Game::Sprites::wall_h,
-                Game::Sprites::wall_w
+                Game::Sprites::wall_1_h,
+                Game::Sprites::wall_1_w
         );
 
         return wall_entity;
@@ -155,7 +159,7 @@ namespace Game::GameplayPrefabCreator {
         enemy_entity->add_component<EnemyBehaviour>();
 
         // Set actor behaviour
-        enemy_entity->add_component<ActorBehaviour>()->set_max_hitpoints((type / 2 + 1) * 3);
+        enemy_entity->add_component<ActorBehaviour>()->set_max_hitpoints(3 + type / 3);
 
         enemy_entity->add_component<Weapon>()->set_weapon(Weapons::enemy_weapons[type]);
 

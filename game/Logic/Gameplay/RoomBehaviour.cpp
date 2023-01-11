@@ -7,9 +7,11 @@
 #include "punity/Components/PBoxCollider.h"
 #include "GameplayPrefabCreator.h"
 #include "game/Assets/groupings.h"
+#include "game/Logic/SceneManager.h"
 
 namespace Game {
     void RoomBehaviour::generate_stage() {
+        Punity::Screen.background_tile_8x8(Game::Groupings::background_types[SceneManager::level - 1]);
         // Border the room
         for (int row = 1; row < 15; ++row) {
             for (int column = 1; column < 15; ++column) {
@@ -71,7 +73,7 @@ namespace Game {
     }
 
     void RoomBehaviour::make_wall(int index) {
-        auto tile = GameplayPrefabCreator::make_wall(get_entity());
+        auto tile = GameplayPrefabCreator::make_wall(get_entity(), SceneManager::level - 1);
 
         // Compute the position based on tile index
         Punity::Utils::PVector pos(index % 16 * 8 - 60,

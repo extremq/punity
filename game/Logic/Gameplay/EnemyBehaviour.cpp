@@ -128,13 +128,13 @@ namespace Game {
 
     void EnemyBehaviour::determine_drop() {
         // Create a random amount of energy pickups (count from 0 to 1)
-        uint8_t random_amount = std::round(Punity::Utils::random(0.0f, 1.0f));
+        uint8_t random_amount = std::lround(Punity::Utils::random(0.0f, 1.0f));
 
         // If we happen to not generate any energy pickup, see if you can make a heart pickup
         if (random_amount == 0)
         {
             // Also roll a number to check for hearts
-            if (Punity::Utils::random() < 0.20f)
+            if (Punity::Utils::random() < 0.50f)
                 GameplayPrefabCreator::drop_heart_pickups(room,
                                                           1,
                                                           get_entity()->get_transform()->global_position);

@@ -53,6 +53,9 @@ namespace Punity::Collision {
         // to center of circle1
         // normalize it and multiply it by the sum of radii
         Utils::PVector tg;
+
+        // Also limit the minimum distance
+        dist = std::max(dist, 0.001f);
         tg.x = (circle2_pos.x - circle1_pos.x) / dist;
         tg.y = (circle2_pos.y - circle1_pos.y) / dist;
 
