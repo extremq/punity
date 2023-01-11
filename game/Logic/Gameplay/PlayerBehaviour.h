@@ -20,7 +20,7 @@ namespace Game {
         Punity::PEntity* room = nullptr;
         Weapon* weapon_component = nullptr;
 
-        // Weapon picked up by player
+        // Weapon picked up by player_normal
         Weapons::WeaponConfig equipped_weapon = Weapons::empty_weapon;
 
         // Weapons use energy

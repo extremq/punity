@@ -13,6 +13,7 @@
 #include "WeaponPickup.h"
 #include "game/Assets/strings.h"
 #include "RoomBehaviour.h"
+#include "game/Assets/sprite_layers.h"
 
 namespace Game {
 
@@ -56,6 +57,7 @@ namespace Game {
     }
 
     void PlayerBehaviour::compute_damage_dealt_by_projectile(uint8_t projectile_type) {
+        bool has_been_hurt = true;
         switch (projectile_type) {
             case Colliders::ENEMY_PROJECTILE_1:
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(1);
@@ -67,7 +69,15 @@ namespace Game {
                 get_entity()->get_component<ActorBehaviour>()->subtract_hitpoints(3);
                 break;
             default:
+                has_been_hurt = false;
                 break;
+        }
+
+        if(has_been_hurt) {
+            // Change sprite to hurt
+            get_entity()->get_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                    SPRITE(Game::Sprites::player_hurt, Game::Sprites::Layers::PLAYER)
+            );
         }
     }
 
@@ -99,7 +109,7 @@ namespace Game {
         // Reset chest touch
         touched_chest = false;
 
-        // Place player back
+        // Place player_normal back
         get_entity()->get_transform()->set_global({0, -40});
     }
 
@@ -159,9 +169,20 @@ namespace Game {
                     room,
                     true
                     )) {
+                // Change sprite to shooting
+                get_entity()->get_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                        SPRITE(Game::Sprites::player_shooting, Game::Sprites::Layers::PLAYER)
+                );
+
                 // Subtract energy and shoot
                 remaining_energy -= weapon_component->get_energy_cost();
             }
+        }
+        else {
+            // Change sprite to normal
+            get_entity()->get_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                    SPRITE(Game::Sprites::player_normal, Game::Sprites::Layers::PLAYER)
+            );
         }
     }
 
@@ -177,7 +198,7 @@ namespace Game {
         // Save the last direction
         last_joystick_direction = joystick_direction;
 
-        // Translate the player
+        // Translate the player_normal
         get_entity()->get_transform()->translate(joystick_direction * Punity::Time.delta_time * 30);
     }
 
@@ -192,14 +213,14 @@ namespace Game {
         Punity::Utils::PVector shifted_enemy = enemy_pos;
         shifted_enemy += {64.0f, 64.0f};
 
-        // Get row and column of player and enemy for optimisations
+        // Get row and column of player_normal and enemy for optimisations
         int row_player = std::floor(shifted_player.y / 8.0f);
         int column_player = std::floor(shifted_player.x / 8.0f);
 
         int row_enemy = std::floor(shifted_enemy.y / 8.0f);
         int column_enemy = std::floor(shifted_enemy.x / 8.0f);
 
-        // Compute the line between player and enemy
+        // Compute the line between player_normal and enemy
         float slope, extra;
         bool is_vertical = false;
         bool is_horizontal = false;
@@ -217,10 +238,10 @@ namespace Game {
         for (int row = std::min(row_player, row_enemy); row <= std::max(row_player, row_enemy); ++row) {
             for (int column = std::min(column_player, column_enemy); column <= std::max(column_player, column_enemy); ++column) {
                 // Ignore anything else other than walls
-                // Ignore tiles of player and enemy
+                // Ignore tiles of player_normal and enemy
                 if (tiles[row][column] != WALL) continue;
 
-                // If this is vertical, we are traversing a line starting from player to enemy.
+                // If this is vertical, we are traversing a line starting from player_normal to enemy.
                 // Encountering a wall means no way of hitting.
                 if (is_vertical || is_horizontal) return false;
 

@@ -34,7 +34,7 @@ namespace Game {
                 );
 
         if (distance_between_player_and_entity < APPROACHING_DISTANCE) {
-            // Start approaching the player
+            // Start approaching the player_normal
             is_approaching_player = true;
             time_of_approaching_start = Punity::Time.time;
         }

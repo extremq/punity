@@ -36,13 +36,13 @@ namespace Game::GameplayPrefabCreator {
     Punity::PEntity* make_player(Punity::PEntity* parent) {
         auto player_entity = Punity::PEntity::make_entity(Game::Names::PLAYER, parent, false);
         player_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                SPRITE(Game::Sprites::player, Game::Sprites::Layers::PLAYER)
+                SPRITE(Game::Sprites::player_normal, Game::Sprites::Layers::PLAYER)
         );
 
         // Add components
         player_entity->add_component<PlayerBehaviour>();
         player_entity->add_component<Punity::Components::PCircleCollider>()
-                ->set_radius(Game::Sprites::player_h / 2.0f)
+                ->set_radius(Game::Sprites::player_normal_h / 2.0f)
                 ->set_static(false)
                 ->set_information(Game::Colliders::PLAYER);
         player_entity->add_component<ActorBehaviour>();
@@ -165,7 +165,7 @@ namespace Game::GameplayPrefabCreator {
 
         enemy_entity->add_component<MovingBehaviour>();
 
-        // Entity for selector that appears above enemy when player aims at
+        // Entity for selector that appears above enemy when player_normal aims at
         auto selector_entity = Punity::PEntity::make_entity(Game::Names::SELECTOR, enemy_entity, false);
 
         selector_entity->get_transform()->set_local({0, -8});

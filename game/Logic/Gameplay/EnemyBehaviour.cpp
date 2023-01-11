@@ -122,7 +122,7 @@ namespace Game {
     void EnemyBehaviour::on_destroy() {
         if (!room->is_globally_active()) return;
 
-        // Determine rewards for player
+        // Determine rewards for player_normal
         determine_drop();
     }
 

@@ -11,7 +11,7 @@ namespace Game {
     void Projectile::on_start_collision(Punity::Components::PCollider *other) {
         // I simply destroy the projectile on hit. Others have to deal with
         // whatever they want to do if hit by projectiles.
-        // I also support an exception, however. If we shoot from inside the player,
+        // I also support an exception, however. If we shoot from inside the player_normal,
         // I may not want it to be destroyed instantly.
 
         // Also ignore triggers

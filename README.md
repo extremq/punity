@@ -30,7 +30,7 @@ Left, you have folders and subfolders with files. Right, you have my entity stru
 
 This way of handlind entities makes it so when disabling or destroying an entity, you also destroy all their children entities. Think of how deleting a folder deletes every subfolder.
 
-You can easily disable and enable the player without needing to disable their sword, their arms, hats, etc. since eveything is a child of the player.
+You can easily disable and enable the player_normal without needing to disable their sword, their arms, hats, etc. since eveything is a child of the player_normal.
 
 Each entity also has a component. Components simply extend an entity's behaviour. You could make a Sprite component which attaches a sprite to the entity, so it can be rendered on the screen, or you could add a BoxCollider component, so you make it have a rectangular hitbox.
 
@@ -126,7 +126,7 @@ You can get the elapsed time in second since boot easily using the `Punity::Time
 If you'd like to make physics computation independent of frame rate, you can also use
 `Punity::Time.delta_time`, which gives you the difference in time between the frames.
 
-Here is a snippet that implements player movement using a joystick.
+Here is a snippet that implements player_normal movement using a joystick.
 
 ```cpp
 // Construct vector of direction
@@ -140,7 +140,7 @@ joystick_direction = joystick_direction.norm();
 // Save the last direction
 last_joystick_direction = joystick_direction;
 
-// Translate the player
+// Translate the player_normal
 get_entity()->get_transform()->translate(joystick_direction * Punity::Time.delta_time * 30);
 ```
 
@@ -230,7 +230,7 @@ Punity::PEntity* make_enemy(Punity::PEntity* parent, uint8_t type) {
     // Set enemy behaviour
     enemy_entity->add_component<EnemyBehaviour>();
     
-    // Entity for selector that appears above enemy when player aims at
+    // Entity for selector that appears above enemy when player_normal aims at
     auto selector_entity = Punity::PEntity::make_entity(Game::Names::SELECTOR, enemy_entity, false);
 
     selector_entity->get_transform()->set_local({0, -8}); // place the selector in offset regarding enemy

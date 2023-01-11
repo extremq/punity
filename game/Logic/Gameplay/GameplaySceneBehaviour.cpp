@@ -30,7 +30,7 @@ namespace Game {
                 }
             }
 
-        // Update the hearts to reflect current player health
+        // Update the hearts to reflect current player_normal health
         update_hearts(player_actor_behaviour);
 
         // Update weapon status
@@ -44,7 +44,7 @@ namespace Game {
 
         bool enemies_are_dead = enemies->get_children_count() == 0;
 
-        // Check if player is dead
+        // Check if player_normal is dead
         if (player_actor_behaviour->is_dead()) {
             // TODO make a death thingy? Use invokes.
             player_behaviour->fully_reset_player();
@@ -136,7 +136,7 @@ namespace Game {
         wave = 1;
 
         if (SceneManager::level == 1 && player != nullptr) {
-            // Reset player health
+            // Reset player_normal health
             player->get_component<ActorBehaviour>()->replenish_hitpoints();
         }
 
@@ -156,14 +156,14 @@ namespace Game {
         // Reset stage status
         room->set_active(true);
 
-        // Show the player and hud later
+        // Show the player_normal and hud later
         player->set_active(false);
         hud->set_active(false);
 
         // Create enemies entity (it's deleted each time)
         enemies = GameplayPrefabCreator::make_enemies_entity(room);
 
-        // Show the player with a delay of 1 second
+        // Show the player_normal with a delay of 1 second
         new Punity::Utils::PInvokable<GameplaySceneBehaviour>(
                 &GameplaySceneBehaviour::show_player,
                 this,
@@ -181,11 +181,11 @@ namespace Game {
     }
 
     void GameplaySceneBehaviour::show_player() {
-        // Show the player-related things
+        // Show the player_normal-related things
         player->set_active(true);
         hud->set_active(true);
 
-        // Place player
+        // Place player_normal
         player->get_transform()->set_global(room->get_component<RoomBehaviour>()->get_player_starting_position());
 
         GameplaySceneManager::player_loaded = true;

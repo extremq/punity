@@ -24,7 +24,7 @@ namespace Game {
             }
         }
 
-        // Let's see what the player will get
+        // Let's see what the player_normal will get
         float random_chance = Punity::Utils::random();
 
         if (random_chance < 0.0030f) {
