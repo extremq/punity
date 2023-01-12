@@ -25,7 +25,7 @@ namespace Game::Colliders {
     constexpr uint8_t ENERGY_PICKUP = 11;
     constexpr uint8_t HEART_PICKUP = 12;
     constexpr uint8_t WEAPON_PICKUP = 13;
-    constexpr uint8_t SHIELD_PICKUP = 13;
+    constexpr uint8_t SHIELD_PICKUP = 14;
 
 }
 

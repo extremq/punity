@@ -20,7 +20,7 @@ namespace Game::Weapons {
         Colliders::PLAYER_PROJECTILE_1,
         0,
         1,
-        2.0f,
+        10.0f,
         75.0f,
         100.0f
     };

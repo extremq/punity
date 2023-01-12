@@ -14,6 +14,8 @@
 #include "game/Assets/strings.h"
 #include "RoomBehaviour.h"
 #include "game/Assets/sprite_layers.h"
+#include "punity/Components/PCircleCollider.h"
+#include "punity/Utils/PInvokable.h"
 
 namespace Game {
 
@@ -36,7 +38,9 @@ namespace Game {
         }
 
         // If its a heart or energy pickup, destroy them
-        if(other->information == Colliders::ENERGY_PICKUP || other->information == Colliders::HEART_PICKUP) {
+        if(other->information == Colliders::ENERGY_PICKUP ||
+        other->information == Colliders::HEART_PICKUP ||
+        other->information == Colliders::SHIELD_PICKUP) {
 
             switch (other->information) {
                 case Colliders::ENERGY_PICKUP:
@@ -48,9 +52,20 @@ namespace Game {
                     get_entity()->get_component<ActorBehaviour>()->add_hitpoints(1);
                     break;
                 case Colliders::SHIELD_PICKUP:
+                    if (is_shielded) break;
+
                     // Protect the player and enable the barrier
                     is_shielded = true;
-                    get_entity()->get_child_by_name(Game::Names::BARRIER)->set_active(true);
+                    get_entity()->get_child_by_name(Game::Names::BARRIER)
+                            ->set_active(true);
+
+                    // Remove after 10seconds
+                    new Punity::Utils::PInvokable<PlayerBehaviour>(
+                            &PlayerBehaviour::disable_barrier,
+                            this,
+                            10.0f,
+                            get_entity()->get_id()
+                            );
                     break;
                 default:
                     break;

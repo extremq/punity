@@ -130,6 +130,7 @@ namespace Game {
         // Create a random amount of energy pickups (count from 0 to 1)
         uint8_t random_amount = std::lround(Punity::Utils::random(0.0f, 1.0f));
 
+        GameplayPrefabCreator::drop_shield_pickups(room, 1, get_entity()->get_transform()->global_position);
         // If we happen to not generate any energy pickup, see if you can make a heart pickup
         if (random_amount == 0)
         {

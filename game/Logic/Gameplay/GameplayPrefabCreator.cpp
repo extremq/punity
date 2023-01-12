@@ -51,7 +51,7 @@ namespace Game::GameplayPrefabCreator {
         // Add barrier for shielding from bullets
         auto barrier_entity = Punity::PEntity::make_entity(Game::Names::BARRIER, player_entity, false);
         barrier_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
-                SPRITE(Game::Sprites::barrier, Game::Sprites::Layers::PLAYER)
+                SPRITE(Game::Sprites::barrier, Game::Sprites::Layers::BARRIER)
                 );
 
         return player_entity;
@@ -478,6 +478,25 @@ namespace Game::GameplayPrefabCreator {
         return energy_pickup_entity;
     }
 
+    Punity::PEntity* make_shield_pickup(Punity::PEntity* parent) {
+        auto shield_pickup_entity = Punity::PEntity::make_entity(Game::Names::SHIELD_PICKUP, parent, true);
+
+        shield_pickup_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                SPRITE(Game::Sprites::shield, Game::Sprites::Layers::PICKUP)
+        );
+
+        // A static trigger type.
+        shield_pickup_entity->add_component<Punity::Components::PCircleCollider>()
+                ->set_radius(Game::Sprites::shield_w / 2.0f)
+                ->set_information(Colliders::SHIELD_PICKUP)
+                ->set_trigger(true)
+                ->set_static(true);
+
+        shield_pickup_entity->add_component<AttractablePickup>();
+
+        return shield_pickup_entity;
+    }
+
     Punity::PEntity* make_heart_pickup(Punity::PEntity* parent) {
         auto heart_pickup_entity = Punity::PEntity::make_entity(Game::Names::HEART_PICKUP, parent, true);
 
@@ -538,12 +557,26 @@ namespace Game::GameplayPrefabCreator {
     // Spawns amount of heart pickups at a random offset of position
     void drop_heart_pickups(Punity::PEntity* parent, uint8_t amount, Punity::Utils::PVector position) {
         while (amount-- > 0) {
-            // Create an energy pickup on death and set it at the same position + random offset
+            // Create a heart pickup on death and set it at the same position + random offset
             Punity::Utils::PVector random_spawn_position(Punity::Utils::random(-5.0f, 5.0f),
                                                          Punity::Utils::random(-5.0f, 5.0f));
             random_spawn_position += position;
 
             GameplayPrefabCreator::make_heart_pickup(parent)->get_transform()->set_global(
+                    random_spawn_position
+            );
+        }
+    }
+
+    // Spawns amount of heart pickups at a random offset of position
+    void drop_shield_pickups(Punity::PEntity* parent, uint8_t amount, Punity::Utils::PVector position) {
+        while (amount-- > 0) {
+            // Create a shield pickup on death and set it at the same position + random offset
+            Punity::Utils::PVector random_spawn_position(Punity::Utils::random(-5.0f, 5.0f),
+                                                         Punity::Utils::random(-5.0f, 5.0f));
+            random_spawn_position += position;
+
+            GameplayPrefabCreator::make_shield_pickup(parent)->get_transform()->set_global(
                     random_spawn_position
             );
         }

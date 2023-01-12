@@ -47,6 +47,7 @@ namespace Game::Names {
     constexpr char ENERGY_PICKUP[] = "EnergyPickup";
     constexpr char HEART_PICKUP[] = "HeartPickup";
     constexpr char WEAPON_PICKUP[] = "WeaponPickup";
+    constexpr char SHIELD_PICKUP[] = "ShieldPickup";
     constexpr char START_SCENE[] = "StartScene";
     constexpr char LOAD_SCENE[] = "LoadScene";
     constexpr char GAMEPLAY_SCENE[] = "GameplayScene";
