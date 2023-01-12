@@ -14,6 +14,7 @@ namespace Game {
         bool touched_chest = false;
         bool using_starting_weapon = true;
         bool picked_up_any_weapon = false;
+        bool is_shielded = false;
 
         // Avoid some casts
         Punity::PEntity* enemies = nullptr;
@@ -52,6 +53,8 @@ namespace Game {
         Weapons::WeaponConfig get_equipped_weapon();
 
         bool check_if_player_can_hit_enemy(Punity::Utils::PVector enemy_pos);
+
+        void disable_barrier();
     };
 } // Game
 

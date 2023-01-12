@@ -48,6 +48,12 @@ namespace Game::GameplayPrefabCreator {
         player_entity->add_component<ActorBehaviour>();
         player_entity->add_component<Weapon>()->set_weapon(Weapons::starting_weapon);
 
+        // Add barrier for shielding from bullets
+        auto barrier_entity = Punity::PEntity::make_entity(Game::Names::BARRIER, player_entity, false);
+        barrier_entity->add_component<Punity::Components::PSpriteRenderer>()->set_sprite(
+                SPRITE(Game::Sprites::barrier, Game::Sprites::Layers::PLAYER)
+                );
+
         return player_entity;
     }
 

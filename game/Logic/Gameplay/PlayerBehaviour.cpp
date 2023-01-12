@@ -38,12 +38,23 @@ namespace Game {
         // If its a heart or energy pickup, destroy them
         if(other->information == Colliders::ENERGY_PICKUP || other->information == Colliders::HEART_PICKUP) {
 
-            if (other->information == Colliders::ENERGY_PICKUP)
-                // Add energy and cap it to 99
-                remaining_energy = std::min(99, remaining_energy + 3);
-            else
-                // Add one hitpoint
-                get_entity()->get_component<ActorBehaviour>()->add_hitpoints(1);
+            switch (other->information) {
+                case Colliders::ENERGY_PICKUP:
+                    // Add energy and cap it to 99
+                    remaining_energy = std::min(99, remaining_energy + 3);
+                    break;
+                case Colliders::HEART_PICKUP:
+                    // Add one hitpoint
+                    get_entity()->get_component<ActorBehaviour>()->add_hitpoints(1);
+                    break;
+                case Colliders::SHIELD_PICKUP:
+                    // Protect the player and enable the barrier
+                    is_shielded = true;
+                    get_entity()->get_child_by_name(Game::Names::BARRIER)->set_active(true);
+                    break;
+                default:
+                    break;
+            }
 
             // Destroy the pickup
             other->get_entity()->destroy();
@@ -52,8 +63,14 @@ namespace Game {
             return;
         }
 
-        // Subtract hitpoints
-        compute_damage_dealt_by_projectile(other->information);
+        // Subtract hitpoints if its a damaging projectile
+        if (!is_shielded)
+            compute_damage_dealt_by_projectile(other->information);
+    }
+
+    void PlayerBehaviour::disable_barrier() {
+        is_shielded = false;
+        get_entity()->get_child_by_name(Game::Names::BARRIER)->set_active(false);
     }
 
     void PlayerBehaviour::compute_damage_dealt_by_projectile(uint8_t projectile_type) {
@@ -87,6 +104,10 @@ namespace Game {
         using_starting_weapon = true;
         equipped_weapon = Weapons::empty_weapon;
         picked_up_any_weapon = false;
+
+        // Shield status
+        is_shielded = false;
+        get_entity()->get_child_by_name(Game::Names::BARRIER)->set_active(false);
 
         // Restore energy
         remaining_energy = 99;
