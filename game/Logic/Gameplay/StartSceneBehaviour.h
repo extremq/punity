@@ -15,6 +15,8 @@ namespace Game {
         void on_update() override {
             // If the joystick button is pressed
             if (Punity::Button.read_button(JOY_BTN)) {
+                Punity::Buzzer.play_beep(0.005);
+
                 SceneManager::level = 1;
                 SceneManager::stage = 1;
                 SceneManager::switch_scene(LEVEL_LOAD_SCENE);
