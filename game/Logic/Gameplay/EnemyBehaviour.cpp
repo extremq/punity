@@ -66,8 +66,8 @@ namespace Game {
         Tile picked_tile = room->get_component<RoomBehaviour>()->
                 tiles[static_cast<int>((64.0f + target.y) / 8.0f)][static_cast<int>((64.0f + target.x) / 8.0f)];
 
-        while(picked_tile != EMPTY && picked_tile != BOX) {
-            // Roll until empty tile or crate.
+        while(picked_tile != EMPTY) {
+            // Roll until empty tile.
             picked_direction = std::floor(Punity::Utils::random(0, 3.99f));
             target = get_entity()->get_transform()->global_position + directions[picked_direction];
             picked_tile = room->get_component<RoomBehaviour>()->
