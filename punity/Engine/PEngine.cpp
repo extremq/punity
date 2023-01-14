@@ -255,6 +255,9 @@ namespace Punity {
                 );
             }
 
+            // Update buzzer
+            update_buzzer();
+
             // Render the screen
             Punity::Screen.load_frame();
             // Sleep the remaining frame time
@@ -287,6 +290,10 @@ namespace Punity {
         float raw_time_seconds = raw_time / 1000000.0f;
         Punity::Time.m_delta_time = raw_time_seconds - Punity::Time.m_time;
         Punity::Time.m_time = raw_time_seconds;
+    }
+
+    void PEngine::update_buzzer() {
+        Punity::Buzzer.update();
     }
 
     PEngine::PEngine() {

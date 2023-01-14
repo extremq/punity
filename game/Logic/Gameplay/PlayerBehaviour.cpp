@@ -14,7 +14,6 @@
 #include "game/Assets/strings.h"
 #include "RoomBehaviour.h"
 #include "game/Assets/sprite_layers.h"
-#include "punity/Components/PCircleCollider.h"
 #include "punity/Utils/PInvokable.h"
 
 namespace Game {
@@ -192,7 +191,7 @@ namespace Game {
             }
         }
 
-        // Shoot test!
+        // Shooting
         if (Punity::Button.read_button(ACTION_BTN)) {
             // You need enough energy to be able to shoot
             // However starting weapon uses no energy, just magic
@@ -205,6 +204,9 @@ namespace Game {
                     room,
                     true
                     )) {
+                // Play sound
+                Punity::Buzzer.play_beep(0.005);
+
                 // Change sprite to shooting
                 get_entity()->get_component<Punity::Components::PSpriteRenderer>()->set_sprite(
                         SPRITE(Game::Sprites::player_shooting, Game::Sprites::Layers::PLAYER)

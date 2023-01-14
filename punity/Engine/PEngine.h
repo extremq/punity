@@ -67,6 +67,8 @@ namespace Punity {
 
         // Root Entity, head of the Entity Tree
         PEntity* root_entity = nullptr;
+
+        void update_buzzer();
     };
 }
 

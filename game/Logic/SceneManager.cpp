@@ -28,6 +28,9 @@ namespace Game::SceneManager {
         Punity::Button.config(JOY_BTN);
         Punity::Button.config(ACTION_BTN);
 
+        // Configure buzzer
+        Punity::Buzzer.config(BUZZ_PIN);
+
         // Set up entities
         init_entities();
 

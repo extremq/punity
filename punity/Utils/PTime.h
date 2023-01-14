@@ -14,6 +14,7 @@ namespace Punity::Utils {
         float m_time = 0;
         float m_delta_time = 0;
         friend class Punity::PEngine;
+        PTime() = default;
     public:
         static PTime& get() {
             static PTime instance;

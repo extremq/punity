@@ -16,6 +16,7 @@
 #include "punity/Input/PButton.h"
 #include "punity/Engine/PEngine.h"
 #include "punity/Screen/PScreen.h"
+#include "punity/Sound/PSound.h"
 
 // Start of Punity!
 namespace Punity {
@@ -23,6 +24,7 @@ namespace Punity {
     static PScreen& Screen = PScreen::get();
     static PEngine& Engine = PEngine::get();
     static Utils::PTime& Time = Utils::PTime::get();
+    static Sound::PSound& Buzzer = Sound::PSound::get();
     static Input::PJoystick& Joystick = Input::PJoystick::get();
     static Input::PButton& Button = Input::PButton::get();
 }

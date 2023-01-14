@@ -12,9 +12,14 @@ namespace Game {
         // If hit by player_normal or projectile, destroy itself
         if (other->information == Game::Colliders::PLAYER ||
                 (other->information >= Game::Colliders::PLAYER_PROJECTILE_1 && other->information <= Game::Colliders::ENEMY_PROJECTILE_4) ) {
-            // Create some energy pickups and set them to Room
-            if (Punity::Utils::random() < 0.5f)
+
+            auto roll = Punity::Utils::random();
+
+            // Create some energy pickups or shield and attach them to room
+            if (roll < 0.5f)
                 GameplayPrefabCreator::drop_energy_pickups(get_entity()->get_parent(), 2, get_entity()->get_transform()->global_position);
+            else if (roll < 0.75f)
+                GameplayPrefabCreator::drop_shield_pickups(get_entity()->get_parent(), 1, get_entity()->get_transform()->global_position);
 
             get_entity()->destroy();
         }
