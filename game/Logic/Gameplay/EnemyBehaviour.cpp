@@ -60,13 +60,18 @@ namespace Game {
                 {-8, 0}
         };
 
-        int pick = std::floor(Punity::Utils::random(0, 3.99f));
-        Punity::Utils::PVector target = get_entity()->get_transform()->global_position + directions[pick];
+        // Determine the selected tile
+        int picked_direction = std::floor(Punity::Utils::random(0, 3.99f));
+        Punity::Utils::PVector target = get_entity()->get_transform()->global_position + directions[picked_direction];
+        Tile picked_tile = room->get_component<RoomBehaviour>()->
+                tiles[static_cast<int>((64.0f + target.y) / 8.0f)][static_cast<int>((64.0f + target.x) / 8.0f)];
 
-        while(room->get_component<RoomBehaviour>()->tiles[static_cast<int>((64.0f + target.y) / 8.0f)][static_cast<int>((64.0f + target.x) / 8.0f)] != EMPTY) {
-            // Reroll until empty tile
-            pick = std::floor(Punity::Utils::random(0, 3.99f));
-            target = get_entity()->get_transform()->global_position + directions[pick];
+        while(picked_tile != EMPTY && picked_tile != BOX) {
+            // Roll until empty tile or crate.
+            picked_direction = std::floor(Punity::Utils::random(0, 3.99f));
+            target = get_entity()->get_transform()->global_position + directions[picked_direction];
+            picked_tile = room->get_component<RoomBehaviour>()->
+                    tiles[static_cast<int>((64.0f + target.y) / 8.0f)][static_cast<int>((64.0f + target.x) / 8.0f)];
         }
 
         get_entity()->get_component<MovingBehaviour>()->translate_to(

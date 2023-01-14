@@ -9,8 +9,8 @@
 
 namespace Game {
     void CrateBehaviour::on_start_collision(Punity::Components::PCollider *other) {
-        // If hit by player_normal or projectile, destroy itself
-        if (other->information == Game::Colliders::PLAYER ||
+        // If hit by player, enemy or projectile, destroy itself
+        if (other->information == Game::Colliders::PLAYER || other->information == Game::Colliders::ENEMY ||
                 (other->information >= Game::Colliders::PLAYER_PROJECTILE_1 && other->information <= Game::Colliders::ENEMY_PROJECTILE_4) ) {
 
             auto roll = Punity::Utils::random();
