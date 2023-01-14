@@ -120,8 +120,7 @@ namespace Game {
         picked_up_any_weapon = false;
 
         // Shield status
-        is_shielded = false;
-        get_entity()->get_child_by_name(Game::Names::BARRIER)->set_active(false);
+        disable_barrier();
 
         // Restore energy
         remaining_energy = 99;
@@ -140,6 +139,9 @@ namespace Game {
 
         // Store weapon component
         weapon_component = get_entity()->get_component<Weapon>();
+
+        // Reset shield status
+        disable_barrier();
 
         // Reset chest touch
         touched_chest = false;
