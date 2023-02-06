@@ -2,6 +2,8 @@
 
 # Punity
 ![](https://i.imgur.com/e5t4SCO.png)
+![](https://i.imgur.com/ER29NXM.jpg)
+![](https://i.imgur.com/I4rq7I1.jpg)
 ![](https://i.imgur.com/vKiKM2b.png)
 
 Punity (*noun: punishment, punitiveness*) is 
