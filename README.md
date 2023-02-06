@@ -2,9 +2,14 @@
 
 # Punity
 ![](https://i.imgur.com/e5t4SCO.png)
+<details><summary>More pictures!</summary>
+
 ![](https://i.imgur.com/ER29NXM.jpg)
+
 ![](https://i.imgur.com/I4rq7I1.jpg)
+
 ![](https://i.imgur.com/vKiKM2b.png)
+</details>
 
 Punity (*noun: punishment, punitiveness*) is 
 a 2D game engine targeted to the Raspberry Pi Pico microcontroller, designed with Unity as an inspiration.
